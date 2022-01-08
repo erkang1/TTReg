@@ -1,0 +1,62 @@
+﻿{
+  "params": [
+    {
+      "display_name": "批次编号",
+      "name": "pcbh",
+      "type": 2,
+      "default": "A1"
+    },
+    {
+      "display_name": "联众账号",
+      "name": "lzzh",
+      "type": 2,
+      "default": "请输入联众账号"
+    },
+    {
+      "display_name": "联众密码",
+      "name": "lzmm",
+      "type": 2,
+      "default": "请输入联众密码"
+    },
+    {
+      "display_name": "注册数量",
+      "name": "zcsl",
+      "type": 1,
+      "default": 20
+    },
+    {
+      "display_name": "防卡时间",
+      "name": "fksj",
+      "type": 1,
+      "default": 300
+    },
+    {
+      "display_name": "接口序",
+      "name": "jkx",
+      "type": 3,
+      "options": [
+        {
+          "name": "接口1:内部专线",
+          "value": 0
+        },
+        {
+          "name": "接口2：sms-activate.ru/cn",
+          "value": 1
+        }
+      ],
+      "default": "0"
+    },
+    {
+      "display_name": "电话号接口",
+      "name": "dhhjk",
+      "type": 2,
+      "default": "网站"
+    },
+    {
+      "display_name": "电话号接口2",
+      "name": "dhhjk2",
+      "type": 2,
+      "default": "网站"
+    }
+  ]
+}
