@@ -223,6 +223,8 @@ function 代理状态()
 	end
 end
 
+
+
 function 卸载应用(包名)
 	flag = ipaUninstall(包名)
 	if flag == 1 then
@@ -299,7 +301,7 @@ if  values.接口序=='0' then
 		local str = values.电话号接口:split("/v2")
 		local str2= values.电话号接口:split("?name=")
 		local webdata=httpGet(str[1]..'/v2/api/setting/phone/status?name='..str2[2]..'&phone='..电话号码..'&token='..token值)
-		token值=''--归零
+		token值=''	--归零
 		电话号码=''
 	end
 elseif values.接口序=='1' then
@@ -470,4 +472,139 @@ else
 	全局变量1=2
 	mSleep(5000)
 end
+end
+
+
+------------登录相关-------------------------
+------------线上上传账号函数-----------------
+function 获取账号密码()
+local webdata,tmp,获取状态
+for var= 1,20 do
+	webdata = httpGet("http://45.207.44.6:12345/v2/api/get/phone?name="..values.账号密码接口,60)  --获取数据
+	tmp = json.decode(webdata)
+	--dialog("获取到的数据："..webdata)   --调试打印，上线需要注释
+	获取状态=tmp.code
+	获取数量=tmp.data
+	登录账号=tmp.data.phone
+	登录密码=tmp.data.token
+	if 获取状态=='200' or 获取状态==200 then
+		mSleep(1000)
+		return 登录账号
+	elseif 获取数量 == '0' or 获取数量 == 0 then
+		toast("没有更多的账号密码了。")
+		mSleep(1000)
+		lua_exit()
+	else
+		dialog("脚本结束：无法获取到登录账号密码，请检查网络或者查看是否还有更多账号",{title = "错误打印",button = "我知道了"})
+		lua_exit()
+	end
+	mSleep(5000)
+end
+dialog('获取账号密码失败')
+lua_exit()
+end
+
+--function 释放账号密码()
+--if 登录账号~='' then
+--	toast('释放账号密码',1)
+--	local str = ("http://45.207.44.6:12345/v2/api/get/phone?name=denglu"):split("/v2")
+--	dialog(str)
+--	local str2= ("http://45.207.44.6:12345/v2/api/get/phone?name=denglu"):split("?name=")
+--	dialog(str2)
+--	local webdata=httpGet(str[1]..'/v2/api/setting/phone/status?name='..str2[2]..'&phone='..登录账号..'&token='..登录密码)
+--	dialog(webdata)
+--	登录密码=''--归零
+--	登录账号=''
+--end
+--end
+
+function 记录登录账号信息()
+	toast("已记录账号："..登录账号)
+	mSleep(500)
+	toast("已记录密码："..登录密码)
+	mSleep(500)
+	记录内容 = tostring(登录账号).."|".. tostring(登录密码)
+	mSleep(1000)
+	记录数据('已登录账号.log',记录内容)
+	mSleep(5000)
+end
+
+----------本地文件登录处理------------------
+--读取账号和密码 --将指定文件中的内容按行读取
+local ts = require("ts")
+function 读取首行()
+	function readFile(path)
+    local file = io.open(path,"r");
+		if file then
+			local _list = {};
+			for l in file:lines() do
+				table.insert(_list,l)
+			end
+			file:close();
+			return _list
+		end
+	end
+	--检测指定文件是否存在
+	function file_exists(file_name)
+		local f = io.open(file_name)	
+		--f:close()
+		return f ~= nil and f:close()
+	end
+	bool = file_exists(values.登录文件名称)
+	if bool then
+	list = readFile(values.登录文件名称)
+	if #list > 0 then
+		--for  i=1, #list,1  do
+		for  i=1, 1,1  do
+			local 首行 = list[i]
+			local str = 首行:split("|")	
+			登录账号 = str[1]
+			登录密码 = str[2]
+			toast("账号是："..登录账号)
+			toast("密码是："..登录密码)		
+		end
+	end
+		else
+		dialog("文件不存在",0)
+	end
+
+end
+
+
+-------删除首行：读取文件到table，然后修改，再清除文件内容，重载写入到文件
+local 文件路径 = values.登录文件名称
+function 读取文本(file)
+	-- body
+	local fileTab = {}
+	local line = file:read()
+	while line do
+		--dialog("获取行数据"..line)
+		table.insert(fileTab,line)
+		line = file:read()
+	end
+	return fileTab
+end
+
+function 写入文件(file,fileTab)
+	for i , line in pairs(fileTab) do
+		toast("开始写入"..line)
+		file:write(line)
+		file:write("\n")
+	end
+end
+
+function 删除首行()
+	-- body
+	toast("开始删除首行")
+	local 打开文件 = io.open(文件路径)
+	if 打开文件 then
+		local tab = 读取文本(打开文件)
+		打开文件:close()
+		table.remove(tab,1)
+		local 文件替换 = io.open(文件路径,"w")
+		if 文件替换 then 
+			写入文件(文件替换,tab)
+			文件替换:close()
+		end
+	end
 end

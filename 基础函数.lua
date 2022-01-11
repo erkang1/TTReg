@@ -190,3 +190,26 @@ mSleep(30);
 --在坐标 (150, 600) 抬起
 touchUp(587+math.random(0,5),267+math.random(0,5));
 end
+
+
+--function 获取读取登录文本(信息文件) --返回 一行随机的文本
+----local tab=readFile('/var/mobile/Media/'..信息文件)
+--local tab=readFile(values.登录文件路径..信息文件)
+--if tab then 
+--	--local 随机获取值=tab[math.random(1,table长度(tab))]
+--	local 随机获取值=tab[math.random(1,table长度(tab))]
+--	toast ("获取到的随机值："..随机获取值)
+--	mSleep(1000)
+--	return  随机获取值:rtrim()
+--else
+--	dialog("没有可用的数据了")
+--	luaExit()
+--	mSleep(1000)
+--end
+--end
+
+
+
+
+
+

@@ -878,3 +878,89 @@ while (true) do
 	end
 end
 end
+
+function 账号登录()
+while (true) do
+	local 当前界面=检索界面(TT注册界面列表)
+	if 当前界面=='注册1665主页授权界面' then
+		tap(248+math.random(0,5),788+math.random(0,5))  --点击 不允许
+		mSleep(1000)
+	elseif 当前界面 == 'TT注册界面2' then 
+		tap(543+math.random(0,5),1264+math.random(0,5))
+		mSleep(1000)
+	elseif 当前界面=='TT注册225界面login点击1' or  当前界面=='TT注册225界面login点击2' then  --遮罩点击
+		mSleep(500)
+		tap(TT注册225界面login点击1X+math.random(0,5),TT注册225界面login点击1X+math.random(0,5))
+		mSleep(1000)
+	elseif 当前界面=='TT注册225界面login4' then
+		tap(点击225login按钮X+math.random(0,5),点击225login按钮Y+math.random(0,5))
+		mSleep(1000)
+	elseif 当前界面 == 'TT注册电话界面' then
+		toast("当前界面是电话登录")
+		tap(登录225邮箱按钮X+math.random(0,5),登录225邮箱按钮Y+math.random(0,5))
+	elseif 当前界面 == 'TT登录225界面邮箱' then 
+		tap(456,348)  --先点击空位置 才会出现X
+		mSleep(math.random(500,1000))
+		tap(666, 347) --点击 X 清空内容
+		mSleep(math.random(500,1000))
+		----如果是上传登录方式 那么就调用线上获取的方式
+		----反之，调用本地获取的函数——先获取首行数据，登录成功删除首行
+		if values.账号密码接口 ~= '' and values.登录文件名称 == '' then
+			获取账号密码()
+		elseif values.账号密码接口 == '' and values.登录文件名称 ~= '' then
+			读取首行()
+		end
+		输入文本2(129,338,登录账号)
+		mSleep(1000)
+		输入文本(145,472,登录密码)
+		mSleep(1000)
+		if 当前界面 == 'TT登录225界面邮箱' then 
+			for var= 1,math.random(2,5) do
+				tap(296+math.random(0,5),683+math.random(0,5))
+				mSleep(8000)
+			end	
+		end
+		判断是否离开该界面(TT注册界面列表,'TT注册邮箱界面')
+	elseif 当前界面=='TT注册打码界面' then
+		mSleep(3000)
+		打码准备()
+		toast('验证码已刷新',1)
+		mSleep(500)
+		打码()
+		mSleep(12000)
+		判断是否离开该界面(TT注册界面列表,'TT注册邮箱界面')
+	elseif 	当前界面=='注册1665验证码未刷新界面' then
+		toast('刷新验证码中...',1)
+		mSleep(500)
+		tap(154+math.random(0,10),832+math.random(0,10))
+		mSleep(1000)
+	elseif 	当前界面=='TT登录225界面toomany' or	当前界面=='TT登录225界面验证码' then
+		toast('账号节点或者新机环境异常,登录结束',1)
+		mSleep(500)
+		--释放账号密码()
+		return true
+	elseif 当前界面 == 'TT登录授权弹框' then 
+		tap(TT登录授权弹框X,TT登录授权弹框Y)
+		mSleep(1000)
+	elseif 当前界面 == 'TT登录主页滑动' or 当前界面 == '注册1665主页界面' then 
+		for var= 1,math.random(2,3) do
+			moveTo(370+math.random(1,10),988+math.random(1,10),374+math.random(1,10),461+math.random(1,10)) --这里用的选择头像的时候的坐标
+			mSleep(1000)
+		end
+		tap(524+math.random(1,10),1272+math.random(1,10))    --点击主页
+	elseif 当前界面 == 'TT登录消息界面' then 
+		记录登录账号信息()
+		删除首行()
+		全局登录变量1=1
+		return true
+	else	
+		
+	end
+end
+end
+
+
+
+
+
+

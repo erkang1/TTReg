@@ -7,7 +7,7 @@ MyTable = {
     ["height"] = h,            
     ["cancelname"] = "取消",  
     ["okname"] = "同意条款并运行", 
-    ["title"] = "TK脚本", --标题栏文字
+    ["title"] = "TK二合一脚本", --标题栏文字
     ["titlealign"] = "left", --title 对齐方式，默认左对齐
     ["align"] = "center", --
     ["titlesize"] = 15,  
@@ -24,6 +24,165 @@ MyTable = {
     pages       =
     {
         {
+			{
+                ["type"] = "Label",
+                ["align"] = "center",
+                ["text"] = "脚本功能:",
+                ["size"] = 15, 
+                ["align"] = "left",          
+                ["valign"] = "center", 
+                ["color"] = "0,0,0",           
+                ["width"] = -1,
+                ["nowrap"] = 1,
+            },
+            {
+                ["type"] = "RadioGroup",            
+                -- 必填，控件类型，单选组合
+                ["id"] = "脚本功能",                      
+                -- 选填，无，控件 ID，以 table 格式返回返回值时必填,否则无法获取返回值
+                ["list"] = "登录,注册",      -- 必填，无，多选组合内容
+                ["select"] = "1",                   -- 选填，0，默认选中项 id
+                --["images"] = "test1.png,test1.png,test1.png,test1.png", 
+                -- 选填，无， 单选组合选项显示图片
+                ["scale"] = 0.4,                    -- 选填，1，图片缩放比例
+                ["countperline"] = 0,
+            },
+			{
+                ["type"] = "Label",
+                ["align"] = "center",
+                ["text"] = "使用软件:",
+                ["size"] = 15, 
+                ["align"] = "left",          
+                ["valign"] = "center", 
+                ["color"] = "0,0,0",           
+                ["width"] = -1,
+                ["nowrap"] = 1,
+            },
+            {
+                ["type"] = "RadioGroup",            
+                -- 必填，控件类型，单选组合
+                ["id"] = "使用软件",                      
+                -- 选填，无，控件 ID，以 table 格式返回返回值时必填,否则无法获取返回值
+                ["list"] = "AWZ,AXJ,黑豹,PyApp",      -- 必填，无，多选组合内容
+                ["select"] = "1",                   -- 选填，0，默认选中项 id
+                --["images"] = "test1.png,test1.png,test1.png,test1.png", 
+                -- 选填，无， 单选组合选项显示图片
+                ["scale"] = 0.4,                    -- 选填，1，图片缩放比例
+                ["countperline"] = 0,
+            },
+			{
+                ["type"] = "Label",
+                ["align"] = "center",
+                ["text"] = "是否备份:",
+                ["size"] = 15, 
+                ["align"] = "left",          
+                ["valign"] = "center", 
+                ["color"] = "0,0,0",           
+                ["width"] = -1,
+                ["nowrap"] = 1,
+            },
+--            {
+--                ["type"] = "RadioGroup",            
+--                -- 必填，控件类型，单选组合
+--                ["id"] = "是否备份",                      
+--                -- 选填，无，控件 ID，以 table 格式返回返回值时必填,否则无法获取返回值
+--                ["list"] = "是,否",      -- 必填，无，多选组合内容
+--                ["select"] = "1",                   -- 选填，0，默认选中项 id
+--                --["images"] = "test1.png,test1.png,test1.png,test1.png", 
+--                -- 选填，无， 单选组合选项显示图片
+--                ["scale"] = 0.4,                    -- 选填，1，图片缩放比例
+--                ["countperline"] = 0,
+--            },
+			{
+                ["type"] = "Switch",
+                ["id"] = "是否备份",
+                ["size"] = "m",
+                ["align"] = "left",
+                ["valign"] = "top",
+                ["state"] = "off",
+                ["width"] = -1,
+                ["nowrap"] = 1,
+            },
+			{
+                ["type"] = "Label",
+                ["align"] = "center",
+                ["text"] = "卸载安装:",
+                ["size"] = 15, 
+                ["align"] = "left",          
+                ["valign"] = "center", 
+                ["color"] = "0,0,0",           
+                ["width"] = -1,
+                ["nowrap"] = 1,
+            },
+--            {
+--                ["type"] = "RadioGroup",            
+--                -- 必填，控件类型，单选组合
+--                ["id"] = "卸载安装",                      
+--                -- 选填，无，控件 ID，以 table 格式返回返回值时必填,否则无法获取返回值
+--                ["list"] = "开启,关闭",      -- 必填，无，多选组合内容
+--                ["select"] = "1",                   -- 选填，0，默认选中项 id
+--                --["images"] = "test1.png,test1.png,test1.png,test1.png", 
+--                -- 选填，无， 单选组合选项显示图片
+--                ["scale"] = 0.4,                    -- 选填，1，图片缩放比例
+--                ["countperline"] = 0,
+--            },
+			{
+                ["type"] = "Switch",
+                ["id"] = "卸载安装",
+                ["size"] = "m",
+                ["align"] = "left",
+                ["valign"] = "top",
+                ["state"] = "off",
+                ["width"] = -1,
+                ["nowrap"] = 0,
+            },
+			{
+                ["type"] = "Label", 
+                ["text"] = "上传登录:",        
+--                ["text"] = "接口地址1:",        
+                ["size"] = 15, 
+                ["align"] = "left",          
+                ["valign"] = "center", 
+                ["color"] = "0,0,0",           
+                ["width"] = -1,
+                ["nowrap"] = 1,
+            },
+			 {
+                ["type"] = "Edit",               
+                ["id"] = "账号密码接口",
+				--["prompt"] = "http://45.207.44.6:12345/v2/api/get/phone?name=denglu", 
+				["text"]="denglu",
+                ["kbtype"] = "default", 
+                ["color"] = "0,0,0",   
+                ["size"] = 15,           
+                ["align"] = "",           
+                ["valign"] = "top",   
+                ["width"] = 500,
+                ["nowrap"] = 0,
+            },
+			{
+				["type"] = "Label", 
+				["text"] = "本地登录:",        
+				["size"] = 15, 
+				["align"] = "left",          
+				["valign"] = "center", 
+				["color"] = "0,0,0",           
+				["width"] = -1,
+				["nowrap"] = 1,--下个控件不换行
+			},			
+			{
+				["type"] = "Edit",               
+				["id"] = "登录文件名称",  
+				["text"] = "/private/var/mobile/Media/cs.txt",
+				["prompt"] = "/private/var/mobile/Media/cs.txt", 
+				["kbtype"] = "default",  
+				["color"] = "0,0,0",   
+				["size"] = 15,           
+				["align"] = "",           
+				["valign"] = "top",   
+				["width"] = 500,
+				["nowrap"] = 0,
+			},
             {
                 ["type"] = "Label", 
                 ["text"] = "联众账号:",        
@@ -141,7 +300,7 @@ MyTable = {
             },
 			{
                 ["type"] = "Label", 
-                ["text"] = "接口序列:",        
+                ["text"] = "注册接口:",        
                 ["size"] = 15, 
                 ["align"] = "left",          
                 ["valign"] = "center", 
@@ -231,79 +390,10 @@ MyTable = {
                 ["valign"] = "top",   
                 ["width"] = 500,
                 ["nowrap"] = 0,
-            },
-			 {
-                ["type"] = "Label",
-                ["align"] = "center",
-                ["text"] = "使用软件:",
-                ["size"] = 15, 
-                ["align"] = "left",          
-                ["valign"] = "center", 
-                ["color"] = "0,0,0",           
-                ["width"] = -1,
-                ["nowrap"] = 1,
-            },
-            {
-                ["type"] = "RadioGroup",            
-                -- 必填，控件类型，单选组合
-                ["id"] = "使用软件",                      
-                -- 选填，无，控件 ID，以 table 格式返回返回值时必填,否则无法获取返回值
-                ["list"] = "AWZ,AXJ,黑豹,PyApp",      -- 必填，无，多选组合内容
-                ["select"] = "1",                   -- 选填，0，默认选中项 id
-                --["images"] = "test1.png,test1.png,test1.png,test1.png", 
-                -- 选填，无， 单选组合选项显示图片
-                ["scale"] = 0.4,                    -- 选填，1，图片缩放比例
-                ["countperline"] = 0,
-            },
-			{
-                ["type"] = "Label",
-                ["align"] = "center",
-                ["text"] = "是否备份:",
-                ["size"] = 15, 
-                ["align"] = "left",          
-                ["valign"] = "center", 
-                ["color"] = "0,0,0",           
-                ["width"] = -1,
-                ["nowrap"] = 1,
-            },
-            {
-                ["type"] = "RadioGroup",            
-                -- 必填，控件类型，单选组合
-                ["id"] = "是否备份",                      
-                -- 选填，无，控件 ID，以 table 格式返回返回值时必填,否则无法获取返回值
-                ["list"] = "是,否",      -- 必填，无，多选组合内容
-                ["select"] = "1",                   -- 选填，0，默认选中项 id
-                --["images"] = "test1.png,test1.png,test1.png,test1.png", 
-                -- 选填，无， 单选组合选项显示图片
-                ["scale"] = 0.4,                    -- 选填，1，图片缩放比例
-                ["countperline"] = 0,
-            },
-			{
-                ["type"] = "Label",
-                ["align"] = "center",
-                ["text"] = "卸载安装:",
-                ["size"] = 15, 
-                ["align"] = "left",          
-                ["valign"] = "center", 
-                ["color"] = "0,0,0",           
-                ["width"] = -1,
-                ["nowrap"] = 1,
-            },
-            {
-                ["type"] = "RadioGroup",            
-                -- 必填，控件类型，单选组合
-                ["id"] = "卸载安装",                      
-                -- 选填，无，控件 ID，以 table 格式返回返回值时必填,否则无法获取返回值
-                ["list"] = "开启,关闭",      -- 必填，无，多选组合内容
-                ["select"] = "1",                   -- 选填，0，默认选中项 id
-                --["images"] = "test1.png,test1.png,test1.png,test1.png", 
-                -- 选填，无， 单选组合选项显示图片
-                ["scale"] = 0.4,                    -- 选填，1，图片缩放比例
-                ["countperline"] = 0,
-            },
+            },	
 			{
                 ["type"] = "Label", 
-                ["text"] = "\n 适配6/6s/7/8，默认使用 随机邮箱 和 随机密码 地址1和地址2两者对应二选一\n 适配 16.6.5，21.1.0，22.0.0，22.5.0\n 卸载安装目前仅支持TK16.6.5",        
+                ["text"] = "说明：适配6/6s/7/8，默认使用 随机邮箱 和 随机密码 地址1和地址2两者对应二选一\n 注册适配 16.6.5，21.1.0，22.0.0，22.5.0\n登陆仅支持22.5.0\n 卸载安装目前仅支持TK16.6.5 \n备份只针对awz，axj",        
                 ["size"] = 12, 
                 ["align"] = "center",          
                 ["valign"] = "center", 
@@ -359,8 +449,8 @@ MyTable = {
 			{
                 ["type"] = "Edit",               
                 ["id"] = "端口设置", 
-				["text"] = "5000", 
-                ["prompt"] = "", 
+				--["text"] = "5000", 
+                ["prompt"] = "5000", 
                 ["kbtype"] = "number",  
                 ["color"] = "0,0,0",   
                 ["size"] = 15,           
@@ -465,7 +555,7 @@ MyTable = {
             },	
 			{
                 ["type"] = "Label", 
-                ["text"] = "不填文件名称 【默认随机】",        
+                ["text"] = "\n 不填文件名称 【默认随机】\n",        
                 ["size"] = 15, 
                 ["align"] = "left",          
                 ["valign"] = "center", 
@@ -473,6 +563,7 @@ MyTable = {
                 ["width"] = -1,
                 ["nowrap"] = 1,--下个控件不换行
             },	
+			
 		},
 
 		{			
