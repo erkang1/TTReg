@@ -154,13 +154,13 @@ end
 
 
 if values.账号密码接口 == '' and values.登录文件名称 == '' then    ---判断接口地址是否合法
-		dialog("请填写正确的账号密码文件接口或者本地路径",{title = "登录接口错误",button = "重新填写"})
-		return false
-	elseif values.账号密码接口 ~= '' and values.登录文件名称 ~= '' then
-		dialog("请检查文件的接口地址是否正确\n登录地址二选一",{title = "登录接口错误",button = "重新填写"})
-		return false
-	else	
-		mSleep(1000)
+	dialog("请填写正确的账号密码文件接口或者本地路径",{title = "登录接口错误",button = "重新填写"})
+	return false
+elseif values.账号密码接口 ~= '' and values.登录文件名称 ~= '' then
+	dialog("请检查文件的接口地址是否正确\n登录地址二选一",{title = "登录接口错误",button = "重新填写"})
+	return false
+else	
+	mSleep(1000)
 end
 
 
