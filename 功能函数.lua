@@ -160,34 +160,12 @@ function TT防闪退启动()
 	end
 end
 
-------1665抓包上传函数-------
---function KillMe()
---	local webdata,tmp,获取状态
---	for var= 1,10 do
---		webdata = httpGet("http://192.168.80.114:12345/status?port=5005" ,60)  --获取代理状态
---		tmp = json.decode(webdata)
---		dialog("得到的值"..webdata)   --调试打印，上线需要注释
---		获取状态=tmp.code
---		dialog("获取到的状态"..获取状态)   --调试打印，上线需要注释
---		if 获取状态=='run' then
---			mSleep(1000)
---			return 
---		elseif 获取状态 == 'stop' then
---			toast("代理端口未启动，等待10秒",1)
---			mSleep(10000)
---		else
-			
---		end
---		mSleep(5000)
---	end
---end
-
 
 function KillMe()
 	local header_send = {typeget = "ios"}
 	local body_send = {id = "687"}
 	ts.setHttpsTimeOut(60)  --网页超时
-	status_resp, header_resp,body_resp = ts.httpGet("http://192.168.80.114:12345/stop?port="..values.端口设置, header_send, body_send)
+	status_resp, header_resp,body_resp = ts.httpGet("http://"..values.ip..":12345/stop?port="..values.端口设置, header_send, body_send)
 	--dialog(status_resp,0)
 	--dialog(header_resp,0)
 	toast(body_resp,0)
@@ -205,7 +183,7 @@ function 代理状态()
 		local header_send = {typeget = "ios"}
 		local body_send = {id = "687"}
 		ts.setHttpsTimeOut(60) 
-		local status_resp, header_resp,body_resp = ts.httpGet("http://192.168.80.114:12345/status?port="..values.端口设置, header_send, body_send)
+		local status_resp, header_resp,body_resp = ts.httpGet("http://"..values.ip..":12345/status?port="..values.端口设置, header_send, body_send)
 		--dialog(status_resp,0)
 		--dialog(header_resp,0)
 		toast(body_resp,0)
@@ -530,7 +508,7 @@ function 记录登录账号信息()
 end
 
 ----------本地文件登录处理------------------
---读取账号和密码 --将指定文件中的内容按行读取
+--读取账号和密码 --将指定文件中的内容按行读取  --分隔符 “ | ”
 local ts = require("ts")
 function 读取首行()
 	function readFile(path)

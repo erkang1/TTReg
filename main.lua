@@ -57,6 +57,7 @@ local 注册间隔 = values.注册间隔
 local 使用软件 = values.使用软件
 local 是否开启抓包代理 = values.是否开启抓包代理
 local 端口设置 = values.端口设置
+local ip = values.ip
 local 卸载安装 = values.卸载安装
 local 是否备份 = values.是否备份
 ---------登录操作ID----------
@@ -164,7 +165,7 @@ end
 
 
 function 流程()
-	if values.脚本功能 == '0' then 	---以下是登录账号的主要流程----------
+	if values.脚本功能 == '0' then 		---以下是登录账号的主要流程-------适配22.5.0---
 		toast("当前功能为登录",1)
 		mSleep(500)
 		----进行登录功能		
@@ -178,7 +179,7 @@ function 流程()
 	end
 
 
-	if values.脚本功能 == '1' then  									----以下是注册账号的主要流程----
+	if values.脚本功能 == '1' then 		----以下是注册账号的主要流程----------
 		toast("当前功能为注册",1)
 		mSleep(500)
 
@@ -191,7 +192,7 @@ function 流程()
 		end
 		----判断放卡时间是否大于等于300------
 		if tonumber(values.防卡时间) < 300 then
-			dialog("为保证流程正常，防卡时间应该大于等于5分钟")
+			dialog("为保证流程正常，防卡时间应该大于等于 5 分钟")
 			return false
 		else
 			mSleep(100)

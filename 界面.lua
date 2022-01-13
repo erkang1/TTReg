@@ -150,8 +150,8 @@ MyTable = {
 			 {
                 ["type"] = "Edit",               
                 ["id"] = "账号密码接口",
-				--["prompt"] = "http://45.207.44.6:12345/v2/api/get/phone?name=denglu", 
-				["text"]="denglu",
+				["prompt"] = "上传用户名", 
+				--["text"]="denglu",
                 ["kbtype"] = "default", 
                 ["color"] = "0,0,0",   
                 ["size"] = 15,           
@@ -438,6 +438,29 @@ MyTable = {
             },
 			{
 				["type"] = "Label", 
+                ["text"] = "IP设    置:",        
+                ["size"] = 15, 
+                ["align"] = "left",          
+                ["valign"] = "center", 
+                ["color"] = "0,0,0",           
+                ["width"] = -1,
+                ["nowrap"] = 1,--下个控件换行
+			},
+			{
+                ["type"] = "Edit",               
+                ["id"] = "ip", 
+				--["text"] = "5000", 
+                ["prompt"] = "5000", 
+                ["kbtype"] = "default",  
+                ["color"] = "0,0,0",   
+                ["size"] = 15,           
+                ["align"] = "",           
+                ["valign"] = "top",   
+                ["width"] = 500,
+                ["nowrap"] = 0,
+            },
+			{
+				["type"] = "Label", 
                 ["text"] = "端口设置:",        
                 ["size"] = 15, 
                 ["align"] = "left",          
@@ -459,7 +482,6 @@ MyTable = {
                 ["width"] = 500,
                 ["nowrap"] = 0,
             },
-			
 			{
 				["type"] = "Label", 
                 ["text"] = "代理设置为16.6.5版本抓包使用，\n 不做其他处理 ",        
