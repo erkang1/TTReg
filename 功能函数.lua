@@ -81,7 +81,7 @@ end
 end
 
 function 随机账号密码()
-require("界面")
+--require("界面")
 local 域名集={'gmail.com','yahoo.com','outlook.com','hotmail.com','icloud.com'}
 local ret=获取随机字符(5,9)
 账号=ret..'@'..域名集[math.random(1,5)]   -------这个是随机出来的邮箱账号
@@ -408,9 +408,12 @@ function 获取手机号和ID2()
 --mSleep(1000)
 local wet= httpGet(values.电话号接口2,20)
 new = tostring(wet):split(":")
-if new[1]=='ACCESS_NUMBER' then
+--dialog("获取到的号码状态："..wet)
+while (true) do
+	if new[1]=='ACCESS_NUMBER' then 
 	激活ID=new[2]
 	电话号码=string.gsub(new[3],国家代码,"",1):atrim()
+	--dialog("电话号码:"..电话号码)
 	mSleep(1000)
 	发送状态('1')
 	return 电话号码
@@ -425,25 +428,35 @@ else
 	mSleep(3000)
 end
 end
+end
+
 
 function 发送状态(状态)--string ,1-通知已发送短信   6.激活成功   8.激活失败
-wet= httpGet('https://sms-activate.ru/stubs/handler_api.php?api_key='..api_key值..'&action=setStatus&status='..状态..'&id='..激活ID)
+--wet= httpGet('https://sms-activate.ru/stubs/handler_api.php?api_key='..api_key值..'&action=setStatus&status='..状态..'&id='..激活ID)     --原地址
+wet= httpGet('https://api.sms-activate.org/stubs/handler_api.php?api_key='..api_key值..'&action=setStatus&status='..状态..'&id='..激活ID)
 end
 
 function 获取验证码2()
 local webdata,tmp,验证码
-for var= 1,14 do
-	webdata = httpGet('https://sms-activate.ru/stubs/handler_api.php?api_key='..api_key值..'&action=getFullSms&id='..激活ID,5)
-	if webdata=='STATUS_WAIT_CODE' or webdata==false then
+for var= 1,10 do
+	webdata = httpGet('https://api.sms-activate.org/stubs/handler_api.php?api_key='..api_key值..'&action=getFullSms&id='..激活ID,5)
+	--webdata = httpGet('https://sms-activate.ru/stubs/handler_api.php?api_key='..api_key值..'&action=getFullSms&id='..激活ID,5)			--原地址
+	if webdata=='STATUS_WAIT_CODE' or webdata== false then
 		mSleep(5000)
 	else
-		break
+		break 
 	end
 end
 tmp=webdata:split(':')
 if tmp[1]=='FULL_SMS'then
 	发送状态('6')
-	验证码=string.sub(tmp[2],10,15)
+--	界面需要添加版本判断 --- 16.6.5为4位数，之后版本为6位数
+	if values.软件版本 == '0' then 
+		验证码=string.sub(tmp[2],10,13)		--4位数验证码
+	else
+		验证码=string.sub(tmp[2],10,15) 	--6位数验证码 
+	end
+	mSleep(1000)
 	return 验证码
 else
 	toast('获取验证码失败',1)
@@ -549,7 +562,7 @@ function 读取首行()
 end
 
 
--------删除首行：读取文件到table，然后修改，再清除文件内容，重载写入到文件
+-------删除首行：先读取文件到table，然后修改，再清除文件内容，重载写入到文件
 local 文件路径 = values.登录文件名称
 function 读取文本(file)
 	-- body

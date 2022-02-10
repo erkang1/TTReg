@@ -29,6 +29,14 @@ api_key值=''
 --接口序=jkx
 --电话号接口=dhhjk:atrim()
 --电话号接口2=dhhjk2:atrim()
+--脚本功能=jbgn
+--使用软件=syrj
+--脚本功能=jbgn
+--使用软件=syrj
+--上传登录=scdl
+--使用软件=syrj
+--指定密码=zdmm
+
 
 
 ------------调试--------------
@@ -60,10 +68,13 @@ local 端口设置 = values.端口设置
 local ip = values.ip
 local 卸载安装 = values.卸载安装
 local 是否备份 = values.是否备份
+local 上传头像 = values.上传头像
 ---------登录操作ID----------
 local 登录文件名称 = values.登录文件名称
 local 账号密码接口 = values.账号密码接口
 local 脚本功能 = values.脚本功能
+local 软件版本 = values.软件版本
+
 
 require("基础函数")
 require("功能函数")
@@ -146,7 +157,13 @@ function 全局设置()
 		end
 	elseif values.使用软件 == '3' then 		--PyAPP
 		PyApp新机坐标版本()
-		mSleep(1000)			
+		mSleep(1000)
+	elseif values.使用软件 == '4' then 		--OnePress
+		os.execute("/usr/local/bin/onepress_lite -b com.zhiliaoapp.musically -C -o")
+		mSleep(1000)
+		打开再关闭()
+		toast("等待2分钟")
+		mSleep(120000)
 	else
 		mSleep(1000)
 	end
@@ -231,7 +248,21 @@ function 流程()
 		全局变量1=1     --注册成功
 		记录账号信息()  --记录已经获取到的号码到本地
 		设置资料()
-		设置头像()
+		if values.上传头像 == 'on' then 
+			设置头像()
+		else
+			mSleep(1000)
+		end
+		if values.使用软件 == '4' then 
+			打开再关闭()
+			mSleep(3000)
+			tap(675,1287)  --点击 我的
+			mSleep(500)
+			toast("等待上传中......")
+			mSleep(6000)   --等待上传
+		else
+			mSleep(1000)
+		end	
 	else
 		--判断脚本功能结束
 	end
@@ -258,8 +289,8 @@ for var = 1, 注册数量 do
 	---------------------下面是倒计时，通过全局变量1调用------------------
 	local 防卡倒计时
 	local 注册等待 = values.注册间隔 * 1000
-	for  ii= 1,防卡时间/10,1 do
-		防卡倒计时=(40-ii+1)*10
+	for  ii= 1,values.防卡时间/10,1 do
+		防卡倒计时=(60-ii+1)*10
 		--toast('防卡倒计时：'..防卡倒计时..'秒',1)
 		mSleep(5000)
 		if 全局变量1==1 then
@@ -302,7 +333,7 @@ for var = 1, 注册数量 do
 end
 
 else
-		toast("取消操作")
+	toast("取消操作")
 	return false
 end
 

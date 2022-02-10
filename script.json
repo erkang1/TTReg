@@ -1,6 +1,46 @@
 ﻿{
   "params": [
     {
+      "display_name": "脚本功能",
+      "name": "jbgn",
+      "type": 3,
+      "options": [
+        {
+          "name": "登陆",
+          "value": 0
+        },
+        {
+          "name": "注册",
+          "value": 1
+        }
+      ],
+      "default": "1"
+    },
+    {
+      "display_name": "使用软件",
+      "name": "syrj",
+      "type": 3,
+      "options": [
+        {
+          "name": "AWZ",
+          "value": 0
+        },
+        {
+          "name": "AXJ",
+          "value": 1
+        },
+        {
+          "name": "HB",
+          "value": 2
+        },
+        {
+          "name": "PyApp",
+          "value": 3
+        }
+      ],
+      "default": "1"
+    },
+    {
       "display_name": "批次编号",
       "name": "pcbh",
       "type": 2,
@@ -57,6 +97,18 @@
       "name": "dhhjk2",
       "type": 2,
       "default": "网站"
+    },
+    {
+      "display_name": "上传登录",
+      "name": "scdl",
+      "type": 2,
+      "default": "denglu"
+    },
+    {
+      "display_name": "指定密码",
+      "name": "zdmm",
+      "type": 2,
+      "default": "qqq111..."
     }
   ]
 }

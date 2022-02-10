@@ -67,11 +67,18 @@ function PyApp新机坐标版本()
 	mSleep(1000)
 	打开应用('com.hd.PyApp',2000)
 	mSleep(3000)
-	tap(新机按钮X,新机按钮Y)
+	--tap(新机按钮X,新机按钮Y)
+	touchDown(新机按钮X,新机按钮Y)
+	mSleep(30)
+	touchUp(新机按钮X,新机按钮Y)
 	mSleep(3000)
 	toast("点击新机 ")
 	mSleep(1000)
-	tap(确定新机X,确定新机Y)
+	--tap(确定新机X,确定新机Y)
+	touchDown(确定新机X,确定新机Y)
+	mSleep(30)
+	touchUp(确定新机X,确定新机Y)
+	mSleep(3000)
 	mSleep(3000)
 	toast("确认新机 ")
 	mSleep(6000)
@@ -304,48 +311,8 @@ moveTo(选择年[1],选择年[2]+math.random(50,100)+50 ,选择年[3],选择年[
 mSleep(3000)
 end
 
---function 注册准备()
---bid = frontAppBid()
---toast("准备")
---	local 当前界面=检索界面(TT注册界面列表)
---	if bid  == "com.zhiliaoapp.musically" then     
---		--坐标版
---		--elseif 当前界面=='TT注册选择兴趣' then
---		--dialog("1222")
---		mSleep(2000)
---		tap(654,84)
---		mSleep(1000)
---		tap(TT注册选择兴趣X,TT注册选择兴趣Y)
---		mSleep(3000)
---		--elseif 当前界面=='TT注册选择兴趣2' then
---		tap(TT注册选择兴趣2X,TT注册选择兴趣2Y)
---		mSleep(3000)
---		--elseif 当前界面=='TT注册进入主页界面' then
---		--dialog("122232")
---			for var= 1,math.random(2,3) do
---				moveTo(370+math.random(1,10),988+math.random(1,10),374+math.random(1,10),461+math.random(1,10)) --这里用的选择头像的时候的坐标
---				mSleep(1000)
---			end
---		mSleep(1000)
---		tap(677,1272) --点击 “我”
---		mSleep(1000)
---		tap(378,749) -- 点击 注册
---		toast("点击Sign up",1)
---		mSleep(1000)
---	end
---	if 当前界面 == "" then 
---		tap(511,1207) -- 点击 注册
---		toast("点击Sign up底部",1)
---		mSleep(2000)		   
-
---	elseif 当前界面 == "" then 
---	else	
---	end
---end
-
 function 打开再关闭()
 --  dialog("222")
-	-- body
 	打开应用(TT,1000)
 	mSleep(2000)
 	toast("准备关闭")
@@ -403,7 +370,7 @@ function TT注册()
 			mSleep(1000)
 			tap(328+math.random(0,10),492+math.random(0,10))  -- 点击手机号邮箱注册
 			mSleep(1000)
-		elseif 当前界面 == '注册1665主页界面2' then
+		elseif 当前界面 == '注册1665主页界面2' or 当前界面 == '注册1665视频提示界面' then
 			mSleep(500)
 			tap(670+math.random(0,5),1286+math.random(0,5))  --点击 我
 			mSleep(1000)
@@ -430,7 +397,7 @@ function TT注册()
 		elseif 当前界面=='TT注册电话界面' then
 --				mSleep(1000)
 --				tap(email按钮X,email按钮Y)
---		erkang 如果有手机号接口，那么继续操作，如果没有，则使用随机邮箱注册
+--				erkang 如果有手机号接口，那么继续操作，如果没有，则使用随机邮箱注册
 				if values.电话号接口 == '' and values.电话号接口2 == '' then
 					toast("未获取到手机号接口，执行邮箱注册")
 					mSleep(1000)
@@ -456,7 +423,8 @@ function TT注册()
 					mSleep(5000)
 					判断是否离开该界面(TT注册界面列表,'TT注册电话界面')
 				end
-		elseif 当前界面=='TT注册电话验证码界面' then
+				
+		elseif 当前界面=='TT注册电话验证码界面' or 当前界面=='注册1665手机验证号' then
 			local 验证码
 			x, y = findColorInRegionFuzzy(0xfe2c55,90,69,435,106,573)
 			if x>0 then
@@ -467,22 +435,25 @@ function TT注册()
 				tap(630,1276)
 				mSleep(500)
 			end
-			mSleep(1000)			
-			if values.接口序=='0' then					
+			mSleep(1000)	
+			if values.接口序=='0' then
 				验证码=获取验证码()
 			elseif values.接口序=='1' then
 				验证码=获取验证码2()
+			else
+				mSleep(1000)
 			end
 			mSleep(1000)
-			小键盘输入(验证码)
-			mSleep(12000)
-			
-		elseif 当前界面=='TT注册邮箱界面' then
+--			dialog("获取到的验证码："..验证码) 
+			小键盘输入(验证码) --注意接码API的变化和更新，同时注意　软件版本　的验证码长度
+			mSleep(10000)
+		
+		elseif 当前界面=='TT注册邮箱界面' or 当前界面=='注册1665邮箱注册界面2'  then
 			tap(456,348)  --先点击空位置 才会出现X
 			mSleep(math.random(500,1000))
 			tap(666, 347) --点击X  清空内容
 			mSleep(math.random(500,1000))
-			--dialog(随机账号密码)
+				--dialog(随机账号密码)
 			随机账号密码()
 			输入文本2(邮箱输入框X,邮箱输入框Y,账号)
 			mSleep(1000)
@@ -505,14 +476,7 @@ function TT注册()
 			mSleep(500)
 			tap(154+math.random(0,10),832+math.random(0,10))
 			mSleep(1000)
-		elseif 当前界面=='TT注册密码界面' or 当前界面=='注册1665密码界面' then
-			随机账号密码()
-			mSleep(100)
-			输入文本(密码输入框X,密码输入框Y,密码)
-			mSleep(1000)
-			tap(密码界面next按钮X,密码界面next按钮Y)
-			tap(298+math.random(0,10),524+math.random(0,10))  --1665版本
-			mSleep(6000)
+
 		elseif 当前界面=='TT注册邮箱验证码界面' then --出现验证码就重头来
 			toast('请输入验证码',5)
 			mSleep(10000)
@@ -520,6 +484,17 @@ function TT注册()
 		elseif 当前界面=='TT注册频繁界面' then
 			mSleep(15000)
 	
+		elseif 当前界面 == '注册1665密码界面' or 当前界面 == 'TT注册密码界面' then
+			mSleep(1000)
+			随机账号密码()
+			--dialog(密码)
+			mSleep(100)
+			输入文本(密码输入框X,密码输入框Y,密码)
+			mSleep(1000)
+			tap(密码界面next按钮X,密码界面next按钮Y)
+			tap(298+math.random(0,10),524+math.random(0,10))  --1665版本
+			mSleep(6000)
+			
 		elseif 当前界面=='TT注册用户名界面' or 当前界面=='TT注册用户名界面2' then
 			mSleep(3000)
 			while (true) do
@@ -542,7 +517,7 @@ function TT注册()
 					mSleep(800)
 					输入文本(用户名输入框X,用户名输入框Y,名字)
 					mSleep(5000)
-				if multiColor({{用户名对勾X,用户名对勾Y,对勾的颜色}},90,false) == true then--说明用户名可以用	
+				if multiColor({{用户名对勾X,用户名对勾Y,对勾的颜色}},90,false) == true  then--说明用户名可以用	
 					tap(用户名确认按钮X,用户名确认按钮Y)
 					mSleep(8000)
 					return true
@@ -785,7 +760,7 @@ while (true) do
 	elseif 当前界面=='TT相册授权界面4' then
 		tap(422,1014)
 		mSleep(1000)	
-	elseif 当前界面=='TT相册界面' or 当前界面=='注册1665选择照片界面' or 当前界面=='注册1665选择照片界面2' then --开始选择照片
+	elseif 当前界面=='TT相册界面' or 当前界面=='注册1665选择照片界面' or 当前界面=='注册1665选择照片界面2' or 当前界面=='TT相册界面5' then --开始选择照片
 		moveTo(370+math.random(1,10),988+math.random(1,10),374+math.random(1,10),461+math.random(1,10))
 		mSleep(2000)
 		tap(math.random(64,649),math.random(410,1191))
@@ -953,8 +928,7 @@ while (true) do
 		删除首行()
 		全局登录变量1=1
 		return true
-	else	
-		
+	else		
 	end
 end
 end

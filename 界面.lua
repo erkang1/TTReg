@@ -50,7 +50,7 @@ MyTable = {
 			{
                 ["type"] = "Label",
                 ["align"] = "center",
-                ["text"] = "使用软件:",
+                ["text"] = "软件版本:",
                 ["size"] = 15, 
                 ["align"] = "left",          
                 ["valign"] = "center", 
@@ -61,9 +61,32 @@ MyTable = {
             {
                 ["type"] = "RadioGroup",            
                 -- 必填，控件类型，单选组合
+                ["id"] = "软件版本",                      
+                -- 选填，无，控件 ID，以 table 格式返回返回值时必填,否则无法获取返回值
+                ["list"] = "16.6.5,其他版本",      -- 必填，无，多选组合内容
+                ["select"] = "0",                   -- 选填，0，默认选中项 id
+                --["images"] = "test1.png,test1.png,test1.png,test1.png", 
+                -- 选填，无， 单选组合选项显示图片
+                ["scale"] = 0.4,                    -- 选填，1，图片缩放比例
+                ["countperline"] = 0,
+            },
+			{
+                ["type"] = "Label",
+                ["align"] = "center",
+                ["text"] = "使用软件:",
+                ["size"] = 15, 
+                ["align"] = "left",          
+                ["valign"] = "top", 
+                ["color"] = "0,0,0",           
+                ["width"] = -1,
+                ["nowrap"] = 1,
+            },
+            {
+                ["type"] = "RadioGroup",            
+                -- 必填，控件类型，单选组合
                 ["id"] = "使用软件",                      
                 -- 选填，无，控件 ID，以 table 格式返回返回值时必填,否则无法获取返回值
-                ["list"] = "AWZ,AXJ,黑豹,PyApp",      -- 必填，无，多选组合内容
+                ["list"] = "AWZ,AXJ,黑豹,PyApp,OnePress",      -- 必填，无，多选组合内容
                 ["select"] = "1",                   -- 选填，0，默认选中项 id
                 --["images"] = "test1.png,test1.png,test1.png,test1.png", 
                 -- 选填，无， 单选组合选项显示图片
@@ -133,6 +156,27 @@ MyTable = {
                 ["align"] = "left",
                 ["valign"] = "top",
                 ["state"] = "off",
+                ["width"] = -1,
+                ["nowrap"] = 0,
+            },
+			{
+                ["type"] = "Label",
+                ["align"] = "center",
+                ["text"] = "上传头像:",
+                ["size"] = 15, 
+                ["align"] = "left",          
+                ["valign"] = "center", 
+                ["color"] = "0,0,0",           
+                ["width"] = -1,
+                ["nowrap"] = 1,
+            },
+			{
+                ["type"] = "Switch",
+                ["id"] = "上传头像",
+                ["size"] = "m",
+                ["align"] = "left",
+                ["valign"] = "top",
+                ["state"] = "on",
                 ["width"] = -1,
                 ["nowrap"] = 0,
             },
@@ -450,7 +494,7 @@ MyTable = {
                 ["type"] = "Edit",               
                 ["id"] = "ip", 
 				--["text"] = "5000", 
-                ["prompt"] = "5000", 
+                ["prompt"] = "192.168.8.8", 
                 ["kbtype"] = "default",  
                 ["color"] = "0,0,0",   
                 ["size"] = 15,           
@@ -484,7 +528,7 @@ MyTable = {
             },
 			{
 				["type"] = "Label", 
-                ["text"] = "代理设置为16.6.5版本抓包使用，\n 不做其他处理 ",        
+                ["text"] = "代理设置为16.6.5 和 21.1.0 版本抓包使用，\n 不做其他处理 ",        
                 ["size"] = 15, 
                 ["align"] = "center",          
                 ["valign"] = "center", 
@@ -577,7 +621,7 @@ MyTable = {
             },	
 			{
                 ["type"] = "Label", 
-                ["text"] = "\n 不填文件名称 【默认随机】\n",        
+                ["text"] = "\n 不填文件名称 【默认随机】\n\n\n\n\n",        
                 ["size"] = 15, 
                 ["align"] = "left",          
                 ["valign"] = "center", 
