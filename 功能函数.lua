@@ -202,7 +202,6 @@ function 代理状态()
 end
 
 
-
 function 卸载应用(包名)
 	flag = ipaUninstall(包名)
 	if flag == 1 then
@@ -217,7 +216,7 @@ function 安装TK()
 	if flag == 1 then
 		toast("安装成功")
 	else
-		toast("安装失败")
+		toast("安装失败,请检查文件是否存在")
 	end
 end
 
@@ -438,7 +437,7 @@ end
 
 function 获取验证码2()
 local webdata,tmp,验证码
-for var= 1,10 do
+for var= 1,14 do
 	webdata = httpGet('https://api.sms-activate.org/stubs/handler_api.php?api_key='..api_key值..'&action=getFullSms&id='..激活ID,5)
 	--webdata = httpGet('https://sms-activate.ru/stubs/handler_api.php?api_key='..api_key值..'&action=getFullSms&id='..激活ID,5)			--原地址
 	if webdata=='STATUS_WAIT_CODE' or webdata== false then

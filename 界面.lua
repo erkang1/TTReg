@@ -81,18 +81,32 @@ MyTable = {
                 ["width"] = -1,
                 ["nowrap"] = 1,
             },
-            {
-                ["type"] = "RadioGroup",            
-                -- 必填，控件类型，单选组合
-                ["id"] = "使用软件",                      
-                -- 选填，无，控件 ID，以 table 格式返回返回值时必填,否则无法获取返回值
-                ["list"] = "AWZ,AXJ,黑豹,PyApp,OnePress",      -- 必填，无，多选组合内容
-                ["select"] = "1",                   -- 选填，0，默认选中项 id
-                --["images"] = "test1.png,test1.png,test1.png,test1.png", 
-                -- 选填，无， 单选组合选项显示图片
-                ["scale"] = 0.4,                    -- 选填，1，图片缩放比例
-                ["countperline"] = 0,
-            },
+--            {
+--                ["type"] = "RadioGroup",            
+--                -- 必填，控件类型，单选组合
+--                ["id"] = "使用软件",                      
+--                -- 选填，无，控件 ID，以 table 格式返回返回值时必填,否则无法获取返回值
+--                ["list"] = "AWZ,AXJ,黑豹,PyApp,OnePress,SuperMan",      -- 必填，无，多选组合内容
+--                ["select"] = "1",                   -- 选填，0，默认选中项 id
+--                --["images"] = "test1.png,test1.png,test1.png,test1.png", 
+--                -- 选填，无， 单选组合选项显示图片
+--				["width"] = 500,
+--                ["scale"] = 0.4,                    -- 选填，1，图片缩放比例
+--                ["countperline"] = 0,
+--            },
+			{
+                ["type"] = "ComboBox",               
+                ["id"] = "使用软件",                  
+                --["prompt"] = "300毫秒", 
+				["list"] = "AWZ,AXJ,黑豹,PyApp,OnePress,SuperMan",
+				["select"] = 4,
+				--["list"] = "地址1:http://45.207.44.6:12345/v2/api/get/phone?name=,地址2:sms-activate.ru/cn",
+                ["color"] = "0,0,0",
+                ["align"] = "",           
+                ["valign"] = "top",   
+                ["width"] = 500,
+                ["nowrap"] = 0,
+            }, 
 			{
                 ["type"] = "Label",
                 ["align"] = "center",
@@ -129,7 +143,7 @@ MyTable = {
 			{
                 ["type"] = "Label",
                 ["align"] = "center",
-                ["text"] = "卸载安装:",
+                ["text"] = "卸载重新安装:",
                 ["size"] = 15, 
                 ["align"] = "left",          
                 ["valign"] = "center", 
@@ -177,6 +191,27 @@ MyTable = {
                 ["align"] = "left",
                 ["valign"] = "top",
                 ["state"] = "on",
+                ["width"] = -1,
+                ["nowrap"] = 1,
+            },
+			{
+                ["type"] = "Label",
+                ["align"] = "center",
+                ["text"] = "降级上传账号:",
+                ["size"] = 15, 
+                ["align"] = "left",          
+                ["valign"] = "center", 
+                ["color"] = "0,0,0",           
+                ["width"] = -1,
+                ["nowrap"] = 1,
+            },
+			{
+                ["type"] = "Switch",
+                ["id"] = "降级上传",
+                ["size"] = "m",
+                ["align"] = "left",
+                ["valign"] = "top",
+                ["state"] = "off",
                 ["width"] = -1,
                 ["nowrap"] = 0,
             },
@@ -437,9 +472,9 @@ MyTable = {
             },	
 			{
                 ["type"] = "Label", 
-                ["text"] = "说明：适配6/6s/7/8，默认使用 随机邮箱 和 随机密码 地址1和地址2两者对应二选一\n 注册适配 16.6.5，21.1.0，22.0.0，22.5.0\n登陆仅支持22.5.0\n 卸载安装目前仅支持TK16.6.5 \n备份只针对awz，axj",        
+                ["text"] = "说明：\n 1、适配6/6s/7/8，默认使用 随机邮箱 和 随机密码 手机号地址1和地址2两者对应二选一\n 2、软件适配版本 16.6.5，21.1.0，22.0.0，22.5.0，22.8.0\n 3、登陆仅支持22.5.0\n 4、卸载重新安装目前仅支持TK16.6.5，需要在文件夹内修改文件名称为【TikTok 16.6.5.ipa】 \n 5、备份只针对awz，axj",        
                 ["size"] = 12, 
-                ["align"] = "center",          
+                ["align"] = "left",          
                 ["valign"] = "center", 
                 ["color"] = "255,140,0",           
                 --["width"] = -1,
@@ -546,7 +581,7 @@ MyTable = {
             },
 			{
                 ["type"] = "Label", 
-                ["text"] = "昵称自定义",        
+                ["text"] = "用户名自定义",        
                 ["size"] = 18, 
                 ["align"] = "left",          
                 ["valign"] = "center", 
@@ -600,7 +635,7 @@ MyTable = {
 			{
                 ["type"] = "Edit",               
                 ["id"] = "文件名称",                  
-                ["prompt"] = "昵称.txt", 
+                ["prompt"] = "用户名.txt", 
                 ["kbtype"] = "default",  
                 ["color"] = "0,0,0",   
                 ["size"] = 15,           

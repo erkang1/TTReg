@@ -74,7 +74,7 @@ local 登录文件名称 = values.登录文件名称
 local 账号密码接口 = values.账号密码接口
 local 脚本功能 = values.脚本功能
 local 软件版本 = values.软件版本
-
+local 降级上传 = values.降级上传
 
 require("基础函数")
 require("功能函数")
@@ -147,7 +147,7 @@ function 全局设置()
 		mSleep(1000)
 		一键新机()
 		mSleep(5000)
-	elseif values.使用软件 == '2' then  	--HB
+	elseif values.使用软件 == '2' or values.使用软件 == '5'  then  	--HB  /  SuperMan
 		for var= 1,20 do
 			if HB新机()== false then
 				切换VPN()
@@ -169,7 +169,7 @@ function 全局设置()
 	end
 end
 
-
+-----登录上传接口是否合法------
 if values.账号密码接口 == '' and values.登录文件名称 == '' then    ---判断接口地址是否合法
 	dialog("请填写正确的账号密码文件接口或者本地路径",{title = "登录接口错误",button = "重新填写"})
 	return false
@@ -179,6 +179,7 @@ elseif values.账号密码接口 ~= '' and values.登录文件名称 ~= '' then
 else	
 	mSleep(1000)
 end
+
 
 
 function 流程()
@@ -202,22 +203,30 @@ function 流程()
 
 		----判断间隔时间是否大于等于60------
 		if tonumber(values.注册间隔) < 60 then
-			dialog("为保证流程正常，间隔时间应该大于等于60秒")
-			return false
+			dialog("为保证流程正常运行，间隔时间应该大于等于【60】秒",{title = "参数设置错误",button = "退出重新设置"})
+--			return false
+			lua_exit()
 		else
 			mSleep(100)
 		end
 		----判断放卡时间是否大于等于300------
 		if tonumber(values.防卡时间) < 300 then
-			dialog("为保证流程正常，防卡时间应该大于等于 5 分钟")
-			return false
+			dialog("为保证流程正常运行，防卡时间应该大于等于 5 分钟",{title = "参数设置错误",button = "退出重新设置"})
+--			return false
+			lua_exit()
 		else
 			mSleep(100)
 		end
 		---判断手机号接口的填写是否合法--------
 		if values.电话号接口 ~= '' and values.电话号接口2 ~= '' then
-			dialog("接口地址填写有误，请确保两项二选一,脚本退出")
+			dialog("接口地址填写有误，请确保两项二选一,脚本退出",{title = "地址设置错误",button = "退出重新编辑"})
 			lua_exit()
+--		elseif values.接口序 == '0' and values.电话号接口 == '' then
+--			dialog("接口地址填写有误，请确认【接口地址】和【输入地址栏】是否对应,脚本退出",{title = "地址设置错误",button = "退出重新编辑"})
+--			lua_exit()
+--		elseif values.接口序 == '1' and values.电话号接口2 == '' then
+--			dialog("接口地址填写有误，请确认【接口地址】和【输入地址栏】是否对应,脚本退出",{title = "地址设置错误",button = "退出重新编辑"})
+--			lua_exit()
 		else
 			mSleep(1000)
 		end
@@ -260,6 +269,8 @@ function 流程()
 			mSleep(500)
 			toast("等待上传中......")
 			mSleep(6000)   --等待上传
+--		elseif values.使用软件 == '4' and values.降级上传 == 'on' then
+			--将22.1.0 覆盖安装 tiktok16.6.5
 		else
 			mSleep(1000)
 		end	

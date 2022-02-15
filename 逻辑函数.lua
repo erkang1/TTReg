@@ -9,15 +9,17 @@ function 切换VPN()--启动小火箭  --判定打开VPN  --切换VPM  -- 判定
 		mSleep(2000)
 	end
 	for var= 1,10 do --小火箭开关开启
-		if (isColor( 643,  204, 0x2473bd, 85)) then
+--		if (isColor( 643,  204, 0x2473bd, 85)) then
+		if (isColor( 612,  209, 0x2372bd, 85)) then
 			break
 		else
 			tap(643,204)
 			mSleep(2000)
 		end
 	end
-	for i= 0,8 do --判断节点数量
-		x,y = findColorInRegionFuzzy(0x000000,100,118,558+i*88,219,589+i*88)
+	for i= 0,7 do --判断节点数量
+		--x,y = findColorInRegionFuzzy(0x000000,100,118,558+i*88,219,589+i*88)
+		x,y = findColorInRegionFuzzy(0xffffff ,100,649,628+i*88, 678,1096+i*88)
 		if x<0 then --说明没有节点了
 			节点数量=i
 			break
@@ -27,12 +29,14 @@ function 切换VPN()--启动小火箭  --判定打开VPN  --切换VPM  -- 判定
 	if 节点数量~=1 then
 		for var= 1,10 do
 			随机节点序=math.random(0,节点数量-1)--去重复，万一随机的还是那个呢
-			if (isColor(13,581+随机节点序*88,0xff9400,85)) then
+--			if (isColor(13,581+随机节点序*88,0xff9400,85)) then
+            if (isColor(  43,  638+随机节点序*88, 0xff9400, 85)) then  --页面适配
 			else
 				break
 			end
 		end
-		tap(325,574+随机节点序*88) 
+--		tap(325,574+随机节点序*88) 
+		tap(346,627+随机节点序*88) 
 		mSleep(2000) 
 	end
 	--判断有没有网络
@@ -163,7 +167,13 @@ function AWZ一键新机()
 end
 
 function HB新机()
-	打开应用('xoxo.heibao',3000)
+	if values.使用软件 == '2' then
+		打开应用('xoxo.heibao',3000)
+	elseif values.使用软件 == '5' then
+		打开应用('xoxo.superman',3000)
+	else
+	end
+
 	local 当前界面
 	while (true) do
 		当前界面=检索界面(HB界面列表)
@@ -243,7 +253,12 @@ end
 --end
 
 function HB切换备份包()
-	打开应用('xoxo.heibao',3000)
+	if values.使用软件 == '2' then
+		打开应用('xoxo.heibao',3000)
+	elseif values.使用软件 == '5' then
+		打开应用('xoxo.superman',3000)
+	else
+	end
 	local 当前界面
 	while (true) do
 		当前界面=检索界面(HB界面列表)
@@ -421,9 +436,12 @@ function TT注册()
 					mSleep(1000)
 					tap(372,660)--send 按钮
 					mSleep(5000)
-					判断是否离开该界面(TT注册界面列表,'TT注册电话界面')
+					--判断是否离开该界面(TT注册界面列表,'TT注册电话界面')
 				end
-				
+		elseif 	当前界面=='注册1665频繁界面' then
+				mSleep(1000)
+				toast("新机环境异常或者节点频繁，流程结束",2)
+				全局变量1=2
 		elseif 当前界面=='TT注册电话验证码界面' or 当前界面=='注册1665手机验证号' then
 			local 验证码
 			x, y = findColorInRegionFuzzy(0xfe2c55,90,69,435,106,573)
@@ -445,8 +463,8 @@ function TT注册()
 			end
 			mSleep(1000)
 --			dialog("获取到的验证码："..验证码) 
-			小键盘输入(验证码) --注意接码API的变化和更新，同时注意　软件版本　的验证码长度
-			mSleep(10000)
+			小键盘输入(验证码) -- 注意接码API的变化和更新，同时注意　软件版本　的验证码长度
+			mSleep(14000)
 		
 		elseif 当前界面=='TT注册邮箱界面' or 当前界面=='注册1665邮箱注册界面2'  then
 			tap(456,348)  --先点击空位置 才会出现X
