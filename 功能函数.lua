@@ -62,7 +62,7 @@ function 打码()
 text,tid = ocrScreen(207,519,646,747,1318,60,0.5)
 if text~=nil then --成功获取数据
 --------返回的坐标X+144，起始坐标Y
-	new = text:split(",") --将字符串 str 按照 `,`
+	new = text:split(",") -- 将字符串 str 按照 `,`
 	local 终止坐标X=起始坐标X+new[1]+打码X偏移量
 	moveTo(起始坐标X,起始坐标Y,终止坐标X,起始坐标Y,{["step"] = 20,["ms"] = 100,["index"] = 1,["stop"] = true})
 else
@@ -74,6 +74,42 @@ for var=1,20 do
 	if isColor(135,853,0xffc1c1) then  --判断打码是否成功
 		--打码失败
 		bool = ocrReportError()
+		toast('打码失败',1) 
+		break
+	end
+end
+end
+
+function 图鉴打码()
+	function userPath()
+		return "/var/mobile/Media/TouchSprite"	--填写触动实际路径
+	end
+
+	function ttScreen(x1,y1,x2,y2,scale) -- 此处为触动截图方法
+		scale=scale or 1
+		local path=userPath().."/res/ttshu.png"
+		snapshot("ttshu.png",x1,y1,x2,y2,scale)
+		return path
+	end
+	local a = ttScreen(99,459,650,802,1) --图片的路径完整路径此处为截图获取的路径
+--	dialog(tostring(a))
+	res,id = tt.Image(a,33) --开始识别  33为滑块验证类型 返回起始X坐标
+--	dialog("result:"..tostring(res)..tostring(id)) --识别结果,识别id
+	--识别结果报错示例。
+--	res1=tt.ReportError2(id) 
+--	dialog(tostring(res1))
+	if res ~= nil then 
+		local  终止坐标X=107+tonumber(res)
+		moveTo(107,847,终止坐标X,847,{["step"] = 20,["ms"] = 100,["index"] = 1,["stop"] = true})
+	else
+		toast('获取打码坐标失败',1)
+		return false
+	end
+	for var=1,20 do
+	mSleep(200)
+	if isColor(135,853,0xffc1c1) then  --判断打码是否成功
+		--打码失败
+		bool = tt.ReportError2(id) 
 		toast('打码失败',1) 
 		break
 	end
@@ -128,7 +164,7 @@ if flag.active then
 else
 	setVPNEnable(true)
 	toast('vpn已开启',1)
-	mSleep(5000)
+	mSleep(3000)
 end
 end
 
@@ -139,7 +175,7 @@ if flag.active then
 	toast('检测到vpn已开启，关闭VPN',1)
 	setVPNEnable(false)
 else
-	mSleep(5000)
+	mSleep(3000)
 end
 end
 
@@ -201,6 +237,75 @@ function 代理状态()
 	end
 end
 
+------------------手动S5设置------------------------------------------------------------------------------------------------------------
+function 获取S5代理()
+获取S5接口 = values.代理链接
+-- 获取S5接口 = "http://20.122.103.3:51515/api/v1/getIP?type=text&username=test_99641&protocol=0&region=RU&count=1"
+--格式：socks5://test_99641$ifhie8NkW4*US:owrjgdnhg@185.145.128.72:4113
+local webdata=httpGet(获取S5接口)
+--dialog(webdata)
+local strs1 = webdata:split("//")  --分割前缀
+local strs2 = strs1[2]:split("@")  --分割账号密码 + IP端口
+local strs3 = strs2[1]:split(":")  --分割账号 密码
+local strs4 = strs2[2]:split(":")  --分割IP 端口
+
+代理账号 = strs3[1]
+代理密码 = strs3[2]
+代理IP = strs4[1]
+代理端口 = strs4[2]
+
+--dialog("账号密码："..strs2[1].."IP端口"..strs2[2])
+--dialog("账号:"..strs3[1].."密码："..strs3[2])
+--dialog("IP:"..strs4[1].."端口:"..strs4[2])
+
+end
+
+function 手动设置代理()
+	关闭应用("com.liguangming.Shadowrocket")
+	mSleep(500)
+	打开应用("com.liguangming.Shadowrocket",500)
+	tap(695,82)  --点击加号
+	mSleep(500)
+	tap(485,208)  --点击类型
+	mSleep(1000)
+	tap(362,773)  --点击Socks5
+	mSleep(1000)
+	
+	--开始输入
+	--tap(226,360) --点击地址
+	--dialog(代理IP)
+	输入文本2(226,360,代理IP)
+	mSleep(500)
+	--dialog(代理端口)
+	输入文本2(220,455,代理端口)
+	mSleep(500)
+	--dialog(代理账号)
+	输入文本2(304,542,代理账号)
+	mSleep(500)
+	--dialog(代理密码)
+	输入文本2(221,623,代理密码)
+	mSleep(500)
+	tap( 680,83) --点击完成
+end
+
+function 删除手动设置的代理()
+if (isColor( 682,  551, 0xc4c4c6, 85)) then  --如果找到色块，则返回 true
+	--dialog("111")
+	mSleep(1000)
+	return true
+else
+	关闭应用("com.liguangming.Shadowrocket")
+	mSleep(500)
+	打开应用("com.liguangming.Shadowrocket",500)
+	mSleep(1000)
+	moveTo(552,  553,486,  548,{["step"] = 20,["ms"] = 70,["index"] = 1,["stop"] = 1})  --滑动显示删除
+	mSleep(1000)
+	tap(  641,  555) --滑动之后点击删除
+	mSleep(1000)
+	tap( 510,  763) --点击删除
+end
+end
+---------------------------------------------------------------------------------------------------------------------------------------
 
 function 卸载应用(包名)
 	flag = ipaUninstall(包名)
@@ -437,13 +542,13 @@ end
 
 function 获取验证码2()
 local webdata,tmp,验证码
-for var= 1,14 do
+for var= 1,14 do 
 	webdata = httpGet('https://api.sms-activate.org/stubs/handler_api.php?api_key='..api_key值..'&action=getFullSms&id='..激活ID,5)
 	--webdata = httpGet('https://sms-activate.ru/stubs/handler_api.php?api_key='..api_key值..'&action=getFullSms&id='..激活ID,5)			--原地址
 	if webdata=='STATUS_WAIT_CODE' or webdata== false then
 		mSleep(5000)
 	else
-		break 
+		break
 	end
 end
 tmp=webdata:split(':')

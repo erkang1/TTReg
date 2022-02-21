@@ -177,34 +177,34 @@ function HB新机()
 	local 当前界面
 	while (true) do
 		当前界面=检索界面(HB界面列表)
-		if 当前界面=='HB主界面' then
+		if 当前界面=='HB主界面' or 当前界面=='SM主界面' then
 			tap(新机按钮X,新机按钮Y)
 			mSleep(1000)
 		elseif 当前界面=='HB广告界面' then
 			tap(我知道了按钮X,我知道了按钮Y)
 			mSleep(1000)
-		elseif 当前界面=='HB提示1界面' then--新机提示
+		elseif 当前界面=='HB提示1界面' or 当前界面=='SM提示1界面' then		--新机提示
 			tap(提示1确定按钮X,提示1确定按钮Y)
 			mSleep(1500)  
 		elseif 当前界面=='HB提示2界面' then
 			tap(提示失败确定按钮X,提示失败确定按钮Y)
 			mSleep(1000)
 			--erkang--
-		elseif 当前界面=='HB提示4界面' then
+		elseif 当前界面=='HB提示4界面' or 当前界面=='SM提示4界面' then
 			tap(提示失败确定按钮2X,提示失败确定按钮2Y)
 			mSleep(1000)
-		elseif 当前界面=='HB刷新界面' then
+		elseif 当前界面=='HB刷新界面' or 当前界面=='SM刷新界面' then
 			for var= 1, 200 do
-				if isColor(293,558,0x1e1f22) then--判断是否刷新完成
+				if isColor(293,558,0x1e1f22) then		--判断是否刷新完成
 					mSleep(1000)
 				else
 					mSleep(5000)
-					if 检索界面(HB界面列表)=='HB提示2界面' then
+					if 检索界面(HB界面列表)=='HB提示2界面' or 当前界面=='SM提示4界面' then
 						toast('新机失败',1)
 						return false
 					else
 						toast('新机完成',3)
-						return true	
+						return true
 					end
 				end
 			end
@@ -375,7 +375,7 @@ function TT注册()
 		elseif 当前界面 == '注册1665主页授权界面' then
 			tap(248+math.random(0,5),788+math.random(0,5))  --点击 不允许
 			mSleep(1000)
-		elseif 当前界面 == '注册1665主页界面' then
+		elseif 当前界面 == '注册1665主页界面' or 当前界面 == 'TT主界面无视频' then
 			mSleep(500)
 			moveTo(556+math.random(1,10),726+math.random(1,10),574+math.random(1,10),494+math.random(1,10)) --滑动遮罩
 			mSleep(1000)
@@ -436,12 +436,19 @@ function TT注册()
 					mSleep(1000)
 					tap(372,660)--send 按钮
 					mSleep(5000)
-					--判断是否离开该界面(TT注册界面列表,'TT注册电话界面')
+					判断是否离开该界面(TT注册界面列表,'TT注册电话界面')
 				end
 		elseif 	当前界面=='注册1665频繁界面' then
 				mSleep(1000)
-				toast("新机环境异常或者节点频繁，流程结束",2)
+				toast("新机环境异常或者节点频繁，流程结束")
 				全局变量1=2
+		elseif 	当前界面=='TT注册网络异常界面' or 当前界面=='TT注册网络异常界面2' then
+				mSleep(1000)
+				toast("网络异常，流程结束")
+				全局变量1=2
+		elseif 当前界面=='TT验证码等待界面' then 
+				mSleep(3000)
+				toast("正在等待验证码刷新")
 		elseif 当前界面=='TT注册电话验证码界面' or 当前界面=='注册1665手机验证号' then
 			local 验证码
 			x, y = findColorInRegionFuzzy(0xfe2c55,90,69,435,106,573)
@@ -482,11 +489,13 @@ function TT注册()
 			向右滑动()
 			mSleep(1000)
 		elseif 当前界面=='TT注册打码界面' then
+			tap(170,924)  --先点击刷新
 			mSleep(3000)
 			打码准备()
 			toast('验证码已刷新',1)
 			mSleep(500)
-			打码()
+--			打码()
+			图鉴打码()
 			mSleep(12000)
 			判断是否离开该界面(TT注册界面列表,'TT注册邮箱界面')
 		elseif 	当前界面=='注册1665验证码未刷新界面' then
@@ -494,7 +503,11 @@ function TT注册()
 			mSleep(500)
 			tap(154+math.random(0,10),832+math.random(0,10))
 			mSleep(1000)
-
+		elseif 当前界面=='TT验证码验证失败2' then  --绿色滑块失败界面
+			toast("验证失败，重新验证")
+			mSleep(1000)
+			tap(166,926)
+			mSleep(1000)
 		elseif 当前界面=='TT注册邮箱验证码界面' then --出现验证码就重头来
 			toast('请输入验证码',5)
 			mSleep(10000)

@@ -1,6 +1,8 @@
 [res]
 [lib]
 [file]
+ttjson.lua
+tt.lua
 main.lua
 TT数据.lua
 
