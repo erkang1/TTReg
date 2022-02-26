@@ -326,22 +326,27 @@ function 安装TK()
 end
 
 
-
+---------------------------------------------本地上传手机号版本---------------------------------------------------------
 function 获取电话号码()
 local webdata,tmp,获取状态
 for var= 1,20 do
 	--dialog("获取到的电话号码接口："..values.电话号接口)   --调试打印，上线需要注释
 	webdata = httpGet(values.电话号接口,60)  --获取token数据
 	tmp = json.decode(webdata)
-	--dialog("获取到的token："..webdata)   --调试打印，上线需要注释
-	获取状态=tmp.code
+	--dialog("获取到的json："..webdata)   --调试打印，上线需要注释
+	获取状态= tostring(tmp.code)
 	电话号码=tmp.data.phone
-	获取验证码地址=tmp.data.url
+	获取验证码地址=tmp.data.smsCodeLink
+	无可用手机号 = tmp.msg
+	--dialog("获取状态:"..获取状态)
 	--dialog("获取到的验证码地址："..获取验证码地址)   --调试打印，上线需要注释
-	token值=tmp.data.token
-	if 获取状态=='200' or 获取状态==200 then
+	--dialog("电话号码:"..电话号码)
+	if 获取状态 == '0' then
 		mSleep(1000)
 		return 电话号码
+	elseif 无可用手机号 == '没有可用号码' then
+		dialog('没有号码')
+		lua_exit()
 	else
 		toast("无法获取到号码，请检查网络或者是否还有更多号码")
 		mSleep(1000)
@@ -355,22 +360,35 @@ end
 function 获取验证码()
 local webdata,tmp,验证码
 for var= 1,14 do	
-	--erkang---   
-	--dialog(获取验证码地址)    --调试打印，上线需要注释
 	webdata = httpGet(获取验证码地址,10)
-	--tmp = json.decode(webdata)	--需要兼容的位置！！！！！！！！！！！！！！！！
-	--dialog(webdata)    --调试打印，上线需要注释	
-	str = string.sub(webdata,3,3)
-	if str == 'i'  then --表示获取验证码成功
-		验证码=string.sub(webdata,10,15)
-		return 验证码
-	elseif tmp.flag==true then
-		验证码=string.sub(tmp.message,10,15)
-		return 验证码
-	else
+	tmp = json.decode(webdata)	
+	验证状态 = tostring(tmp.flag)
+	--dialog("验证状态："..验证状态)
+	if 验证状态 == 'false' then
 		mSleep(5000)
+		if (isColor(  69,  475, 0xfe2c55, 85)) then
+			tap(  113+math.random(0,5),  478+math.random(0,5)) --点击重新发送
+		else
+		end
+	else
+		break
 	end
 end
+
+	local res_f = tostring(tmp.message)
+	local res ,_ = res_f:gsub("%D+","")  		--正则验证码
+	
+	if 验证状态 == 'true' then
+		if values.软件版本 == '0' then
+			验证码 = string.sub(res,1,4) 			--4位数验证码 
+		elseif values.软件版本 == '1'  then
+			验证码=string.sub(res,1,6) 				--6位数验证码 
+		else
+		end	
+		mSleep(1000)
+		return 验证码
+	else
+	end	
 toast('获取验证码失败',1)
 全局变量1=2
 mSleep(5000)
@@ -379,29 +397,38 @@ end
 function 释放电话号码()
 if  values.接口序=='0' then
 	if 电话号码~='' then
-		toast('释放电话号码',1)
-		local str = values.电话号接口:split("/v2")
-		local str2= values.电话号接口:split("?name=")
-		local webdata=httpGet(str[1]..'/v2/api/setting/phone/status?name='..str2[2]..'&phone='..电话号码..'&token='..token值)
-		token值=''	--归零
-		电话号码=''
+		--toast('释放电话号码',1)
+		local str = values.电话号接口:split("token=")
+		local token值 = str[2]
+		--dialog("token值:"..token值)
+		--dialog("电话号码："..电话号码)		
+--		local webdata=httpGet(str[1]..'/v2/api/setting/phone/status?name='..str2[2]..'&phone='..电话号码..'&token='..token值)
+		local webdata1=httpGet('http://20.122.103.3:11223/api/v2/phone/reset?token='..token值..'&phone='..电话号码)
+		token值 = ''
+		电话号码 = ''
+	else
+		dialog('没有号码')
+		lua_exit()
 	end
 elseif values.接口序=='1' then
 发送状态('8')
 end
 end
+----------------------------------------------------------------------------------------------------------------------------------
+
+
 
 --erkang 记录账号信息到本地--
 function 记录账号信息()
-    --如果是手机号——记录手机号码、token，用于排查未注册的账号，不做记录功能
-    --如果是邮箱账号—— 记录用户名和密码
+    --如果是手机号——记录手机号码、token，用于排查未注册的账号，仅做记录功能
+    --如果是邮箱账号 —— 记录邮箱，用户名，密码
     --	dialog(电话号码)
     --	mSleep(1000)
     --	dialog(获取验证码地址)
     --	mSleep(1000)
-	if values.电话号接口 == '' and values.电话号接口2 == '' then  --如果都为空  那么就是邮箱号
+	if values.电话号接口 == '' and values.电话号接口2 == '' and values.电话号接口3 == '' then  --如果都为空  那么就是邮箱号
 		--dialog("邮箱账号记录")
-		记录内容 = tostring(名字).."-----".. tostring(密码)
+		记录内容 = tostring(账号).."-----"..tostring(名字).."-----".. tostring(密码)
 		mSleep(1000)
 		记录数据('已注册邮箱账号.log',记录内容)
 	else
@@ -413,6 +440,7 @@ function 记录账号信息()
 	mSleep(5000)
 end
 
+
 function 小键盘输入(数字验证码)
 local 验证码长度=string.len(数字验证码)
 for i= 1,(验证码长度) do
@@ -421,6 +449,8 @@ for i= 1,(验证码长度) do
 	mSleep(1000)
 end
 end
+
+--------------------------------------SMS--------------------------------------------------------
 
 function 获取KEY值()
 local wet= values.电话号接口2:split("key=")
@@ -545,18 +575,41 @@ local webdata,tmp,验证码
 for var= 1,14 do 
 	webdata = httpGet('https://api.sms-activate.org/stubs/handler_api.php?api_key='..api_key值..'&action=getFullSms&id='..激活ID,5)
 	--webdata = httpGet('https://sms-activate.ru/stubs/handler_api.php?api_key='..api_key值..'&action=getFullSms&id='..激活ID,5)			--原地址
-	if webdata=='STATUS_WAIT_CODE' or webdata== false then
+--	if webdata=='STATUS_WAIT_CODE' or webdata== false then
+	if webdata == 'STATUS_WAIT_CODE' or webdata == "STATUS_WAIT_RETRY" or webdata == false then	
 		mSleep(5000)
+		if (isColor(  69,  475, 0xfe2c55, 85)) then
+			tap(  113+math.random(0,5),  478+math.random(0,5)) --点击重新发送
+		else
+		end
+
 	else
 		break
 	end
 end
+
+
+--验证码格式适配
+--local webdata = "FULL_SMS:7474 is your verification code, valid for 5 minutes. To keep your account safe, never forward this code."
+--local webdata = "FULL_SMS:ÄTikTokÑ 4521 is your verification code, valid for 5 minutes. To keep your account safe, never forward this code."
+--local webdata = "FULL_SMS:4546"
+--local webdata = "FULL_SMS:код подтверждения рег. 8180"
+--local webdata = "FULL_SMS:(3 ) (7 ) (8 ) (6 )"
+--local webdata = "FULL_SMS:[TikTok] 8776 is your verification code, valid for 5 minutes. To keep your account safe, never forward this code."
+--local webdata = "FULL_SMS:← 0825 is your verification code, valid for 5 minutes. To keep your account safe, never forward this code."
+--local webdata = "FULL_SMS:TТоккд/ 0976 Qcmy WVdaO"
+
+--local sms1 = string.sub(tmp[2],17,18)
+--local sms2 = string.sub(tmp[2],0,1)
+--local sms3 = string.sub(tmp[2],1,4)
+--local sms4 = string.sub(tmp[2],18,19)
+
 tmp=webdata:split(':')
-if tmp[1]=='FULL_SMS'then
+local res,_ = webdata:gsub("%D+","")    --使用正则匹配验证码  适配16.6.5版本4位数验证码
+if tmp[1]=='FULL_SMS' then
 	发送状态('6')
---	界面需要添加版本判断 --- 16.6.5为4位数，之后版本为6位数
-	if values.软件版本 == '0' then 
-		验证码=string.sub(tmp[2],10,13)		--4位数验证码
+	if values.软件版本 == '0' then
+		验证码 = string.sub(res,1,4) 		--4位数验证码 
 	else
 		验证码=string.sub(tmp[2],10,15) 	--6位数验证码 
 	end
@@ -568,6 +621,88 @@ else
 	mSleep(5000)
 end
 end
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+
+------------------------------------适配内部对接接码格式-------------------------------------------------------------------------------------
+function 获取电话号码3()
+local webdata,tmp,获取状态
+for var= 1,20 do
+	webdata = httpGet("http://20.122.103.3:11223/api/v1/sms/getPhone?token=b0633c54509bb534feef5968625acbea&itemId=1")  --获取jsonn数据
+	--dialog(tostring(webdata))
+	tmp = json.decode(webdata)
+	--dialog("获取到的json："..webdata)   --调试打印，上线需要注释
+	获取状态=tostring(tmp.code)
+	--dialog("获取状态"..获取状态)
+	电话号码带区号=tmp.msg
+	--dialog("获取到的电话地址："..电话号码带区号)   --调试打印，上线需要注释
+	if 获取状态 == '0' then
+		mSleep(1000)
+		local 电话号码 = string.sub(电话号码带区号,3,13) 
+		--dialog("电话号码:"..电话号码)
+		return 电话号码
+	elseif 电话号码带区号 == '无可用号码' then
+		dialog('没有号码')
+		lua_exit()
+	else
+		toast("无法获取到号码，请检查网络或者是否还有更多号码")
+		mSleep(1000)
+	end
+	mSleep(5000)
+end
+dialog('获取电话号失败')
+lua_exit()
+end
+
+function 获取验证码3()
+local webdata,tmp,验证码
+for var= 1,20 do	
+	local 获取验证码地址 = "http://20.122.103.3:11223/api/v1/sms/getSmsCode?token=b0633c54509bb534feef5968625acbea&itemId=1&phone="..电话号码带区号
+	--dialog(获取验证码地址)    --调试打印，上线需要注释
+	webdata = httpGet(获取验证码地址,10)
+	tmp = json.decode(webdata)	--需要兼容的位置！！！！！！！！
+	--dialog(webdata)    --调试打印，上线需要注释	
+	获取状态 = tostring(tmp.code)
+	--dialog("获取状态"..获取状态)
+	if 获取状态 == '-1' then
+		mSleep(5000)
+		if (isColor(  69,  475, 0xfe2c55, 85)) then
+			tap(  113+math.random(0,5),  478+math.random(0,5)) --点击重新发送
+		else
+		end
+	else
+		break
+	end
+end
+	local res_s = tostring(tmp.msg)
+	local res, _ = res_s:gsub("%D+","")  		--正则验证码
+	--dialog("res:"..res)
+	if 获取状态 == '0'  then
+		if  values.软件版本 == '0'then
+		验证码 = string.sub(res,1,4)		--4位数验证码 
+		else
+		验证码 = string.sub(res,1,6)		--6位数验证码 
+		end
+
+		mSleep(1000)
+		return 验证码
+	else
+		toast('获取验证码失败',1)
+		全局变量1=2
+		mSleep(5000)
+	end
+end
+
+--不做释放操作
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
 
 
 ------------登录相关-------------------------

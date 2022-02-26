@@ -54,6 +54,7 @@ local 图鉴密码 =  values.图鉴密码
 local 接口序 = values.接口序
 local 电话号接口 = values.电话号接口  
 local 电话号接口2 = values.电话号接口2
+local 电话号接口3 = values.电话号接口3
 local 注册数量 =  values.注册数量
 local 防卡时间 =  values.防卡时间
 local 指定密码 =  values.指定密码
@@ -74,6 +75,7 @@ local 脚本功能 = values.脚本功能
 local 软件版本 = values.软件版本
 local 手动获取代理 = values.手动获取代理
 local 代理链接 = values.代理链接
+local 号码地区 = values.号码地区
 
 require("基础函数")
 require("功能函数")
@@ -190,7 +192,6 @@ elseif values.账号密码接口 ~= '' and values.登录文件名称 ~= '' then
 else	
 	mSleep(1000)
 end
-
 
 
 function 流程()

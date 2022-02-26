@@ -60,13 +60,9 @@ MyTable = {
             },
             {
                 ["type"] = "RadioGroup",            
-                -- 必填，控件类型，单选组合
                 ["id"] = "软件版本",                      
-                -- 选填，无，控件 ID，以 table 格式返回返回值时必填,否则无法获取返回值
                 ["list"] = "16.6.5,其他版本",      -- 必填，无，多选组合内容
                 ["select"] = "0",                   -- 选填，0，默认选中项 id
-                --["images"] = "test1.png,test1.png,test1.png,test1.png", 
-                -- 选填，无， 单选组合选项显示图片
                 ["scale"] = 0.4,                    -- 选填，1，图片缩放比例
                 ["countperline"] = 0,
             },
@@ -81,19 +77,6 @@ MyTable = {
                 ["width"] = -1,
                 ["nowrap"] = 1,
             },
---            {
---                ["type"] = "RadioGroup",            
---                -- 必填，控件类型，单选组合
---                ["id"] = "使用软件",                      
---                -- 选填，无，控件 ID，以 table 格式返回返回值时必填,否则无法获取返回值
---                ["list"] = "AWZ,AXJ,黑豹,PyApp,OnePress,SuperMan",      -- 必填，无，多选组合内容
---                ["select"] = "1",                   -- 选填，0，默认选中项 id
---                --["images"] = "test1.png,test1.png,test1.png,test1.png", 
---                -- 选填，无， 单选组合选项显示图片
---				["width"] = 500,
---                ["scale"] = 0.4,                    -- 选填，1，图片缩放比例
---                ["countperline"] = 0,
---            },
 			{
                 ["type"] = "ComboBox",               
                 ["id"] = "使用软件",                  
@@ -101,6 +84,28 @@ MyTable = {
 				["list"] = "AWZ,AXJ,黑豹,PyApp,OnePress,SuperMan",
 				["select"] = 4,
 				--["list"] = "地址1:http://45.207.44.6:12345/v2/api/get/phone?name=,地址2:sms-activate.ru/cn",
+                ["color"] = "0,0,0",
+                ["align"] = "",           
+                ["valign"] = "top",   
+                ["width"] = 500,
+                ["nowrap"] = 0,
+            }, 
+						{
+                ["type"] = "Label",
+                ["align"] = "center",
+                ["text"] = "号码地区:",
+                ["size"] = 15, 
+                ["align"] = "left",          
+                ["valign"] = "top", 
+                ["color"] = "0,0,0",           
+                ["width"] = -1,
+                ["nowrap"] = 1,
+            },
+			{
+                ["type"] = "ComboBox",               
+                ["id"] = "号码地区",                  
+				["list"] = "美国+1,俄罗斯+7,印尼+62",
+				["select"] = 1,
                 ["color"] = "0,0,0",
                 ["align"] = "",           
                 ["valign"] = "top",   
@@ -118,18 +123,6 @@ MyTable = {
                 ["width"] = -1,
                 ["nowrap"] = 1,
             },
---            {
---                ["type"] = "RadioGroup",            
---                -- 必填，控件类型，单选组合
---                ["id"] = "是否备份",                      
---                -- 选填，无，控件 ID，以 table 格式返回返回值时必填,否则无法获取返回值
---                ["list"] = "是,否",      -- 必填，无，多选组合内容
---                ["select"] = "1",                   -- 选填，0，默认选中项 id
---                --["images"] = "test1.png,test1.png,test1.png,test1.png", 
---                -- 选填，无， 单选组合选项显示图片
---                ["scale"] = 0.4,                    -- 选填，1，图片缩放比例
---                ["countperline"] = 0,
---            },
 			{
                 ["type"] = "Switch",
                 ["id"] = "是否备份",
@@ -151,18 +144,6 @@ MyTable = {
                 ["width"] = -1,
                 ["nowrap"] = 1,
             },
---            {
---                ["type"] = "RadioGroup",            
---                -- 必填，控件类型，单选组合
---                ["id"] = "卸载安装",                      
---                -- 选填，无，控件 ID，以 table 格式返回返回值时必填,否则无法获取返回值
---                ["list"] = "开启,关闭",      -- 必填，无，多选组合内容
---                ["select"] = "1",                   -- 选填，0，默认选中项 id
---                --["images"] = "test1.png,test1.png,test1.png,test1.png", 
---                -- 选填，无， 单选组合选项显示图片
---                ["scale"] = 0.4,                    -- 选填，1，图片缩放比例
---                ["countperline"] = 0,
---            },
 			{
                 ["type"] = "Switch",
                 ["id"] = "卸载安装",
@@ -324,8 +305,8 @@ MyTable = {
 			 {
                 ["type"] = "Edit",               
                 ["id"] = "代理链接",                  
-                --["prompt"] = "代理链接", 
-				["text"] = "http://20.122.103.3:51515/api/v1/getIP?type=text&username=test_99641&protocol=0&region=RU&count=1",
+                ["prompt"] = "你的代理链接", 
+				--["text"] = "http://20.122.103.3:51515/api/v1/getIP?type=text&username=test_99641&protocol=0&region=RU&count=1",
                 ["kbtype"] = "default",  
                 ["color"] = "0,0,0",   
                 ["size"] = 15,           
@@ -417,7 +398,7 @@ MyTable = {
                 ["type"] = "ComboBox",               
                 ["id"] = "接口序",                  
                 --["prompt"] = "300毫秒", 
-				["list"] = "地址1,地址2",
+				["list"] = "地址1,地址2,地址3",
 				--["list"] = "地址1:http://45.207.44.6:12345/v2/api/get/phone?name=,地址2:sms-activate.ru/cn",
                 ["color"] = "0,0,0",
                 ["align"] = "",           
@@ -488,6 +469,30 @@ MyTable = {
                 ["id"] = "电话号接口2",
 				["prompt"] = "https://api.sms-activate.org/stubs/handler_api.php?api_key=", 
 				--["text"]="https://api.sms-activate.org/stubs/handler_api.php?api_key=",
+                ["kbtype"] = "default", 
+                ["color"] = "0,0,0",   
+                ["size"] = 15,           
+                ["align"] = "",           
+                ["valign"] = "top",   
+                ["width"] = 500,
+                ["nowrap"] = 0,
+            },
+			{
+                ["type"] = "Label", 
+                ["text"] = "地  址  3  :",        
+ --               ["text"] = "接口地址2:",        
+                ["size"] = 15, 
+                ["align"] = "left",          
+                ["valign"] = "center", 
+                ["color"] = "0,0,0",           
+                ["width"] = -1,
+                ["nowrap"] = 1,
+            },
+			 {
+                ["type"] = "Edit",               
+                ["id"] = "电话号接口3",
+				["prompt"] = "http://20.122.103.3:11223/api/v1/sms/getPhone?token=b0633c54509bb534feef5968625acbea&itemId=1", 
+				["text"]="http://20.122.103.3:11223/api/v1/sms/getPhone?token=b0633c54509bb534feef5968625acbea&itemId=1",
                 ["kbtype"] = "default", 
                 ["color"] = "0,0,0",   
                 ["size"] = 15,           
@@ -697,10 +702,10 @@ MyTable = {
 --			{
 --                ["type"] = "Image", 
 --                ["src"] = "https://pic.imgdb.cn/item/61bad28e2ab3f51d91c62ddc.png",  -----外站图标
---				["scale"] = 1, 
+--				  ["scale"] = 1, 
 --                ["align"] = "center",
 --                ["valign"] = "center",
---				["nowrap"] = 0,
+--				  ["nowrap"] = 0,
 --            },
 			{
                 ["type"] = "Label", 

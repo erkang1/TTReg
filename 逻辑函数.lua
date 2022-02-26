@@ -9,7 +9,7 @@ function 切换VPN()--启动小火箭  --判定打开VPN  --切换VPM  -- 判定
 		mSleep(2000)
 	end
 	for var= 1,10 do --小火箭开关开启
---		if (isColor( 643,  204, 0x2473bd, 85)) then
+--		if (isColor( 643,  204, 0x2473bd, 85)) then  --旧版本
 		if (isColor( 612,  209, 0x2372bd, 85)) then
 			break
 		else
@@ -19,6 +19,7 @@ function 切换VPN()--启动小火箭  --判定打开VPN  --切换VPM  -- 判定
 	end
 	for i= 0,7 do --判断节点数量
 		--x,y = findColorInRegionFuzzy(0x000000,100,118,558+i*88,219,589+i*88)
+--		x,y = findColorInRegionFuzzy(0x000000,100,692,690+i*88,694,1218+i*88)  --旧版本
 		x,y = findColorInRegionFuzzy(0xffffff ,100,649,628+i*88, 678,1096+i*88)
 		if x<0 then --说明没有节点了
 			节点数量=i
@@ -29,41 +30,19 @@ function 切换VPN()--启动小火箭  --判定打开VPN  --切换VPM  -- 判定
 	if 节点数量~=1 then
 		for var= 1,10 do
 			随机节点序=math.random(0,节点数量-1)--去重复，万一随机的还是那个呢
---			if (isColor(13,581+随机节点序*88,0xff9400,85)) then
-            if (isColor(  43,  638+随机节点序*88, 0xff9400, 85)) then  --页面适配
+--			if (isColor(13,581+随机节点序*88,0xff9400,85)) then      --旧版本
+            if (isColor(  43,  638+随机节点序*88, 0xff9400, 85)) then  --页面适配    
 			else
 				break
 			end
-		end
---		tap(325,574+随机节点序*88) 
+		end 
+--		tap(325,574+随机节点序*88)    --旧版本
 		tap(346,627+随机节点序*88) 
 		mSleep(2000) 
 	end
 	--判断有没有网络
 end
 
--------------------PyApp新机操作-----------------------
---function PyApp新机()
---	打开应用('com.hd.PyApp',2000)
---	local 当前界面
---	for var= 1,100 do
---		当前界面 = 检索界面(PyApp界面列表)
---		if 当前界面 =='PyApp主界面' then
---			mSleep(500)
---			tap(新机按钮X,新机按钮Y)
---			mSleep(1000)
---		elseif 当前界面 =='PyApp新机界面' then
---			mSleep(500)
---			tap(确定新机X,确定新机Y)
---			mSleep(1000)
---		elseif 当前界面 =='PyApp等待界面' then
---			toast("正在新机")
---			mSleep(2000)
---		else
---			mSleep(1000)
---		end
---	end	
---end
 
 function PyApp新机坐标版本()
 	关闭应用('com.hd.PyApp')
@@ -298,18 +277,6 @@ function HB切换备份包()
 end
 
 
---function HB切换备份包()
---	打开应用('xoxo.heibao',3000)
---	local 当前界面
---	for var= 1,100 do   --循环判断是否开启成功
---		if 当前界面~= '未知界面' then
---			break
---		else
---			mSleep(1000)
---		end
---	end
---end
-
 ------------------------------------------------
 
 function 选择生日()
@@ -413,12 +380,11 @@ function TT注册()
 --				mSleep(1000)
 --				tap(email按钮X,email按钮Y)
 --				erkang 如果有手机号接口，那么继续操作，如果没有，则使用随机邮箱注册
-				if values.电话号接口 == '' and values.电话号接口2 == '' then
+				if values.电话号接口 == '' and values.电话号接口2 == '' and values.电话号接口3 == ''  then
 					toast("未获取到手机号接口，执行邮箱注册")
 					mSleep(1000)
 					tap(email按钮X,email按钮Y)
 					mSleep(1000)
-				--elseif values.电话号接口 ~= '' or values.电话号接口2 ~= ''  then
 				else 
 					toast("获取到手机号接口,执行手机号注册")
 					mSleep(1000)
@@ -427,10 +393,35 @@ function TT注册()
 					mSleep(math.random(500,1000))
 					tap(666, 347) --点击X  清空内容
 					mSleep(math.random(500,1000))
+					
+				----------------选择国家代号-------------
+						if values.号码地区 == '0' then     --美国号   +1
+							tap(108,345)
+							mSleep(1000)
+							touchDown( 732,  978); 
+							mSleep(500)
+							touchUp( 732,  978)
+							mSleep(1000)
+							tap(311,  767)
+							mSleep(500)
+						elseif values.号码地区 == '2' then  --印尼 +62
+							tap(108,345)
+							mSleep(1000)
+							touchDown( 735,  642) 
+							mSleep(500)
+							touchUp( 735,  642)
+							mSleep(1000)
+							tap(309,  474)
+							mSleep(500)
+						else						--俄罗斯号    +7
+							mSleep(500)
+						end
 						if values.接口序=='0' then
 							电话号码=获取电话号码()
 						elseif values.接口序=='1' then
 							电话号码=获取手机号和ID2()
+						elseif values.接口序=='2' then
+							电话号码 = 获取电话号码3()
 						end
 					输入文本2(邮箱输入框X2,邮箱输入框Y2,电话号码)  --inputText 版本
 					mSleep(1000)
@@ -465,6 +456,8 @@ function TT注册()
 				验证码=获取验证码()
 			elseif values.接口序=='1' then
 				验证码=获取验证码2()
+			elseif values.接口序=='2' then
+				验证码=获取验证码3()
 			else
 				mSleep(1000)
 			end
