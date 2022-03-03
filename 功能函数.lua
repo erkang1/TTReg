@@ -168,7 +168,6 @@ else
 end
 end
 
---erkang--
 function 关闭VPN()
 	flag = getVPNStatus()
 if flag.active then
@@ -328,6 +327,7 @@ end
 
 ---------------------------------------------本地上传手机号版本---------------------------------------------------------
 function 获取电话号码()
+--http://20.122.103.3:11223/api/v2/phone/getPhone?token=erkang
 local webdata,tmp,获取状态
 for var= 1,20 do
 	--dialog("获取到的电话号码接口："..values.电话号接口)   --调试打印，上线需要注释
@@ -345,8 +345,10 @@ for var= 1,20 do
 		mSleep(1000)
 		return 电话号码
 	elseif 无可用手机号 == '没有可用号码' then
-		dialog('没有号码')
-		lua_exit()
+		toast('没有号码')
+		--dialog('没有号码')
+		全局变量1=2
+		--lua_exit()
 	else
 		toast("无法获取到号码，请检查网络或者是否还有更多号码")
 		mSleep(1000)
@@ -354,71 +356,104 @@ for var= 1,20 do
 	mSleep(5000)
 end
 dialog('获取电话号失败')
-lua_exit()
+全局变量1=2
+--lua_exit()
 end
 
 function 获取验证码()
 local webdata,tmp,验证码
-for var= 1,14 do	
-	webdata = httpGet(获取验证码地址,10)
-	tmp = json.decode(webdata)	
-	验证状态 = tostring(tmp.flag)
-	--dialog("验证状态："..验证状态)
-	if 验证状态 == 'false' then
-		mSleep(5000)
-		if (isColor(  69,  475, 0xfe2c55, 85)) then
-			tap(  113+math.random(0,5),  478+math.random(0,5)) --点击重新发送
-		else
-		end
-	else
-		break
-	end
-end
+for var= 1,2 do	
 
-	local res_f = tostring(tmp.message)
-	local res ,_ = res_f:gsub("%D+","")  		--正则验证码
+	webdata = httpGet(获取验证码地址,20)
 	
-	if 验证状态 == 'true' then
-		if values.软件版本 == '0' then
+	--判断json格式和文本格式  如果前两个字符是 {" 那就是json  否则就不是
+	local isjson = string.sub(webdata,1,1)
+	--dialog(isjson,2)
+	
+	if isjson == "{" then
+		toast("验证码格式为json格式",2)
+		--dialog("webdata:"..webdata)
+		local tmp = json.decode(webdata)	
+		验证状态 = tostring(tmp.flag)
+		--信息内容 = tostring(tmp.message)
+		--dialog("验证状态："..验证状态,2)
+		--dialog("信息内容："..信息内容,2)
+			for var= 1, 2 do
+				if 验证状态 == 'false'  then
+					mSleep(5000)
+					if (isColor(  69,  475, 0xfe2c55, 85)) then
+						tap(  113+math.random(0,5),  478+math.random(0,5)) --点击重新发送
+					end
+				else
+					break
+				end
+			end
+		local res_f = tostring(tmp.message)
+		local res ,_ = res_f:gsub("%D+","")  		--正则验证码
+		
+		--dialog("message:"..res_f,2)
+		
+		if 验证状态 =='true' then		
 			验证码 = string.sub(res,1,4) 			--4位数验证码 
-		elseif values.软件版本 == '1'  then
-			验证码=string.sub(res,1,6) 				--6位数验证码 
+			--dialog("验证码:"..验证码,2)
+			return 验证码
 		else
-		end	
-		mSleep(1000)
-		return 验证码
+		end			
 	else
-	end	
+		toast("验证码格式为文本格式",2)
+		--webdata1 = [[[TikTok] 3875 is your verification code, valid for 5 minutes. To keep your account safe, never forward this code.]]
+		--dialog("webdata:"..webdata,2)
+		str = string.sub(webdata,33,34)
+		for var= 1,14 do	
+			if str == 'on' then
+				break
+			else
+				mSleep(5000)
+			end
+		end 
+		if str == 'on' then		
+			验证码 = string.sub(webdata,10,13) 			--4位数验证码 
+			--dialog("验证码:"..验证码,2)
+			return 验证码
+		else
+			mSleep(5000)
+		end
+	end
+
 toast('获取验证码失败',1)
+--释放电话号码()
 全局变量1=2
 mSleep(5000)
 end
+end
+
 
 function 释放电话号码()
-if  values.接口序=='0' then
-	if 电话号码~='' then
-		--toast('释放电话号码',1)
-		local str = values.电话号接口:split("token=")
-		local token值 = str[2]
-		--dialog("token值:"..token值)
-		--dialog("电话号码："..电话号码)		
---		local webdata=httpGet(str[1]..'/v2/api/setting/phone/status?name='..str2[2]..'&phone='..电话号码..'&token='..token值)
-		local webdata1=httpGet('http://20.122.103.3:11223/api/v2/phone/reset?token='..token值..'&phone='..电话号码)
-		token值 = ''
-		电话号码 = ''
-	else
-		dialog('没有号码')
-		lua_exit()
+	if  values.接口序=='0' then	
+		if 电话号码~='' then
+			--toast('释放电话号码',1)
+			local str = values.电话号接口:split("token=")
+			local token值 = str[2]
+			--dialog("token值:"..token值)
+			--dialog("电话号码："..电话号码)		
+	--		local webdata=httpGet(str[1]..'/v2/api/setting/phone/status?name='..str2[2]..'&phone='..电话号码..'&token='..token值)
+			local webdata1=httpGet('http://20.122.103.3:11223/api/v2/phone/reset?token='..token值..'&phone='..电话号码)
+			token值 = ''
+			电话号码 = ''
+		else
+			toast('号码没有啦！')
+			--lua_exit()
+			--全局变量1=2
+			mSleep(5000)
+		end	
+	elseif values.接口序== '1' then
+		发送状态('8')
 	end
-elseif values.接口序=='1' then
-发送状态('8')
-end
 end
 ----------------------------------------------------------------------------------------------------------------------------------
 
 
-
---erkang 记录账号信息到本地--
+--记录账号信息到本地--
 function 记录账号信息()
     --如果是手机号——记录手机号码、token，用于排查未注册的账号，仅做记录功能
     --如果是邮箱账号 —— 记录邮箱，用户名，密码
@@ -588,7 +623,6 @@ for var= 1,14 do
 	end
 end
 
-
 --验证码格式适配
 --local webdata = "FULL_SMS:7474 is your verification code, valid for 5 minutes. To keep your account safe, never forward this code."
 --local webdata = "FULL_SMS:ÄTikTokÑ 4521 is your verification code, valid for 5 minutes. To keep your account safe, never forward this code."
@@ -604,8 +638,9 @@ end
 --local sms3 = string.sub(tmp[2],1,4)
 --local sms4 = string.sub(tmp[2],18,19)
 
+
 tmp=webdata:split(':')
-local res,_ = webdata:gsub("%D+","")    --使用正则匹配验证码  适配16.6.5版本4位数验证码
+local res,_ = webdata:gsub("%D+","")    	--使用正则匹配验证码  目前测试 适配16.6.5版本4位数验证码
 if tmp[1]=='FULL_SMS' then
 	发送状态('6')
 	if values.软件版本 == '0' then
@@ -627,8 +662,9 @@ end
 ------------------------------------适配内部对接接码格式-------------------------------------------------------------------------------------
 function 获取电话号码3()
 local webdata,tmp,获取状态
+--http://20.122.103.3:11223/api/v1/sms/getPhone?token=b0633c54509bb534feef5968625acbea&itemId=1
 for var= 1,20 do
-	webdata = httpGet("http://20.122.103.3:11223/api/v1/sms/getPhone?token=b0633c54509bb534feef5968625acbea&itemId=1")  --获取jsonn数据
+	webdata = httpGet(values.电话号接口3)  --获取json数据
 	--dialog(tostring(webdata))
 	tmp = json.decode(webdata)
 	--dialog("获取到的json："..webdata)   --调试打印，上线需要注释
@@ -696,12 +732,6 @@ end
 --不做释放操作
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-
 
 
 

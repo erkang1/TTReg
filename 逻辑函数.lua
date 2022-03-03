@@ -18,8 +18,7 @@ function 切换VPN()--启动小火箭  --判定打开VPN  --切换VPM  -- 判定
 		end
 	end
 	for i= 0,7 do --判断节点数量
-		--x,y = findColorInRegionFuzzy(0x000000,100,118,558+i*88,219,589+i*88)
---		x,y = findColorInRegionFuzzy(0x000000,100,692,690+i*88,694,1218+i*88)  --旧版本
+		--x,y = findColorInRegionFuzzy(0x000000,100,118,558+i*88,219,589+i*88) --旧版本不需要更改
 		x,y = findColorInRegionFuzzy(0xffffff ,100,649,628+i*88, 678,1096+i*88)
 		if x<0 then --说明没有节点了
 			节点数量=i
@@ -346,7 +345,7 @@ function TT注册()
 			mSleep(500)
 			moveTo(556+math.random(1,10),726+math.random(1,10),574+math.random(1,10),494+math.random(1,10)) --滑动遮罩
 			mSleep(1000)
-			tap(670+math.random(0,5),1286+math.random(0,5))  --点击 我
+			tap(670+math.random(0,5),1286+math.random(0,5))  --点击 我c'v
 			mSleep(1000)
 			tap(372+math.random(0,5),745+math.random(0,5))   --点击 注册按钮
 			mSleep(1000)
@@ -393,7 +392,6 @@ function TT注册()
 					mSleep(math.random(500,1000))
 					tap(666, 347) --点击X  清空内容
 					mSleep(math.random(500,1000))
-					
 				----------------选择国家代号-------------
 						if values.号码地区 == '0' then     --美国号   +1
 							tap(108,345)
@@ -417,9 +415,9 @@ function TT注册()
 							mSleep(500)
 						end
 						if values.接口序=='0' then
-							电话号码=获取电话号码()
+							电话号码 = 获取电话号码()
 						elseif values.接口序=='1' then
-							电话号码=获取手机号和ID2()
+							电话号码 = 获取手机号和ID2()
 						elseif values.接口序=='2' then
 							电话号码 = 获取电话号码3()
 						end
@@ -453,7 +451,7 @@ function TT注册()
 			end
 			mSleep(1000)	
 			if values.接口序=='0' then
-				验证码=获取验证码()
+				验证码=获取验证码()  --兼容 json 和  文本
 			elseif values.接口序=='1' then
 				验证码=获取验证码2()
 			elseif values.接口序=='2' then

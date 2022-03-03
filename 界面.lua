@@ -491,8 +491,8 @@ MyTable = {
 			 {
                 ["type"] = "Edit",               
                 ["id"] = "电话号接口3",
-				["prompt"] = "http://20.122.103.3:11223/api/v1/sms/getPhone?token=b0633c54509bb534feef5968625acbea&itemId=1", 
-				["text"]="http://20.122.103.3:11223/api/v1/sms/getPhone?token=b0633c54509bb534feef5968625acbea&itemId=1",
+				["prompt"] = "http://20.122.103.3:11223/api/v1/sms/getPhone?token=$token&itemId=$id", 
+				--["text"]="http://20.122.103.3:11223/api/v1/sms/getPhone?token=b0633c54509bb534feef5968625acbea&itemId=1",
                 ["kbtype"] = "default", 
                 ["color"] = "0,0,0",   
                 ["size"] = 15,           
