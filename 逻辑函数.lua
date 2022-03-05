@@ -411,7 +411,25 @@ function TT注册()
 							mSleep(1000)
 							tap(309,  474)
 							mSleep(500)
-						else						--俄罗斯号    +7
+						elseif values.号码地区 == '3' then  --印度 +91
+							tap(108,345)
+							mSleep(1000)
+							touchDown(737, 641) 
+							mSleep(1000)
+							touchUp(737,  641)
+							mSleep(500)
+							tap(350,  381)
+							mSleep(500)
+						elseif values.号码地区 == '4' then  --越南 +84
+							tap(108,345)
+							mSleep(1000)
+							touchDown(733, 1005) 
+							mSleep(1000)
+							touchUp(733, 1005)
+							mSleep(500)
+							tap(377,  656)
+							mSleep(500)
+						else						--俄罗斯号 +7   (默认)
 							mSleep(500)
 						end
 						if values.接口序=='0' then

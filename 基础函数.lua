@@ -184,7 +184,7 @@ end
 function 向右滑动()
 touchDown(125+math.random(0,5),267+math.random(0,5));    
 mSleep(30);
---移动到坐标 (150, 600)，注意一次滑动的坐标间隔不要太大，不宜超过 50 像素
+--移动到坐标 (150, 600)， 注意一次滑动的坐标间隔不要太大，不宜超过 50 像素
 touchMove(587+math.random(0,5),267+math.random(0,5));    
 mSleep(30);
 --在坐标 (150, 600) 抬起

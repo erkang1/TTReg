@@ -362,14 +362,12 @@ end
 
 function 获取验证码()
 local webdata,tmp,验证码
-for var= 1,2 do	
-
-	webdata = httpGet(获取验证码地址,20)
-	
+for var=1,5 do
+	  webdata = httpGet(获取验证码地址,20)
 	--判断json格式和文本格式  如果前两个字符是 {" 那就是json  否则就不是
 	local isjson = string.sub(webdata,1,1)
 	--dialog(isjson,2)
-	
+
 	if isjson == "{" then
 		toast("验证码格式为json格式",2)
 		--dialog("webdata:"..webdata)
@@ -378,21 +376,21 @@ for var= 1,2 do
 		--信息内容 = tostring(tmp.message)
 		--dialog("验证状态："..验证状态,2)
 		--dialog("信息内容："..信息内容,2)
-			for var= 1, 2 do
-				if 验证状态 == 'false'  then
-					mSleep(5000)
-					if (isColor(  69,  475, 0xfe2c55, 85)) then
-						tap(  113+math.random(0,5),  478+math.random(0,5)) --点击重新发送
-					end
-				else
-					break
+		for var= 1, 14 do
+			if 验证状态 == 'false'  then
+				mSleep(5000)
+				if (isColor(  69,  475, 0xfe2c55, 85)) then
+					tap(  113+math.random(0,5),  478+math.random(0,5)) --点击重新发送
 				end
+			else
+				break
 			end
+		end
 		local res_f = tostring(tmp.message)
 		local res ,_ = res_f:gsub("%D+","")  		--正则验证码
-		
+
 		--dialog("message:"..res_f,2)
-		
+
 		if 验证状态 =='true' then		
 			验证码 = string.sub(res,1,4) 			--4位数验证码 
 			--dialog("验证码:"..验证码,2)
@@ -403,7 +401,7 @@ for var= 1,2 do
 		toast("验证码格式为文本格式",2)
 		--webdata1 = [[[TikTok] 3875 is your verification code, valid for 5 minutes. To keep your account safe, never forward this code.]]
 		--dialog("webdata:"..webdata,2)
-		str = string.sub(webdata,33,34)
+		local str = string.sub(webdata,33,34)
 		for var= 1,14 do	
 			if str == 'on' then
 				break
@@ -419,12 +417,11 @@ for var= 1,2 do
 			mSleep(5000)
 		end
 	end
-
-toast('获取验证码失败',1)
---释放电话号码()
-全局变量1=2
-mSleep(5000)
 end
+	toast('获取验证码失败',1)
+	--释放电话号码()
+	全局变量1=2
+	mSleep(5000)
 end
 
 
@@ -563,6 +560,8 @@ elseif new[2]=='15' then--波兰
 	return '48'
 elseif new[2]=='72' then--蒙古
 	return '976'
+elseif new[2]=='6' then --印度尼西亚
+	return '62'
 else
 	dialog('未知国家代码')
 	lua_exit()
@@ -594,11 +593,11 @@ elseif new[1]=='NO_BALANCE' then
 	lua_exit()
 else
 	toast('获取手机号失败',3)
-	mSleep(3000)
+	mSleep(2000)
+	全局变量1=2
 end
 end
 end
-
 
 function 发送状态(状态)--string ,1-通知已发送短信   6.激活成功   8.激活失败
 --wet= httpGet('https://sms-activate.ru/stubs/handler_api.php?api_key='..api_key值..'&action=setStatus&status='..状态..'&id='..激活ID)     --原地址
@@ -617,27 +616,10 @@ for var= 1,14 do
 			tap(  113+math.random(0,5),  478+math.random(0,5)) --点击重新发送
 		else
 		end
-
 	else
 		break
 	end
 end
-
---验证码格式适配
---local webdata = "FULL_SMS:7474 is your verification code, valid for 5 minutes. To keep your account safe, never forward this code."
---local webdata = "FULL_SMS:ÄTikTokÑ 4521 is your verification code, valid for 5 minutes. To keep your account safe, never forward this code."
---local webdata = "FULL_SMS:4546"
---local webdata = "FULL_SMS:код подтверждения рег. 8180"
---local webdata = "FULL_SMS:(3 ) (7 ) (8 ) (6 )"
---local webdata = "FULL_SMS:[TikTok] 8776 is your verification code, valid for 5 minutes. To keep your account safe, never forward this code."
---local webdata = "FULL_SMS:← 0825 is your verification code, valid for 5 minutes. To keep your account safe, never forward this code."
---local webdata = "FULL_SMS:TТоккд/ 0976 Qcmy WVdaO"
-
---local sms1 = string.sub(tmp[2],17,18)
---local sms2 = string.sub(tmp[2],0,1)
---local sms3 = string.sub(tmp[2],1,4)
---local sms4 = string.sub(tmp[2],18,19)
-
 
 tmp=webdata:split(':')
 local res,_ = webdata:gsub("%D+","")    	--使用正则匹配验证码  目前测试 适配16.6.5版本4位数验证码
