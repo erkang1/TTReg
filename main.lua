@@ -55,6 +55,7 @@ local 接口序 = values.接口序
 local 电话号接口 = values.电话号接口  
 local 电话号接口2 = values.电话号接口2
 local 电话号接口3 = values.电话号接口3
+local 电话号接口4 = values.电话号接口4
 local 注册数量 =  values.注册数量
 local 防卡时间 =  values.防卡时间
 local 指定密码 =  values.指定密码

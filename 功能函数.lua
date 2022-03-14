@@ -326,6 +326,12 @@ end
 
 
 ---------------------------------------------本地上传手机号版本---------------------------------------------------------
+
+--/api/v2/phone/getPhone?token=xxx        		获取手机号
+--/api/v2/phone/reset?token=xx&phone=xxxx    	重置手机号
+--/api/v2/phone/del?token=xxx    				删除手机号
+--/api/v2/phone/phoneNum?token=xxx   			查看手机号
+
 function 获取电话号码()
 --http://20.122.103.3:11223/api/v2/phone/getPhone?token=erkang
 local webdata,tmp,获取状态
@@ -337,6 +343,7 @@ for var= 1,20 do
 	获取状态= tostring(tmp.code)
 	电话号码=tmp.data.phone
 	获取验证码地址=tmp.data.smsCodeLink
+	--获取验证码地址='http://154.17.1.45/sms.php?token=2e4d193ebc0da0024da2i157986eb1002c67c'
 	无可用手机号 = tmp.msg
 	--dialog("获取状态:"..获取状态)
 	--dialog("获取到的验证码地址："..获取验证码地址)   --调试打印，上线需要注释
@@ -363,13 +370,14 @@ end
 function 获取验证码()
 local webdata,tmp,验证码
 for var=1,5 do
-	  webdata = httpGet(获取验证码地址,20)
+	--local 获取验证码地址 = 'http://104.244.91.82/napi/view?token=d3144d0654fb480f99ef11d7c9236b0a'
+	webdata = httpGet(获取验证码地址,20)
 	--判断json格式和文本格式  如果前两个字符是 {" 那就是json  否则就不是
 	local isjson = string.sub(webdata,1,1)
 	--dialog(isjson,2)
 
 	if isjson == "{" then
-		toast("验证码格式为json格式",2)
+		--toast("验证码格式为json格式",2)
 		--dialog("webdata:"..webdata)
 		local tmp = json.decode(webdata)	
 		验证状态 = tostring(tmp.flag)
@@ -398,10 +406,12 @@ for var=1,5 do
 		else
 		end			
 	else
-		toast("验证码格式为文本格式",2)
+		--toast("验证码格式为文本格式",2)
 		--webdata1 = [[[TikTok] 3875 is your verification code, valid for 5 minutes. To keep your account safe, never forward this code.]]
+		--webdata1 = [[[TikTok] 2481 is your verification code, valid for 5 minutes. To keep your account safe, never forward this code.]]
 		--dialog("webdata:"..webdata,2)
 		local str = string.sub(webdata,33,34)
+		--dialog(str)
 		for var= 1,14 do	
 			if str == 'on' then
 				break
@@ -423,54 +433,10 @@ end
 	全局变量1=2
 	mSleep(5000)
 end
-
-
-function 释放电话号码()
-	if  values.接口序=='0' then	
-		if 电话号码~='' then
-			--toast('释放电话号码',1)
-			local str = values.电话号接口:split("token=")
-			local token值 = str[2]
-			--dialog("token值:"..token值)
-			--dialog("电话号码："..电话号码)		
-	--		local webdata=httpGet(str[1]..'/v2/api/setting/phone/status?name='..str2[2]..'&phone='..电话号码..'&token='..token值)
-			local webdata1=httpGet('http://20.122.103.3:11223/api/v2/phone/reset?token='..token值..'&phone='..电话号码)
-			token值 = ''
-			电话号码 = ''
-		else
-			toast('号码没有啦！')
-			--lua_exit()
-			--全局变量1=2
-			mSleep(5000)
-		end	
-	elseif values.接口序== '1' then
-		发送状态('8')
-	end
-end
 ----------------------------------------------------------------------------------------------------------------------------------
 
 
---记录账号信息到本地--
-function 记录账号信息()
-    --如果是手机号——记录手机号码、token，用于排查未注册的账号，仅做记录功能
-    --如果是邮箱账号 —— 记录邮箱，用户名，密码
-    --	dialog(电话号码)
-    --	mSleep(1000)
-    --	dialog(获取验证码地址)
-    --	mSleep(1000)
-	if values.电话号接口 == '' and values.电话号接口2 == '' and values.电话号接口3 == '' then  --如果都为空  那么就是邮箱号
-		--dialog("邮箱账号记录")
-		记录内容 = tostring(账号).."-----"..tostring(名字).."-----".. tostring(密码)
-		mSleep(1000)
-		记录数据('已注册邮箱账号.log',记录内容)
-	else
-		记录内容 = tostring(电话号码).."|"..tostring(获取验证码地址).."-----"..tostring(名字).."-----".. tostring(密码)
-		--dialog("电话号码:"..电话号码)
-		mSleep(1000)
-		记录数据('已注册手机号.log',记录内容)
-	end
-	mSleep(5000)
-end
+
 
 
 function 小键盘输入(数字验证码)
@@ -562,6 +528,8 @@ elseif new[2]=='72' then--蒙古
 	return '976'
 elseif new[2]=='6' then --印度尼西亚
 	return '62'
+elseif new[2]=='11' then --吉尔吉斯斯坦
+	return '996'
 else
 	dialog('未知国家代码')
 	lua_exit()
@@ -588,6 +556,7 @@ while (true) do
 elseif new[1]=='NO_NUMBERS' then
 	dialog('没有号码')
 	lua_exit()
+	--toast('没有号码',3)
 elseif new[1]=='NO_BALANCE' then
 	dialog('余额不足')
 	lua_exit()
@@ -606,39 +575,68 @@ end
 
 function 获取验证码2()
 local webdata,tmp,验证码
-for var= 1,14 do 
+for var= 1,20 do 
 	webdata = httpGet('https://api.sms-activate.org/stubs/handler_api.php?api_key='..api_key值..'&action=getFullSms&id='..激活ID,5)
 	--webdata = httpGet('https://sms-activate.ru/stubs/handler_api.php?api_key='..api_key值..'&action=getFullSms&id='..激活ID,5)			--原地址
 --	if webdata=='STATUS_WAIT_CODE' or webdata== false then
-	if webdata == 'STATUS_WAIT_CODE' or webdata == "STATUS_WAIT_RETRY" or webdata == false then	
-		mSleep(5000)
-		if (isColor(  69,  475, 0xfe2c55, 85)) then
-			tap(  113+math.random(0,5),  478+math.random(0,5)) --点击重新发送
-		else
-		end
+	if webdata == 'STATUS_WAIT_CODE' or webdata == "STATUS_WAIT_RETRY" then	
+		mSleep(3000)
 	else
 		break
 	end
+	if (isColor( 69,  475, 0xfe2c55, 85)) then
+		tap(113+math.random(0,5),  478+math.random(0,5)) --点击重新发送
+	else
+		mSleep(1000)
+	end
 end
+
 
 tmp=webdata:split(':')
 local res,_ = webdata:gsub("%D+","")    	--使用正则匹配验证码  目前测试 适配16.6.5版本4位数验证码
+
 if tmp[1]=='FULL_SMS' then
 	发送状态('6')
 	if values.软件版本 == '0' then
 		验证码 = string.sub(res,1,4) 		--4位数验证码 
 	else
-		验证码=string.sub(tmp[2],10,15) 	--6位数验证码 
+		验证码 = string.sub(res,1,6) 
+		--验证码=string.sub(tmp[2],10,15) 	--6位数验证码 
 	end
 	mSleep(1000)
 	return 验证码
 else
 	toast('获取验证码失败',1)
 	全局变量1=2
-	mSleep(5000)
 end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------------
+
+function 释放电话号码()
+	if  values.接口序=='0' then	
+		if 电话号码~='' then
+			toast('释放电话号码',1)
+			local str = values.电话号接口:split("token=")
+			local token值 = str[2]
+			--dialog("token值:"..token值)
+			--dialog("电话号码："..电话号码)		
+	--		local webdata=httpGet(str[1]..'/v2/api/setting/phone/status?name='..str2[2]..'&phone='..电话号码..'&token='..token值)
+			local webdata1=httpGet('http://167.172.136.167:11223/api/v2/phone/reset?token='..token值..'&phone='..电话号码)
+			token值 = ''
+			电话号码 = ''
+		else
+			toast('号码没有啦！')
+			mSleep(5000)
+		end	
+	elseif values.接口序== '1' then
+		toast('释放电话号码',1)
+		发送状态('8')
+	else
+		toast('释放5sim电话号码',1)
+		发送状态4('8')
+	end
+end
+
 
 
 ------------------------------------适配内部对接接码格式-------------------------------------------------------------------------------------
@@ -693,7 +691,7 @@ for var= 1,20 do
 	end
 end
 	local res_s = tostring(tmp.msg)
-	local res, _ = res_s:gsub("%D+","")  		--正则验证码
+	local res, _ = res_s:gsub("%D+","")  	--正则验证码
 	--dialog("res:"..res)
 	if 获取状态 == '0'  then
 		if  values.软件版本 == '0'then
@@ -715,6 +713,212 @@ end
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------
 
+
+------------------------------------------------------   51Sim     ------------------------------------------------------------------------------------
+function 获取5simKEY值()
+local wet= values.电话号接口4:split("key=")
+local wet1=wet[2]:split("&action")
+sim_api_key值=wet1[1]
+--dialog("获取到的sim_api_key值:"..sim_api_key值)
+end
+
+function 获取国家代码4()
+local new= values.电话号接口4:split("country=")
+--dialog("国家代码："..new[2])
+if new[2]=='36' then--加拿大
+	return '1'
+elseif new[2]=='22' then--印度
+	return '91'
+elseif new[2]=='0' then--俄罗斯
+	return '7'
+elseif new[2]=='12' then--美国虚拟
+	return '1'
+elseif new[2]=='73' then--巴西
+	return '55'
+elseif new[2]=='16' then--英格兰
+	return '44'
+elseif new[2]=='21' then--埃及
+	return '20'
+elseif new[2]=='70' then--委内瑞拉
+	return '58'
+elseif new[2]=='32' then--罗马尼亚
+	return '40'
+elseif new[2]=='62' then--土耳其
+	return '90'
+elseif new[2]=='56' then--西班牙
+	return '34'
+elseif new[2]=='78' then--法国
+	return '33'
+elseif new[2]=='76' then--安哥拉
+	return '244'
+elseif new[2]=='10' then--越南
+	return '84'
+elseif new[2]=='66' then--巴基斯坦
+	return '92'
+elseif new[2]=='43' then--德国
+	return '49'
+elseif new[2]=='187' then--美国物理
+	return '1'
+elseif new[2]=='40' then--乌兹别克斯坦
+	return '998'
+elseif new[2]=='11' then--吉尔吉斯坦
+	return '996'
+elseif new[2]=='88' then--洪都拉斯
+	return '504 '
+elseif new[2]=='24' then--柬埔寨
+	return '855'
+elseif new[2]=='161' then--土库曼斯坦
+	return '993'
+elseif new[2]=='1' then--乌克兰
+	return '380'
+elseif new[2]=='90' then--尼加拉瓜
+	return '505'
+elseif new[2]=='7' then--马来西亚
+	return '60'
+elseif new[2]=='4' then--菲律宾
+	return '63'
+elseif new[2]=='103' then--牙买加
+	return '876'
+elseif new[2]=='46' then--瑞典
+	return '46'
+elseif new[2]=='48' then--荷兰
+	return '31'
+elseif new[2]=='5' then--缅甸
+	return '95'
+elseif new[2]=='34' then--爱沙尼亚
+	return '372'
+elseif new[2]=='15' then--波兰
+	return '48'
+elseif new[2]=='72' then--蒙古
+	return '976'
+elseif new[2]=='6' then --印度尼西亚
+	return '62'
+elseif new[2]=='11' then --吉尔吉斯斯坦
+	return '996'
+else
+	dialog('未知国家代码')
+	lua_exit()
+end
+end
+
+function 获取手机号和ID4()
+获取5simKEY值()
+国家代码4=获取国家代码4()
+--dialog("获取国家代码:"..国家代码)
+--mSleep(1000)
+local wet= httpGet(values.电话号接口4,20)
+new = tostring(wet):split(":")
+--dialog("获取到的号码状态："..wet)
+while (true) do
+	if new[1]=='ACCESS_NUMBER' then 
+		激活ID=new[2]
+		电话号码=string.gsub(new[3],国家代码4,"",1):atrim()
+--	dialog("电话号码:"..电话号码)
+		mSleep(1000)
+		发送状态4('1')
+		return 电话号码
+	elseif new[1]=='NO_NUMBERS' then
+		dialog('没有号码')
+		lua_exit()
+		--toast('没有号码',3)
+	elseif new[1]=='NO_BALANCE' then
+		dialog('余额不足')
+		lua_exit()
+	else
+		toast('获取手机号失败',3)
+		mSleep(2000)
+		全局变量1=2
+	end
+end
+end
+
+function 发送状态4(状态)--string ,1-通知已发送短信   6.激活成功   8.激活失败
+wet= httpGet('http://api1.5sim.net/stubs/handler_api.php?api_key='..sim_api_key值..'&action=setStatus&status='..状态..'&id='..激活ID)
+end
+
+function 获取验证码4()
+local webdata,tmp,验证码
+for var= 1,20 do 
+	webdata = httpGet('http://api1.5sim.net/stubs/handler_api.php?api_key='..sim_api_key值..'&action=getStatus&id='..激活ID,5)
+	if webdata == 'STATUS_WAIT_CODE' or webdata == "STATUS_WAIT_RETRY" then	
+		mSleep(5000)
+	else
+		break
+	end
+	if (isColor( 69,  475, 0xfe2c55, 85)) then
+		tap(113+math.random(0,5),  478+math.random(0,5)) --点击重新发送
+	else
+		mSleep(1000)
+	end
+end
+
+tmp=webdata:split(':')
+local res,_ = webdata:gsub("%D+","")    	--使用正则匹配验证码  目前测试 适配16.6.5版本4位数验证码
+
+if tmp[1]=='FULL_SMS' or tmp[1]=='STATUS_OK' then
+	发送状态4('6')
+	if values.软件版本 == '0' then
+		验证码 = string.sub(res,1,4) 		--4位数验证码 
+	else
+		验证码 = string.sub(res,1,6) 
+	end
+	mSleep(1000)
+	return 验证码
+else
+	toast('获取验证码失败',1)
+	全局变量1=2
+end
+end
+
+
+--记录账号信息到本地--
+function 记录账号信息()
+    --如果是手机号——记录手机号码、token，用于排查未注册的账号，仅做记录功能
+    --如果是邮箱账号 —— 记录邮箱，用户名，密码
+    --	dialog(电话号码)
+    --	mSleep(1000)
+    --	dialog(获取验证码地址)
+    --	mSleep(1000)
+	--  新增区号记录
+	tim = getNetTime();
+	时间 = os.date("%Y年%m月%d日")
+	local 区号 
+	if values.号码地区 == '0' then  --美国
+		区号 = '+1'
+	elseif values.号码地区 == '1' then --俄罗斯
+		区号 = '+7'
+	elseif values.号码地区 == '2' then --印尼
+		区号 = '+62'
+	elseif values.号码地区 == '3' then --印度
+		区号 = '+91'	
+	elseif values.号码地区 == '4' then --越南
+		区号 ='+84'		
+	elseif values.号码地区 == '5' then --爱沙尼亚
+		区号 = '+372'			
+	elseif values.号码地区 == '6' then --吉尔吉斯斯坦
+		区号 = '+996'		
+	elseif values.号码地区 == '7' then --巴西
+		区号 = '+55'	
+	elseif values.号码地区 == '8' then --马来西亚
+		区号 = '+60'
+	elseif values.号码地区 == '9' then --英格兰
+		区号 = '+44'		
+	end
+		
+	if values.电话号接口 == '' and values.电话号接口2 == '' and values.电话号接口3 == '' and values.电话号接口4 == '' then  --如果都为空  那么就是邮箱号
+		--dialog("邮箱账号记录")
+		记录内容 = tostring(账号).."-----"..tostring(名字).."-----".. tostring(密码).."-----".. tostring(时间)
+		mSleep(1000)
+		记录数据('已注册邮箱账号.log',记录内容)
+	else
+		记录内容 = tostring(区号).."|"..tostring(电话号码).."|"..tostring(获取验证码地址).."-----"..tostring(名字).."-----".. tostring(密码).."-----".. tostring(时间)
+		--dialog("电话号码:"..电话号码)
+		mSleep(1000)
+		记录数据('已注册手机号.log',记录内容)
+		--dialog("已经记录信息")
+	end
+	mSleep(5000)
+end
 
 
 ------------登录相关-------------------------
@@ -811,7 +1015,6 @@ function 读取首行()
 	end
 
 end
-
 
 -------删除首行：先读取文件到table，然后修改，再清除文件内容，重载写入到文件
 local 文件路径 = values.登录文件名称

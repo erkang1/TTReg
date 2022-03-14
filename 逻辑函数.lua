@@ -13,7 +13,7 @@ function 切换VPN()--启动小火箭  --判定打开VPN  --切换VPM  -- 判定
 		if (isColor( 612,  209, 0x2372bd, 85)) then
 			break
 		else
-			tap(643,204)
+			tap(622,205)
 			mSleep(2000)
 		end
 	end
@@ -44,8 +44,9 @@ end
 
 
 function PyApp新机坐标版本()
+	mSleep(500)
 	关闭应用('com.hd.PyApp')
-	toast("关闭新机")
+	toast("已经关闭新机")
 	mSleep(1000)
 	打开应用('com.hd.PyApp',2000)
 	mSleep(3000)
@@ -367,19 +368,39 @@ function TT注册()
 		elseif 当前界面 == '注册1665已选择生日界面' then
 			tap(275+math.random(0,5),553+math.random(0,5))
 			mSleep(1000)
+		elseif 当前界面 == 'TT注册弹框提示界面' then
+			tap(371+math.random(0,5),810+math.random(0,5))
+			mSleep(1000)
+
 		-----------------------------------------------------
 		
 		elseif 当前界面=='TT设置生日界面' then
 			选择生日()
 			tap(生日界面next按钮X,生日界面next按钮Y)
 			tap(生日界面next2按钮X,生日界面next2按钮Y)   --适配22.0版本
-			mSleep(6000)
+			if (isColor( 277,  563, 0xfe2c55, 85)) then  --网络不好就重新点击
+				tap(生日界面next按钮X,生日界面next按钮Y)
+			else
+			end
+			mSleep(3000)
 			判断是否离开该界面(TT注册界面列表,'TT设置生日界面')
-		elseif 当前界面=='TT注册电话界面' then
+		elseif 当前界面=='TT注册电话界面' or 当前界面=='TT注册211手机号界面' then
 --				mSleep(1000)
 --				tap(email按钮X,email按钮Y)
 --				erkang 如果有手机号接口，那么继续操作，如果没有，则使用随机邮箱注册
-				if values.电话号接口 == '' and values.电话号接口2 == '' and values.电话号接口3 == ''  then
+
+				mSleep(1000)
+				if (isColor( 114,  429, 0xff4c3a, 85)) then
+					mSleep(1000)
+					toast("toomany，重新运行")
+					全局变量1=2
+				else
+
+				end
+				
+--				mSleep(3000)
+				
+				if values.电话号接口 == '' and values.电话号接口2 == '' and values.电话号接口3 == '' and values.电话号接口4 == '' then
 					toast("未获取到手机号接口，执行邮箱注册")
 					mSleep(1000)
 					tap(email按钮X,email按钮Y)
@@ -428,16 +449,77 @@ function TT注册()
 							touchUp(733, 1005)
 							mSleep(500)
 							tap(377,  656)
+							mSleep(500)		
+						elseif values.号码地区 == '1' and values.使用软件~='4' then  ---- 俄罗斯号 +7   (默认)
+							tap(108,345)
+							mSleep(1000)
+							touchDown(735,  894) 
+							mSleep(1000)
+							touchUp(735,  894)
 							mSleep(500)
-						else						--俄罗斯号 +7   (默认)
+							tap(309,  481)
+							mSleep(500)	
+						elseif values.号码地区=='5' then  ---- 爱沙尼亚 +372
+							tap(108,345)
+							mSleep(1000)
+							touchDown( 735,  529) 
+							mSleep(1000)
+							touchUp( 735,  529)
+							mSleep(500)
+							tap(310,  760)
+							mSleep(500)	
+						elseif values.号码地区=='6' then  ---- 吉尔吉斯斯坦+996
+							tap(108,345)
+							mSleep(1000)
+							touchDown(734,  701) 
+							mSleep(1000)
+							touchUp(734,  701)
+							mSleep(500)
+							tap(328, 857)
+							mSleep(500)
+						elseif values.号码地区=='7' then  ---- 巴西 +55
+							tap(108,345)
+							mSleep(1000)
+							touchDown(735,  447) 
+							mSleep(1000)
+							touchUp(735,  447)
+							mSleep(500)
+							moveTo(500+math.random(1,10),1038+math.random(1,10),516+math.random(1,10),390+math.random(1,10)) --滑动到 巴西 +55
+							mSleep(3000)
+							tap(372, 532)
+							mSleep(500)		
+						elseif values.号码地区=='8' then  ---- 马来西亚 +60
+							tap(108,345)
+							mSleep(1000)
+							touchDown(735,  755) 
+							mSleep(1000)
+							touchUp(735,  755)
+							mSleep(500)
+							tap(308,  575)
+							mSleep(500)
+						elseif values.号码地区=='9' then  ---- 英格兰 +44
+							tap(108,345)
+							mSleep(1000)
+							touchDown( 733,  585) 
+							mSleep(1000)
+							touchUp( 733,  585)
+							mSleep(500)
+							moveTo(500,1038,516,390) --滑动到 根西岛 +44
+							mSleep(3000)
+							tap( 283,  410)
+							mSleep(500)							
+						else						
 							mSleep(500)
 						end
 						if values.接口序=='0' then
 							电话号码 = 获取电话号码()
+							--电话号码 = '3438659922'     -- 调试
 						elseif values.接口序=='1' then
 							电话号码 = 获取手机号和ID2()
 						elseif values.接口序=='2' then
 							电话号码 = 获取电话号码3()
+						elseif values.接口序=='3' then
+							电话号码 = 获取手机号和ID4()
 						end
 					输入文本2(邮箱输入框X2,邮箱输入框Y2,电话号码)  --inputText 版本
 					mSleep(1000)
@@ -474,12 +556,14 @@ function TT注册()
 				验证码=获取验证码2()
 			elseif values.接口序=='2' then
 				验证码=获取验证码3()
+			elseif values.接口序=='3' then
+				验证码=获取验证码4()				
 			else
 				mSleep(1000)
 			end
 			mSleep(1000)
 --			dialog("获取到的验证码："..验证码) 
-			小键盘输入(验证码) -- 注意接码API的变化和更新，同时注意　软件版本　的验证码长度
+			小键盘输入(验证码) -- 注意接码API的变化和更新，同时注意　软件版本验证码长度
 			mSleep(14000)
 		
 		elseif 当前界面=='TT注册邮箱界面' or 当前界面=='注册1665邮箱注册界面2'  then
@@ -596,12 +680,17 @@ function TT注册()
 --			   当前界面 ~= '注册1665主页界面2' or
 --			   当前界面 ~= '注册1665signup界面' or
 --			   当前界面 ~= '注册1665生日界面' or
---			   当前界面 ~= '注册1665密码界面' or   
---			   当前界面 ~= 'TT注册密码界面' then
+--			   当前界面 ~= '注册1665密码界面' or  
+--			   当前界面 ~= 'TT注册密码界面' then				   
 --			mSleep(100)
 --			toast("该账号是老帐号")
 --			mSleep(1000)
 --			return true
+		elseif 当前界面 == 'TT注册进入粉丝界面' then   --仅适配 onepress 1665版本   去除视频版本
+			mSleep(1000)
+			toast("该账号是老帐号")
+			mSleep(1000)
+			return true	
 		else
 
 		end
