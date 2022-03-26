@@ -388,17 +388,15 @@ function TT注册()
 --				mSleep(1000)
 --				tap(email按钮X,email按钮Y)
 --				erkang 如果有手机号接口，那么继续操作，如果没有，则使用随机邮箱注册
-
-				mSleep(1000)
+				mSleep(3000)
 				if (isColor( 114,  429, 0xff4c3a, 85)) then
 					mSleep(1000)
 					toast("toomany，重新运行")
 					全局变量1=2
 				else
-
-				end
-				
---				mSleep(3000)
+					mSleep(1000)
+				end				
+				mSleep(3000)  --延时3秒
 				
 				if values.电话号接口 == '' and values.电话号接口2 == '' and values.电话号接口3 == '' and values.电话号接口4 == '' then
 					toast("未获取到手机号接口，执行邮箱注册")
@@ -540,15 +538,33 @@ function TT注册()
 				toast("正在等待验证码刷新")
 		elseif 当前界面=='TT注册电话验证码界面' or 当前界面=='注册1665手机验证号' then
 			local 验证码
-			x, y = findColorInRegionFuzzy(0xfe2c55,90,69,435,106,573)
+			local x, y = findColorInRegionFuzzy(0xfe2c55,90,69,435,106,573)
 			if x>0 then
+				toast("Resend code -- 重新发送验证码",1)
+				mSleep(1000)
 				tap(x+10,y+5)
 				mSleep(15000)
 			end
+			
+			local x, y = findMultiColorInRegionFuzzy( 0xff4c3a, "-129|15|0xff4c3a,210|8|0xff4c3a,217|11|0xff4c3a", 90, 53, 440, 444, 484)
+			if x>0 then
+				toast("TK 注册 -- time out ! ，重新运行脚本")
+				mSleep(1000)
+				全局变量1=3		
+			end
+			
+			local x, y = findMultiColorInRegionFuzzy( 0xff4c3a, "219|-7|0xff4c3a,370|-6|0xff4c3a,57|25|0xff513f", 90, 29, 343, 688, 529)
+			if x>0 then
+				toast("TK 注册 -- verification failed，重新运行脚本")
+				mSleep(1000)
+				全局变量1=3
+			end
+			
 			for var= 1,7 do
 				tap(630,1276)
 				mSleep(500)
 			end
+			
 			mSleep(1000)	
 			if values.接口序=='0' then
 				验证码=获取验证码()  --兼容 json 和  文本
@@ -565,7 +581,11 @@ function TT注册()
 --			dialog("获取到的验证码："..验证码) 
 			小键盘输入(验证码) -- 注意接码API的变化和更新，同时注意　软件版本验证码长度
 			mSleep(14000)
-		
+		elseif 当前界面=='TT注册老号界面' then
+			mSleep(2000)
+			toast("该手机号是老号")
+			tap( 196,  864)
+			mSleep(1000)
 		elseif 当前界面=='TT注册邮箱界面' or 当前界面=='注册1665邮箱注册界面2'  then
 			tap(456,348)  --先点击空位置 才会出现X
 			mSleep(math.random(500,1000))

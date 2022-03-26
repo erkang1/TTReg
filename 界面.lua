@@ -171,7 +171,7 @@ MyTable = {
                 ["size"] = "m",
                 ["align"] = "left",
                 ["valign"] = "top",
-                ["state"] = "on",
+                ["state"] = "off",
                 ["width"] = -1,
                 ["nowrap"] = 1,
             },
@@ -210,7 +210,7 @@ MyTable = {
 			 {
                 ["type"] = "Edit",               
                 ["id"] = "账号密码接口",
-				["prompt"] = "上传用户名", 
+				["prompt"] = "", 
 				--["text"]="denglu",
                 ["kbtype"] = "default", 
                 ["color"] = "0,0,0",   

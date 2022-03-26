@@ -145,7 +145,7 @@ return ret
 end
 
 
---erkang--随机用户昵称
+---随机用户昵称--需要导入带昵称的文件
 function 随机用户昵称()
 local str1 ="abcdefghijklmnopqrstuvwxyz"
 local options = {
@@ -156,6 +156,7 @@ local ret=getRndStr(str1,options)
 随机昵称 = tostring(获取随机文本(values.文件名称))
 return 随机昵称..ret
 end
+
 
 function 打开VPN()
 flag = getVPNStatus()
@@ -168,6 +169,7 @@ else
 end
 end
 
+
 function 关闭VPN()
 	flag = getVPNStatus()
 if flag.active then
@@ -177,6 +179,7 @@ else
 	mSleep(3000)
 end
 end
+
 
 function TT防闪退启动()
 	local 当前界面
@@ -240,7 +243,7 @@ end
 function 获取S5代理()
 获取S5接口 = values.代理链接
 -- 获取S5接口 = "http://20.122.103.3:51515/api/v1/getIP?type=text&username=test_99641&protocol=0&region=RU&count=1"
---格式：socks5://test_99641$ifhie8NkW4*US:owrjgdnhg@185.145.128.72:4113
+-- 格式：socks5://test_99641$ifhie8NkW4*US:owrjgdnhg@185.145.128.72:4113
 local webdata=httpGet(获取S5接口)
 --dialog(webdata)
 local strs1 = webdata:split("//")  --分割前缀
@@ -316,7 +319,7 @@ function 卸载应用(包名)
 end
 
 function 安装TK()
-	flag = ipaInstall(userPath().."/res/TikTok 16.6.5.ipa")  --ipa文件需要放进指定路径下面
+	flag = ipaInstall(userPath().."/res/TikTok 16.6.5.ipa")  --ipa文件需要放进指定路径下面，写死版本号
 	if flag == 1 then
 		toast("安装成功")
 	else
@@ -433,10 +436,7 @@ end
 	全局变量1=2
 	mSleep(5000)
 end
-----------------------------------------------------------------------------------------------------------------------------------
-
-
-
+-------------------------------------------------------------------------------------------------
 
 
 function 小键盘输入(数字验证码)
@@ -447,6 +447,7 @@ for i= 1,(验证码长度) do
 	mSleep(1000)
 end
 end
+
 
 --------------------------------------SMS--------------------------------------------------------
 
@@ -568,8 +569,7 @@ end
 end
 end
 
-function 发送状态(状态)--string ,1-通知已发送短信   6.激活成功   8.激活失败
---wet= httpGet('https://sms-activate.ru/stubs/handler_api.php?api_key='..api_key值..'&action=setStatus&status='..状态..'&id='..激活ID)     --原地址
+function 发送状态(状态)  --string   ,1-通知已发送短信   6.激活成功   8.激活失败
 wet= httpGet('https://api.sms-activate.org/stubs/handler_api.php?api_key='..api_key值..'&action=setStatus&status='..状态..'&id='..激活ID)
 end
 
@@ -619,7 +619,7 @@ function 释放电话号码()
 			local str = values.电话号接口:split("token=")
 			local token值 = str[2]
 			--dialog("token值:"..token值)
-			--dialog("电话号码："..电话号码)		
+			--dialog("电话号码："..电话号码)
 	--		local webdata=httpGet(str[1]..'/v2/api/setting/phone/status?name='..str2[2]..'&phone='..电话号码..'&token='..token值)
 			local webdata1=httpGet('http://167.172.136.167:11223/api/v2/phone/reset?token='..token值..'&phone='..电话号码)
 			token值 = ''
@@ -639,7 +639,7 @@ end
 
 
 
-------------------------------------适配内部对接接码格式-------------------------------------------------------------------------------------
+------------------------------------ 适配内部对接接码格式 -------------------------------------------------------------------------------------
 function 获取电话号码3()
 local webdata,tmp,获取状态
 --http://20.122.103.3:11223/api/v1/sms/getPhone?token=b0633c54509bb534feef5968625acbea&itemId=1
@@ -832,9 +832,10 @@ while (true) do
 end
 end
 
-function 发送状态4(状态)--string ,1-通知已发送短信   6.激活成功   8.激活失败
+function 发送状态4(状态)  --string ,1-通知已发送短信   6.激活成功   8.激活失败
 wet= httpGet('http://api1.5sim.net/stubs/handler_api.php?api_key='..sim_api_key值..'&action=setStatus&status='..状态..'&id='..激活ID)
 end
+
 
 function 获取验证码4()
 local webdata,tmp,验证码
@@ -853,14 +854,14 @@ for var= 1,20 do
 end
 
 tmp=webdata:split(':')
-local res,_ = webdata:gsub("%D+","")    	--使用正则匹配验证码  目前测试 适配16.6.5版本4位数验证码
+local res,_ = webdata:gsub("%D+","")    	
 
 if tmp[1]=='FULL_SMS' or tmp[1]=='STATUS_OK' then
 	发送状态4('6')
 	if values.软件版本 == '0' then
 		验证码 = string.sub(res,1,4) 		--4位数验证码 
 	else
-		验证码 = string.sub(res,1,6) 
+		验证码 = string.sub(res,1,6)  		--6位数验证码 
 	end
 	mSleep(1000)
 	return 验证码
@@ -941,7 +942,7 @@ for var= 1,20 do
 		mSleep(1000)
 		lua_exit()
 	else
-		dialog("脚本结束：无法获取到登录账号密码，请检查网络或者查看是否还有更多账号",{title = "错误打印",button = "我知道了"})
+		dialog("脚本结束：无法获取到登录账号密码，请检查网络或者查看是否还有更多账号",{title = "错误日志",button = "我知道了"})
 		lua_exit()
 	end
 	mSleep(5000)
@@ -950,19 +951,6 @@ dialog('获取账号密码失败')
 lua_exit()
 end
 
---function 释放账号密码()
---if 登录账号~='' then
---	toast('释放账号密码',1)
---	local str = ("http://45.207.44.6:12345/v2/api/get/phone?name=denglu"):split("/v2")
---	dialog(str)
---	local str2= ("http://45.207.44.6:12345/v2/api/get/phone?name=denglu"):split("?name=")
---	dialog(str2)
---	local webdata=httpGet(str[1]..'/v2/api/setting/phone/status?name='..str2[2]..'&phone='..登录账号..'&token='..登录密码)
---	dialog(webdata)
---	登录密码=''--归零
---	登录账号=''
---end
---end
 
 function 记录登录账号信息()
 	toast("已记录账号："..登录账号)
@@ -1016,7 +1004,7 @@ function 读取首行()
 
 end
 
--------删除首行：先读取文件到table，然后修改，再清除文件内容，重载写入到文件
+-------删除首行：先读取文件到table，然后修改，再清除文件内容，最后重载写入到文件
 local 文件路径 = values.登录文件名称
 function 读取文本(file)
 	-- body

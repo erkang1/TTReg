@@ -45,6 +45,8 @@ toast('未知界面',1)
 return '未知界面'
 end
 
+
+
 function 是否到达界面(目的界面,等待时间)--目的界面为table，等待时间单位是S
 for var= 1, 等待时间 do
 	local 当前界面=检索界面(目的界面)
@@ -55,6 +57,7 @@ for var= 1, 等待时间 do
 end
 return false
 end
+
 
 function 判断是否离开该界面(指定列表,指定界面) -- 指定界面必须是一个文本格式
 while (true) do
