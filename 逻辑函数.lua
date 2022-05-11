@@ -18,7 +18,7 @@ function 切换VPN()--启动小火箭  --判定打开VPN  --切换VPM  -- 判定
 		end
 	end
 	for i= 0,7 do --判断节点数量
-		--x,y = findColorInRegionFuzzy(0x000000,100,118,558+i*88,219,589+i*88) --旧版本不需要更改
+		--x,y = findColorInRegionFuzzy(0x000000,100,118,558+i*88,219,589+i*88)   --旧版本不需要更改
 		x,y = findColorInRegionFuzzy(0xffffff ,100,649,628+i*88, 678,1096+i*88)
 		if x<0 then --说明没有节点了
 			节点数量=i
@@ -39,7 +39,7 @@ function 切换VPN()--启动小火箭  --判定打开VPN  --切换VPM  -- 判定
 		tap(346,627+随机节点序*88) 
 		mSleep(2000) 
 	end
-	--判断有没有网络
+	--新旧版本目前暂时不支持同时兼容，如果是ios12系统，则需要另起脚本！！！
 end
 
 
@@ -369,7 +369,8 @@ function TT注册()
 			tap(275+math.random(0,5),553+math.random(0,5))
 			mSleep(1000)
 		elseif 当前界面 == 'TT注册弹框提示界面' then
-			tap(371+math.random(0,5),810+math.random(0,5))
+--			tap(371+math.random(0,5),810+math.random(0,5))
+            tap(361,808,100,"click_point_5_2.png",1)
 			mSleep(1000)
 
 		-----------------------------------------------------
@@ -398,7 +399,7 @@ function TT注册()
 				end				
 				mSleep(3000)  --延时3秒
 				
-				if values.电话号接口 == '' and values.电话号接口2 == '' and values.电话号接口3 == '' and values.电话号接口4 == '' then
+				if values.电话号接口 == '' and values.电话号接口2 == '' and values.电话号接口3 == '' and values.电话号接口4 == '' and values.电话号接口5 == '' and values.电话号接口6 == '' then
 					toast("未获取到手机号接口，执行邮箱注册")
 					mSleep(1000)
 					tap(email按钮X,email按钮Y)
@@ -448,7 +449,8 @@ function TT注册()
 							mSleep(500)
 							tap(377,  656)
 							mSleep(500)		
-						elseif values.号码地区 == '1' and values.使用软件~='4' then  ---- 俄罗斯号 +7   (默认)
+						--elseif values.号码地区 == '1' and values.使用软件~='4' then  ---- 俄罗斯号 +7   (默认)
+						elseif values.号码地区 == '1' then  ---- 俄罗斯号 +7   (默认)
 							tap(108,345)
 							mSleep(1000)
 							touchDown(735,  894) 
@@ -518,6 +520,10 @@ function TT注册()
 							电话号码 = 获取电话号码3()
 						elseif values.接口序=='3' then
 							电话号码 = 获取手机号和ID4()
+						elseif values.接口序=='4' then
+							电话号码 = 获取手机号和ID5()
+						elseif values.接口序=='5' then
+							电话号码 = 获取手机号和ID6()
 						end
 					输入文本2(邮箱输入框X2,邮箱输入框Y2,电话号码)  --inputText 版本
 					mSleep(1000)
@@ -573,7 +579,11 @@ function TT注册()
 			elseif values.接口序=='2' then
 				验证码=获取验证码3()
 			elseif values.接口序=='3' then
-				验证码=获取验证码4()				
+				验证码=获取验证码4()
+			elseif values.接口序=='4' then
+				验证码=获取验证码5()
+			elseif values.接口序=='5' then
+				验证码=获取验证码6()
 			else
 				mSleep(1000)
 			end

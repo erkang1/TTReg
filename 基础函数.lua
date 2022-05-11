@@ -46,7 +46,6 @@ return '未知界面'
 end
 
 
-
 function 是否到达界面(目的界面,等待时间)--目的界面为table，等待时间单位是S
 for var= 1, 等待时间 do
 	local 当前界面=检索界面(目的界面)

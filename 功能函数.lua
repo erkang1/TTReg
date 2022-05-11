@@ -241,24 +241,24 @@ end
 
 ------------------手动S5设置------------------------------------------------------------------------------------------------------------
 function 获取S5代理()
-获取S5接口 = values.代理链接
--- 获取S5接口 = "http://20.122.103.3:51515/api/v1/getIP?type=text&username=test_99641&protocol=0&region=RU&count=1"
--- 格式：socks5://test_99641$ifhie8NkW4*US:owrjgdnhg@185.145.128.72:4113
-local webdata=httpGet(获取S5接口)
---dialog(webdata)
-local strs1 = webdata:split("//")  --分割前缀
-local strs2 = strs1[2]:split("@")  --分割账号密码 + IP端口
-local strs3 = strs2[1]:split(":")  --分割账号 密码
-local strs4 = strs2[2]:split(":")  --分割IP 端口
-
-代理账号 = strs3[1]
-代理密码 = strs3[2]
-代理IP = strs4[1]
-代理端口 = strs4[2]
-
---dialog("账号密码："..strs2[1].."IP端口"..strs2[2])
---dialog("账号:"..strs3[1].."密码："..strs3[2])
---dialog("IP:"..strs4[1].."端口:"..strs4[2])
+    获取S5接口 = values.代理链接
+    -- 获取S5接口 = "http://20.122.103.3:51515/api/v1/getIP?type=text&username=test_99641&protocol=0&region=RU&count=1"
+    -- 格式：socks5://test_99641$ifhie8NkW4*US:owrjgdnhg@185.145.128.72:4113
+    local webdata=httpGet(获取S5接口)
+    --dialog(webdata)
+    local strs1 = webdata:split("//")  --分割前缀
+    local strs2 = strs1[2]:split("@")  --分割账号密码 + IP端口
+    local strs3 = strs2[1]:split(":")  --分割账号 密码
+    local strs4 = strs2[2]:split(":")  --分割IP 端口
+    
+    代理账号 = strs3[1]
+    代理密码 = strs3[2]
+    代理IP = strs4[1]
+    代理端口 = strs4[2]
+    
+    --dialog("账号密码："..strs2[1].."IP端口"..strs2[2])
+    --dialog("账号:"..strs3[1].."密码："..strs3[2])
+    --dialog("IP:"..strs4[1].."端口:"..strs4[2])
 
 end
 
@@ -291,21 +291,21 @@ function 手动设置代理()
 end
 
 function 删除手动设置的代理()
-if (isColor( 682,  551, 0xc4c4c6, 85)) then  --如果找到色块，则返回 true
-	--dialog("111")
-	mSleep(1000)
-	return true
-else
-	关闭应用("com.liguangming.Shadowrocket")
-	mSleep(500)
-	打开应用("com.liguangming.Shadowrocket",500)
-	mSleep(1000)
-	moveTo(552,  553,486,  548,{["step"] = 20,["ms"] = 70,["index"] = 1,["stop"] = 1})  --滑动显示删除
-	mSleep(1000)
-	tap(  641,  555) --滑动之后点击删除
-	mSleep(1000)
-	tap( 510,  763) --点击删除
-end
+    if (isColor( 682,  551, 0xc4c4c6, 85)) then  --如果找到色块，则返回 true
+    	--dialog("111")
+    	mSleep(1000)
+    	return true
+    else
+    	关闭应用("com.liguangming.Shadowrocket")
+    	mSleep(500)
+    	打开应用("com.liguangming.Shadowrocket",500)
+    	mSleep(1000)
+    	moveTo(552,  553,486,  548,{["step"] = 20,["ms"] = 70,["index"] = 1,["stop"] = 1})  --滑动显示删除
+    	mSleep(1000)
+    	tap(  641,  555) --滑动之后点击删除
+    	mSleep(1000)
+    	tap( 510,  763) --点击删除
+    end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 
@@ -319,7 +319,7 @@ function 卸载应用(包名)
 end
 
 function 安装TK()
-	flag = ipaInstall(userPath().."/res/TikTok 16.6.5.ipa")  --ipa文件需要放进指定路径下面，写死版本号
+	flag = ipaInstall(userPath().."/res/TikTok 16.6.5.ipa")    --ipa文件需要放进指定路径下面，写死版本号
 	if flag == 1 then
 		toast("安装成功")
 	else
@@ -387,7 +387,7 @@ for var=1,5 do
 		--信息内容 = tostring(tmp.message)
 		--dialog("验证状态："..验证状态,2)
 		--dialog("信息内容："..信息内容,2)
-		for var= 1, 14 do
+		for var= 1, 20 do
 			if 验证状态 == 'false'  then
 				mSleep(5000)
 				if (isColor(  69,  475, 0xfe2c55, 85)) then
@@ -575,25 +575,25 @@ end
 
 function 获取验证码2()
 local webdata,tmp,验证码
-for var= 1,20 do 
+for var= 1,20 do
 	webdata = httpGet('https://api.sms-activate.org/stubs/handler_api.php?api_key='..api_key值..'&action=getFullSms&id='..激活ID,5)
 	--webdata = httpGet('https://sms-activate.ru/stubs/handler_api.php?api_key='..api_key值..'&action=getFullSms&id='..激活ID,5)			--原地址
 --	if webdata=='STATUS_WAIT_CODE' or webdata== false then
-	if webdata == 'STATUS_WAIT_CODE' or webdata == "STATUS_WAIT_RETRY" then	
-		mSleep(3000)
-	else
-		break
-	end
 	if (isColor( 69,  475, 0xfe2c55, 85)) then
 		tap(113+math.random(0,5),  478+math.random(0,5)) --点击重新发送
 	else
 		mSleep(1000)
 	end
+	
+	if webdata == 'STATUS_WAIT_CODE' or webdata == "STATUS_WAIT_RETRY" then	
+		mSleep(3000)
+	else
+		break
+	end
 end
 
-
-tmp=webdata:split(':')
-local res,_ = webdata:gsub("%D+","")    	--使用正则匹配验证码  目前测试 适配16.6.5版本4位数验证码
+    tmp=webdata:split(':')
+    local res,_ = webdata:gsub("%D+","")    	--使用正则匹配验证码  目前测试 适配 16.6.5版本4位数验证码
 
 if tmp[1]=='FULL_SMS' then
 	发送状态('6')
@@ -631,15 +631,22 @@ function 释放电话号码()
 	elseif values.接口序== '1' then
 		toast('释放电话号码',1)
 		发送状态('8')
-	else
-		toast('释放5sim电话号码',1)
+	elseif values.接口序== '3' then
+		toast('释放 【5sim】电话号码',1)
 		发送状态4('8')
+	elseif values.接口序=='4' then
+		toast('释放【richpva】 电话号码',1)
+		发送状态5('3')
+	elseif values.接口序=='5' then
+	    toast('释放【smspool】 电话号码',1)
+	    释放smspool()
+	else
+	    mSleep(1000)
 	end
 end
 
 
-
------------------------------------- 适配内部对接接码格式 -------------------------------------------------------------------------------------
+------------------------------------ 适配内部对接的接码格式 -------------------------------------------------------------------------------------
 function 获取电话号码3()
 local webdata,tmp,获取状态
 --http://20.122.103.3:11223/api/v1/sms/getPhone?token=b0633c54509bb534feef5968625acbea&itemId=1
@@ -853,28 +860,240 @@ for var= 1,20 do
 	end
 end
 
-tmp=webdata:split(':')
+    tmp=webdata:split(':')
 local res,_ = webdata:gsub("%D+","")    	
 
-if tmp[1]=='FULL_SMS' or tmp[1]=='STATUS_OK' then
-	发送状态4('6')
-	if values.软件版本 == '0' then
-		验证码 = string.sub(res,1,4) 		--4位数验证码 
-	else
-		验证码 = string.sub(res,1,6)  		--6位数验证码 
-	end
-	mSleep(1000)
-	return 验证码
-else
-	toast('获取验证码失败',1)
-	全局变量1=2
+    if tmp[1]=='FULL_SMS' or tmp[1]=='STATUS_OK' then
+    	发送状态4('6')
+    	if values.软件版本 == '0' then
+    		验证码 = string.sub(res,1,4) 		--4位数验证码 
+    	else
+    		验证码 = string.sub(res,1,6)  		--6位数验证码 
+    	end
+    	mSleep(1000)
+    	return 验证码
+    else
+    	toast('获取验证码失败',1)
+    	全局变量1=2
+    end
 end
+
+--------------------------------------richpva--------------------------------------------------------
+--电话号接口5 = "http://richpva.com/api.ashx?action=getnumber&token=sujjgatn506l68pwspf7xdcv5bcpyee0&application_id=51&country_id=1"     --俄罗斯1  --美国13     51-tk  15-ins
+function 获取richpvaKEY值()
+local wet= values.电话号接口5:split("token=")
+local wet1=wet[2]:split("&application_id")
+richpvaKEY值=wet1[1]
+--dialog("获取KEY值:"..richpvaKEY值)
+end
+
+function 获取国家代码5()
+local new=values.电话号接口5:split("country_id=")
+--dialog("国家代码："..new[2])
+if new[2]=='34' then--加拿大
+	return '1'
+elseif new[2]=='1' then--俄罗斯
+	return '7'
+elseif new[2]=='13' then--美国
+	return '1'
+else
+	dialog('未知国家代码')
+	lua_exit()
+end
+end
+
+
+function 获取手机号和ID5()
+获取richpvaKEY值()
+国家代码5=获取国家代码5()
+--dialog("获取国家代码:"..国家代码)
+--mSleep(1000)
+local webdata= httpGet(values.电话号接口5,20)
+--local webdata = [[{"request_id":"5440","application_id":"51","application_code":"lf","country_id":"1","number":"79035026897","status":1,"errmsg":""}]]
+  new = tostring(webdata):split(",")
+  --电话号码 = (((new[5]:split(":"))[2]):split('"'))[2]   --分割
+  --激活ID5 =  (((new[1]:split(":"))[2]):split('"'))[2]   --分割
+  错误消息 =  (((new[7]:split(":"))[2]):split('"'))[2]    --分割
+  
+--dialog(错误消息)
+ while (true) do
+        if 错误消息=="" then 
+            激活ID5 =  (((new[1]:split(":"))[2]):split('"'))[2]   --分割
+            --dialog("激活ID5:"..激活ID5)
+            mSleep(1000)
+            if 国家代码5 == '7' then 
+                电话号码 = string.sub((((new[5]:split(":"))[2]):split('"'))[2],2,11)   --分割
+                --dialog("电话号码:"..电话号码)
+                return 电话号码
+            elseif 国家代码5 == '1' then 
+                dialog("暂未适配")
+                lua_exit()
+            else
+            end
+        else
+          toast("获取号码出错")
+          lua_exit()
+        end
+    end
+end
+
+function 发送状态5(状态)  --string   ,1-取消  3-结束
+--http://richpva.com/api.ashx?action=setstatus&token=sujjgatn506l68pwspf7xdcv5bcpyee0&request_id=5440&status=3
+wet= httpGet('http://richpva.com/api.ashx?action=setstatus&token='..richpvaKEY值..'&request_id='..激活ID5..'&status='..状态)
+end
+
+function 获取验证码5()
+    local webdata,tmp,验证码
+    for var= 1,20 do
+        webdata = httpGet('http://richpva.com/api.ashx?action=getsms&token='..richpvaKEY值..'&request_id='..激活ID5,10)
+        --{"money":"40.00","cost":"8.50","request_id":"21155","application_id":"51","country_id":"1","number":"79777989264","sms_code":"4309","errmsg":""}
+        --webdata = [[{"money":"40.00","cost":"8.50","request_id":"21155","application_id":"51","country_id":"1","number":"79777989264","sms_code":"4309","errmsg":""}]]
+        local str = json.decode(webdata)
+        --dialog(str.sms_code)
+    	if (isColor( 69,  475, 0xfe2c55, 85)) then
+    		tap(113+math.random(0,5),  478+math.random(0,5)) --点击重新发送
+    	else
+    		mSleep(1000)
+    	end
+        验证码 = str.sms_code
+        if 验证码 ~='' then
+            mSleep(1000)
+            break
+        else
+            mSleep(5000)
+        end
+    end
+    if 验证码 ~='' then
+        发送状态5(3)
+        dialog("验证码:"..验证码,2)  --调试
+        mSleep(500)
+        return 验证码
+    else
+        toast("验证码获取失败")
+        mSleep(2000)
+        全局变量1=2
+    end
+end
+
+--------------------------------------smspool--------------------------------------------------------
+--需要注意的是：API使用https的get请求，故使用 code,status_resp, body_resp = ts.httpsPost()语法
+--电话号接口6 = "https://smspool.net/api/purchase/sms?key=76XLfrgD78qDhXONMlAcglNFXTnnURKg&country=4&service=924"
+
+function 获取smspool值()
+local wet= values.电话号接口6:split("key=")
+local wet3 = wet[2]:split("&")
+smspool值=wet3[1]
+local wet1=wet[2]:split("service=")
+--dialog("获取KEY值:"..smspool值)
+end
+
+function 获取国家代码6()
+local new = (((values.电话号接口6:split("country="))[2]):split("&"))[1]
+--dialog("国家代码："..new)
+if new=='4' then--俄罗斯
+	return '7'
+elseif new =='1' then--美国
+    return '1'
+else
+	dialog('未知国家代码')
+	lua_exit()
+end
+end
+
+function 释放smspool()
+    --smspool值 = "76XLfrgD78qDhXONMlAcglNFXTnnURKg"
+    --smspool激活id = "9HWHSHKJ"
+    mm = "https://smspool.net/api/sms/cancel?key="..smspool值.."&orderid="..smspool激活id
+    --dialog(mm)
+    code,header_resp, body_resp = ts.httpsGet(mm)
+end
+
+function 获取手机号和ID6()
+    获取smspool值()
+    国家代码=获取国家代码6()
+    --dialog("获取国家代码:"..国家代码)
+    --mSleep(1000)
+    for var=1,10 do
+        code,header_resp, body_resp = ts.httpsGet(values.电话号接口6);
+        --{"success":1,"number":79636880058,"order_id":"A0C9HIPM","country":"Russia","service":"TikTok","pool":4,"expires_in":1200,"message":""}
+        --dialog("获取到的号码信息：".. body_resp)
+        local tmp = json.decode(body_resp)
+        smspool获取状态 = tmp.success
+        完整电话号码 = tostring(tmp.number)
+        smspool激活id = tostring(tmp.order_id)
+        --dialog("获取到的手机号："..完整电话号码)
+        --dialog("获取到的激活ID："..smspool激活id)
+        if body_resp =='' then
+            dialog("手机号码请求出错，请检查网络")
+            lua_exit()
+        else
+            --
+        end
+
+        if smspool获取状态 == 1 then     --注意这里不是字符串
+            toast("获取号码成功")
+            break
+        else
+            dialog("手机号码请求出错或者账户没有余额，请检查网络和账户余额")
+            lua_exit()
+        end
+    end    
+    
+    if 国家代码 == '7' then 
+        电话号码 = string.sub(完整电话号码,2,11)
+        --dialog("电话号码:"..电话号码)
+        return 电话号码
+    elseif 国家代码 == '1' then 
+        dialog("暂未适配")
+        lua_exit()
+    else
+        --   
+    end
+end
+
+function 获取验证码6()
+    local webdata,tmp,验证码
+    for var= 1,25 do
+    	if (isColor( 69,  475, 0xfe2c55, 85)) then
+    		tap(113+math.random(0,5),  478+math.random(0,5)) --点击重新发送
+    	else
+    		mSleep(1000)
+    		--toast("未发现色块")
+    	end
+        code,header_resp, body_resp  = ts.httpsGet('https://smspool.net/api/sms/check?key='..smspool值.."&orderid="..smspool激活id ,10)
+        webdata = body_resp
+        --webdata = [[{"status":1,"message":"pending","resend":0}]]
+  	    --dialog(webdata)
+        local str = json.decode(webdata)
+        --{"status":1,"message":"pending","resend":0}                     {"status":3,"sms":"0377","full_sms":"0377"}
+        获取状态 = tostring(str.status)
+        验证码 = tostring(str.sms)
+        --dialog(获取状态)
+
+        if 获取状态 == "3" then
+            mSleep(1000)
+            break
+        else
+            mSleep(5000)
+        end
+    end
+    
+    if 获取状态 == "3" then
+        --释放smspool()
+        --dialog("验证码:"..验证码)     --调试
+        mSleep(500)
+        return 验证码
+    else
+        toast("验证码获取失败")
+        mSleep(2000)
+        全局变量1=2
+    end
 end
 
 
 --记录账号信息到本地--
 function 记录账号信息()
-    --如果是手机号——记录手机号码、token，用于排查未注册的账号，仅做记录功能
+    --如果是手机号——记录区号、手机号码、token，用于排查未注册的账号，仅做记录功能
     --如果是邮箱账号 —— 记录邮箱，用户名，密码
     --	dialog(电话号码)
     --	mSleep(1000)
@@ -906,13 +1125,13 @@ function 记录账号信息()
 		区号 = '+44'		
 	end
 		
-	if values.电话号接口 == '' and values.电话号接口2 == '' and values.电话号接口3 == '' and values.电话号接口4 == '' then  --如果都为空  那么就是邮箱号
+	if values.电话号接口 == '' and values.电话号接口2 == '' and values.电话号接口3 == '' and values.电话号接口4 == ''  and values.电话号接口5 == '' and values.电话号接口6 == '' then   --如果都为空  那么就是邮箱号
 		--dialog("邮箱账号记录")
-		记录内容 = tostring(账号).."-----"..tostring(名字).."-----".. tostring(密码).."-----".. tostring(时间)
+		记录内容 = tostring(账号).."-----".. tostring(名字).."-----".. tostring(密码).."-----".. tostring(时间)
 		mSleep(1000)
 		记录数据('已注册邮箱账号.log',记录内容)
 	else
-		记录内容 = tostring(区号).."|"..tostring(电话号码).."|"..tostring(获取验证码地址).."-----"..tostring(名字).."-----".. tostring(密码).."-----".. tostring(时间)
+		记录内容 = tostring(区号).."|".. tostring(电话号码).."|".. tostring(获取验证码地址).."-----".. tostring(名字).."-----".. tostring(密码).."-----".. tostring(时间)
 		--dialog("电话号码:"..电话号码)
 		mSleep(1000)
 		记录数据('已注册手机号.log',记录内容)
@@ -963,8 +1182,9 @@ function 记录登录账号信息()
 	mSleep(5000)
 end
 
+
 ----------本地文件登录处理------------------
---读取账号和密码 --将指定文件中的内容按行读取  --分隔符 “ | ”
+--读取账号和密码   --将指定文件中的内容按行读取  分隔符 “ | ”
 local ts = require("ts")
 function 读取首行()
 	function readFile(path)
@@ -1001,7 +1221,6 @@ function 读取首行()
 		else
 		dialog("文件不存在",0)
 	end
-
 end
 
 -------删除首行：先读取文件到table，然后修改，再清除文件内容，最后重载写入到文件
@@ -1025,6 +1244,7 @@ function 写入文件(file,fileTab)
 		file:write("\n")
 	end
 end
+
 
 function 删除首行()
 	-- body

@@ -4,6 +4,7 @@ require("TT数据")
 require("AWZ数据")
 require("爱新机数据")
 require("界面")
+
 ------------全局变量---------------------
 机器编码='0'
 账号=''
@@ -56,6 +57,8 @@ local 电话号接口 = values.电话号接口
 local 电话号接口2 = values.电话号接口2
 local 电话号接口3 = values.电话号接口3
 local 电话号接口4 = values.电话号接口4
+local 电话号接口5 = values.电话号接口5
+local 电话号接口6 = values.电话号接口6
 local 注册数量 =  values.注册数量
 local 防卡时间 =  values.防卡时间
 local 指定密码 =  values.指定密码
@@ -173,6 +176,7 @@ function 全局设置()
 		PyApp新机坐标版本()
 		mSleep(1000)
 	elseif values.使用软件 == '4' then 		--OnePress
+--		os.execute("/usr/local/bin/onepress_lite -b com.zhiliaoapp.musically -C -o")
 		os.execute("/usr/local/bin/onepress_lite -b com.zhiliaoapp.musically -C -o")
 		mSleep(1000)
 		打开再关闭()
@@ -213,12 +217,12 @@ function 流程()
 	if values.脚本功能 == '1' then 		----以下是注册账号的主要流程----------
 		toast("当前功能为注册",1)
 		mSleep(500)
-
 		----判断间隔时间是否大于等于60------
 		if tonumber(values.注册间隔) < 60 then
-			dialog("为保证流程正常运行，间隔时间应该大于等于【60】秒",{title = "参数设置错误",button = "退出重新设置"})
---			return false
-			lua_exit()
+--			dialog("为保证流程正常运行，间隔时间应该大于等于【60】秒",{title = "参数设置错误",button = "退出重新设置"})
+--			lua_exit()
+            toast("为了保证流程正常运行，脚本建议间隔时长超过60秒",1)
+            mSleep(2000)
 		else
 			mSleep(100)
 		end
@@ -258,33 +262,53 @@ function 流程()
 		全局设置()
 		打开再关闭()
 		mSleep(1000)
-	--			TT防闪退启动()
+		--TT防闪退启动()
 		TT注册()
 		--上传账号()
+		if values.使用软件 == '4' then
+			打开再关闭()
+			mSleep(3000)
+			tap(675,1287)    --点击 我的
+			mSleep(500)
+			--1.1.2_onepress_旧版本无需添加此项----------------
+-- 			for var=1,24 do
+--     			toast("等待2分钟，账号上传中...")
+--     			mSleep(5000)   --等待2分钟并上传
+-- 			end
+-- 			toast("账号上传完成")
+			------------------------------------
+		else
+			mSleep(1000)
+		end	
+		
+        ------------------------------------备份包------------------------------------------------------
+		if 	values.是否备份 == 'on' then 
+		  toast("正在备份...")
+		  mSleep(1000)
+		  local 名字 = 随机用户名()
+		  os.execute("/usr/local/bin/onepress_lite -b com.zhiliaoapp.musically --backup "..名字)
+		  打开再关闭()
+		  toast("数据已经备份")
+		  mSleep(1500)
+		  --/var/mobile/Library/onepress/Documents/com.zhiliaoapp.musically/
+		 else
+		  toast("未开启备份功能，流程继续")
+		end
 		全局变量1=1     --注册成功
 		记录账号信息()  --记录注册成功的账号到本地
 		设置资料()
-		if values.上传头像 == 'on' then 
+		
+		if values.上传头像 == 'on' then
 			设置头像()
 		else
 			mSleep(1000)
 		end
-		if values.使用软件 == '4' then 
-			打开再关闭()
-			mSleep(3000)
-			tap(675,1287)  --点击 我的
-			mSleep(500)
-			toast("等待上传中......")
-			mSleep(6000)   --等待上传
---		elseif values.使用软件 == '4' and values.降级上传 == 'on' then
-			--将22.1.0 覆盖安装 tiktok16.6.5
-		else
-			mSleep(1000)
-		end	
+		
 	else
 		--判断脚本功能结束
 	end
 end
+
 
 -------------防卡-------------------------
 for var = 1, 注册数量 do
@@ -295,7 +319,7 @@ for var = 1, 注册数量 do
 		end,{
 			callBack = function()
 				--协程结束会调用，不论是错误、异常、正常结束
-				--toast("我结束了")
+				--toast("i am done!")
 			end,
 			catchBack = function(exp)
 				--协程异常结束,异常是脚本调用了 throw 激发的，exp 是 table,exp.message 是异常原因
@@ -323,7 +347,7 @@ for var = 1, 注册数量 do
 			break
 		elseif 全局变量1==3 then
 			toast('退出注册，脚本重新开始',1)
-			break			
+			break
 		elseif 全局登录变量1==1 then
 			toast('登录成功',1)
 			mSleep(1000)
