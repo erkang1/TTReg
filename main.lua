@@ -108,6 +108,7 @@ if UIret == 1 then
 function 全局设置()
 	---判断是否开启卸载安装--------	
 	if values.卸载安装 == 'on' then
+	    dialog("您已经打开【卸载重装功能】，请确保【/private/var/mobile/Media/TouchSprite/res】目录下存放了【TikTok.ipa】文件",{title = "功能提示",button = "我知道了"})	    
 		toast("准备卸载",1)
 		卸载应用(TT)
 		mSleep(1000)
@@ -200,6 +201,11 @@ end
 
 
 function 流程()
+    if values.脚本功能 == '2' then
+        toast("当前功能为onepress还原上传账号功能",1)
+        onepress还原备份()
+    end
+    
 	if values.脚本功能 == '0' then 		---以下是登录账号的主要流程-------适配22.5.0---
 		toast("当前功能为登录",1)
 		mSleep(500)
@@ -280,17 +286,16 @@ function 流程()
 		else
 			mSleep(1000)
 		end	
-		
-        ------------------------------------备份包------------------------------------------------------
-		if 	values.是否备份 == 'on' then 
+        ------------------------------------onepress备份包------------------------------------------------------
+		if values.使用软件 == '4' and values.是否备份 == 'on' then 
 		  toast("正在备份...")
 		  mSleep(1000)
-		  local 名字 = 随机用户名()
-		  os.execute("/usr/local/bin/onepress_lite -b com.zhiliaoapp.musically --backup "..名字)
+		  local 文件名 = 名字
+		  os.execute("/usr/local/bin/onepress_lite -b com.zhiliaoapp.musically --backup "..文件名)
 		  打开再关闭()
 		  toast("数据已经备份")
 		  mSleep(1500)
-		  --/var/mobile/Library/onepress/Documents/com.zhiliaoapp.musically/
+		  --保存的文件目录：/var/mobile/Library/onepress/Documents/com.zhiliaoapp.musically/
 		 else
 		  toast("未开启备份功能，流程继续")
 		end

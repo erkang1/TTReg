@@ -239,6 +239,49 @@ function 代理状态()
 	end
 end
 
+
+---------------------------------------------------------------------one_press还原上传----------------------------------------------------------------------------------
+function onepress还原备份()
+    tableGet = ts.hlfs.getFileList("/private/var/mobile/Library/onepress/Documents/com.zhiliaoapp.musically",true)   --列出文件夹下所有文件
+    if tableGet then
+        for i,v in pairs(tableGet) do
+        完整文件名称 = string.format("%s = %s",i,v)
+        --dialog(完整文件名称)
+        中转文件名称 = (完整文件名称:split("."))[1]
+        文件名称 = (中转文件名称:split(i.." = "))[2]
+        --dialog(文件名称)
+        --dialog("/usr/local/bin/onepress_lite -b com.zhiliaoapp.musically --restore "..文件名称)
+        toast("获取到文件名称.."..文件名称)
+        os.execute("/usr/local/bin/onepress_lite -b com.zhiliaoapp.musically --restore "..文件名称)
+        mSleep(5000)
+        toast("账号已还原..")
+        关闭VPN()
+		切换VPN()
+		打开VPN()
+        打开再关闭()
+        -- local 当前界面=获取当前界面(TT注册界面列表)
+        -- if 当前界面 == '注册1665主页界面' or 当前界面 == 'TT主界面无视频'  or 当前界面 == '注册1665主页界面2' then
+            mSleep(1000)
+            tap(670,1274)
+            mSleep(1000)
+--        end
+		for var=1,24 do
+    		toast("等待2分钟，账号上传中...")
+    		mSleep(5000)   --等待2分钟并上传
+		end
+		    toast("账号上传完成")
+        	关闭应用("com.zhiliaoapp.musically")
+        	mSleep(1000)
+        end
+        dialog("账号已经全部还原上传完毕")
+        lua_exit()
+    else
+        dialog("没有此文件夹")
+    end
+end
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 ------------------手动S5设置------------------------------------------------------------------------------------------------------------
 function 获取S5代理()
     获取S5接口 = values.代理链接
@@ -319,7 +362,7 @@ function 卸载应用(包名)
 end
 
 function 安装TK()
-	flag = ipaInstall(userPath().."/res/TikTok 16.6.5.ipa")    --ipa文件需要放进指定路径下面，写死版本号
+	flag = ipaInstall(userPath().."/res/TikTok.ipa")    --ipa文件需要放进指定路径下面，写死版本号
 	if flag == 1 then
 		toast("安装成功")
 	else
