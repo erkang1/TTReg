@@ -65,6 +65,7 @@ local 指定密码 =  values.指定密码
 local 文件路径 = values.文件路径
 local 文件名称 = values.文件名称
 local 注册间隔 = values.注册间隔
+local 系统版本 = values.系统版本
 local 使用软件 = values.使用软件
 local 是否开启抓包代理 = values.是否开启抓包代理
 local 端口设置 = values.端口设置

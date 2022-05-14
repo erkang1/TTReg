@@ -454,7 +454,6 @@ for var=1,5 do
 	else
 		--toast("验证码格式为文本格式",2)
 		--webdata1 = [[[TikTok] 3875 is your verification code, valid for 5 minutes. To keep your account safe, never forward this code.]]
-		--webdata1 = [[[TikTok] 2481 is your verification code, valid for 5 minutes. To keep your account safe, never forward this code.]]
 		--dialog("webdata:"..webdata,2)
 		local str = string.sub(webdata,33,34)
 		--dialog(str)
@@ -1033,14 +1032,14 @@ end
 function 获取国家代码6()
 local new = (((values.电话号接口6:split("country="))[2]):split("&"))[1]
 --dialog("国家代码："..new)
-if new=='4' then--俄罗斯
-	return '7'
-elseif new =='1' then--美国
-    return '1'
-else
-	dialog('未知国家代码')
-	lua_exit()
-end
+    if new=='4' then--俄罗斯
+    	return '7'
+    elseif new =='1' then--美国
+        return '1'
+    else
+    	dialog('未知国家代码')
+    	lua_exit()
+    end
 end
 
 function 释放smspool()

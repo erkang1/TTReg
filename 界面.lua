@@ -24,6 +24,29 @@ MyTable = {
     pages       =
     {
         {
+            {
+                ["type"] = "Label",
+                ["align"] = "center",
+                ["text"] = "系统版本:",
+                ["size"] = 15, 
+                ["align"] = "left",          
+                ["valign"] = "center", 
+                ["color"] = "0,0,0",           
+                ["width"] = -1,
+                ["nowrap"] = 1,
+            },
+            {
+                ["type"] = "RadioGroup",            
+                -- 必填，控件类型，单选组合
+                ["id"] = "系统版本",                      
+                -- 选填，无，控件 ID，以 table 格式返回返回值时必填,否则无法获取返回值
+                ["list"] = "IOS-12,其他系统",      -- 必填，无，多选组合内容
+                ["select"] = "1",                   -- 选填，0，默认选中项 id
+                --["images"] = "test1.png,test1.png,test1.png,test1.png", 
+                -- 选填，无， 单选组合选项显示图片
+                ["scale"] = 0.4,                    -- 选填，1，图片缩放比例
+                ["countperline"] = 0,
+            },
 			{
                 ["type"] = "Label",
                 ["align"] = "center",

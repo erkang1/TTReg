@@ -1,3 +1,49 @@
+-- function 切换VPN老方法()--启动小火箭  --判定打开VPN  --切换VPM  -- 判定有无网络
+-- 	local 节点数量
+-- 	打开应用('com.liguangming.Shadowrocket',3000)
+-- 	for var= 1,100 do--说明启动了小火箭
+-- 		x,y = findMultiColorInRegionFuzzy(0x2473bd, "301|-3|0x2473bd,444|-28|0xffffff,-217|-28|0xffffff,-180|-51|0xffffff,-191|-41|0x2473bd,-192|-18|0x2473bd,438|-12|0x2473bd,452|-19|0x2473bd,461|-29|0xffffff",90,30,60,714,115)
+-- 		if x>0 then 
+-- 			break
+-- 		end
+-- 		mSleep(2000)
+-- 	end
+-- 	for var= 1,10 do --小火箭开关开启
+-- --		if (isColor( 643,  204, 0x2473bd, 85)) then  --旧版本
+-- 		if (isColor( 612,  209, 0x2372bd, 85)) then
+-- 			break
+-- 		else
+-- 			tap(622,205)
+-- 			mSleep(2000)
+-- 		end
+-- 	end
+-- 	for i= 0,7 do --判断节点数量
+-- 		--x,y = findColorInRegionFuzzy(0x000000,100,118,558+i*88,219,589+i*88)   --旧版本不需要更改
+-- 		x,y = findColorInRegionFuzzy(0xffffff ,100,649,628+i*88, 678,1096+i*88)
+-- 		if x<0 then --说明没有节点了
+-- 			节点数量=i
+-- 			break
+-- 		end
+-- 	end
+-- 	local 随机节点序
+-- 	if 节点数量~=1 then
+-- 		for var= 1,10 do
+-- 			随机节点序=math.random(0,节点数量-1)  --去重复，万一随机的还是那个呢
+-- --			if (isColor(13,581+随机节点序*88,0xff9400,85)) then      --旧版本
+--             if (isColor(  43,  638+随机节点序*88, 0xff9400, 85)) then  --页面适配    
+                
+-- 			else
+-- 				break
+-- 			end
+-- 		end 
+-- --		tap(325,574+随机节点序*88)    --旧版本
+-- 		tap(346,627+随机节点序*88) 
+-- 		mSleep(2000) 
+-- 	end
+-- 	--新旧版本目前暂时不支持同时兼容，如果是ios12系统，则需要另起脚本！！！
+-- end
+
+
 function 切换VPN()--启动小火箭  --判定打开VPN  --切换VPM  -- 判定有无网络
 	local 节点数量
 	打开应用('com.liguangming.Shadowrocket',3000)
@@ -9,37 +55,54 @@ function 切换VPN()--启动小火箭  --判定打开VPN  --切换VPM  -- 判定
 		mSleep(2000)
 	end
 	for var= 1,10 do --小火箭开关开启
---		if (isColor( 643,  204, 0x2473bd, 85)) then  --旧版本
-		if (isColor( 612,  209, 0x2372bd, 85)) then
-			break
-		else
-			tap(622,205)
-			mSleep(2000)
-		end
+	    local ios12 = isColor( 643,  204, 0x2473bd, 85)
+	    local ios13 = isColor( 612,  209, 0x2372bd, 85)
+	    if values.系统版本=='0' and ios12 then 
+	        --dialog("123")
+	        break
+	    elseif values.系统版本=='1' and ios13 then
+            break
+        else
+            touchDown(669,203)
+            mSleep(500)
+            touchUp(669,203)
+    	    mSleep(2000) 
+        end
 	end
+           
 	for i= 0,7 do --判断节点数量
 		--x,y = findColorInRegionFuzzy(0x000000,100,118,558+i*88,219,589+i*88)   --旧版本不需要更改
 		x,y = findColorInRegionFuzzy(0xffffff ,100,649,628+i*88, 678,1096+i*88)
 		if x<0 then --说明没有节点了
 			节点数量=i
+			--dialog(节点数量)
 			break
 		end
 	end
+	
 	local 随机节点序
 	if 节点数量~=1 then
 		for var= 1,10 do
-			随机节点序=math.random(0,节点数量-1)--去重复，万一随机的还是那个呢
---			if (isColor(13,581+随机节点序*88,0xff9400,85)) then      --旧版本
-            if (isColor(  43,  638+随机节点序*88, 0xff9400, 85)) then  --页面适配    
-			else
-				break
-			end
+    		随机节点序=math.random(0,节点数量-1)--去重复，万一随机的还是那个呢
+    	    local isios12 = isColor(13,581+随机节点序*88,0xff9400,85)
+    	    local isios13 = isColor(43,638+随机节点序*88,0xff9400,85)
+    		 if values.系统版本=='0' and isios12 then 
+    		     toast("代理已切换-ios12")
+    		 elseif values.系统版本=='1' and isios13 then 
+    		     toast("代理已切换")
+    		 else
+    		    break
+    		 end
 		end 
---		tap(325,574+随机节点序*88)    --旧版本
-		tap(346,627+随机节点序*88) 
-		mSleep(2000) 
+		
+		if values.系统版本 =='0' then
+    		tap(325,574+随机节点序*88)    --旧版本 12系统
+        	mSleep(2000)
+		else
+    		tap(346,627+随机节点序*88) 
+    		mSleep(2000) 
+		end
 	end
-	--新旧版本目前暂时不支持同时兼容，如果是ios12系统，则需要另起脚本！！！
 end
 
 
@@ -412,119 +475,137 @@ function TT注册()
 					mSleep(math.random(500,1000))
 					tap(666, 347) --点击X  清空内容
 					mSleep(math.random(500,1000))
-				----------------选择国家代号-------------
-						if values.号码地区 == '0' then     --美国号   +1
-							tap(108,345)
-							mSleep(1000)
-							touchDown( 732,  978); 
-							mSleep(500)
-							touchUp( 732,  978)
-							mSleep(1000)
-							tap(311,  767)
-							mSleep(500)
-						elseif values.号码地区 == '2' then  --印尼 +62
-							tap(108,345)
-							mSleep(1000)
-							touchDown( 735,  642) 
-							mSleep(500)
-							touchUp( 735,  642)
-							mSleep(1000)
-							tap(309,  474)
-							mSleep(500)
-						elseif values.号码地区 == '3' then  --印度 +91
-							tap(108,345)
-							mSleep(1000)
-							touchDown(737, 641) 
-							mSleep(1000)
-							touchUp(737,  641)
-							mSleep(500)
-							tap(350,  381)
-							mSleep(500)
-						elseif values.号码地区 == '4' then  --越南 +84
-							tap(108,345)
-							mSleep(1000)
-							touchDown(733, 1005) 
-							mSleep(1000)
-							touchUp(733, 1005)
-							mSleep(500)
-							tap(377,  656)
-							mSleep(500)		
-						--elseif values.号码地区 == '1' and values.使用软件~='4' then  ---- 俄罗斯号 +7   (默认)
-						elseif values.号码地区 == '1' then  ---- 俄罗斯号 +7   (默认)
-							tap(108,345)
-							mSleep(1000)
-							touchDown(735,  894) 
-							mSleep(1000)
-							touchUp(735,  894)
-							mSleep(500)
-							tap(309,  481)
-							mSleep(500)	
-						elseif values.号码地区=='5' then  ---- 爱沙尼亚 +372
-							tap(108,345)
-							mSleep(1000)
-							touchDown( 735,  529) 
-							mSleep(1000)
-							touchUp( 735,  529)
-							mSleep(500)
-							tap(310,  760)
-							mSleep(500)	
-						elseif values.号码地区=='6' then  ---- 吉尔吉斯斯坦+996
-							tap(108,345)
-							mSleep(1000)
-							touchDown(734,  701) 
-							mSleep(1000)
-							touchUp(734,  701)
-							mSleep(500)
-							tap(328, 857)
-							mSleep(500)
-						elseif values.号码地区=='7' then  ---- 巴西 +55
-							tap(108,345)
-							mSleep(1000)
-							touchDown(735,  447) 
-							mSleep(1000)
-							touchUp(735,  447)
-							mSleep(500)
-							moveTo(500+math.random(1,10),1038+math.random(1,10),516+math.random(1,10),390+math.random(1,10)) --滑动到 巴西 +55
-							mSleep(3000)
-							tap(372, 532)
-							mSleep(500)		
-						elseif values.号码地区=='8' then  ---- 马来西亚 +60
-							tap(108,345)
-							mSleep(1000)
-							touchDown(735,  755) 
-							mSleep(1000)
-							touchUp(735,  755)
-							mSleep(500)
-							tap(308,  575)
-							mSleep(500)
-						elseif values.号码地区=='9' then  ---- 英格兰 +44
-							tap(108,345)
-							mSleep(1000)
-							touchDown( 733,  585) 
-							mSleep(1000)
-							touchUp( 733,  585)
-							mSleep(500)
-							moveTo(500,1038,516,390) --滑动到 根西岛 +44
-							mSleep(3000)
-							tap( 283,  410)
-							mSleep(500)							
-						else						
-							mSleep(500)
-						end
-						if values.接口序=='0' then
-							电话号码 = 获取电话号码()
-							--电话号码 = '3438659922'     -- 调试
-						elseif values.接口序=='1' then
-							电话号码 = 获取手机号和ID2()
-						elseif values.接口序=='2' then
-							电话号码 = 获取电话号码3()
-						elseif values.接口序=='3' then
-							电话号码 = 获取手机号和ID4()
-						elseif values.接口序=='4' then
-							电话号码 = 获取手机号和ID5()
-						elseif values.接口序=='5' then
-							电话号码 = 获取手机号和ID6()
-						end
+                ----------------选择国家代号-------------
+                    if values.系统版本 == "1" then
+                        if values.号码地区 == '0' then     --美国号   +1
+                            tap(108,345)
+                            mSleep(1000)
+                            touchDown( 732,  978); 
+                            mSleep(500)
+                            touchUp( 732,  978)
+                            mSleep(1000)
+                            tap(311,  767)
+                            mSleep(500)
+                        elseif values.号码地区 == '2' then  --印尼 +62
+                            tap(108,345)
+                            mSleep(1000)
+                            touchDown( 735,  642) 
+                            mSleep(500)
+                            touchUp( 735,  642)
+                            mSleep(1000)
+                            tap(309,  474)
+                            mSleep(500)
+                        elseif values.号码地区 == '3' then  --印度 +91
+                            tap(108,345)
+                            mSleep(1000)
+                            touchDown(737, 641) 
+                            mSleep(1000)
+                            touchUp(737,  641)
+                            mSleep(500)
+                            tap(350,  381)
+                            mSleep(500)
+                        elseif values.号码地区 == '4' then  --越南 +84
+                            tap(108,345)
+                            mSleep(1000)
+                            touchDown(733, 1005) 
+                            mSleep(1000)
+                            touchUp(733, 1005)
+                            mSleep(500)
+                            tap(377,  656)
+                            mSleep(500)		
+                            --elseif 号码地区 == '1' and 使用软件~='4' then  ---- 俄罗斯号 +7   (默认)
+                        elseif values.号码地区 == '1' then  ---- 俄罗斯号 +7   (默认)
+                            --dialog("13")
+                            tap(108,345)
+                            mSleep(1000)
+                            touchDown(735,  894) 
+                            mSleep(1000)
+                            touchUp(735,  894)
+                            mSleep(500)
+                            tap(309,  481)
+                            mSleep(500)
+                        elseif values.号码地区=='5' then  ---- 爱沙尼亚 +372
+                            tap(108,345)
+                            mSleep(1000)
+                            touchDown( 735,  529) 
+                            mSleep(1000)
+                            touchUp( 735,  529)
+                            mSleep(500)
+                            tap(310,  760)
+                            mSleep(500)	
+                        elseif values.号码地区=='6' then  ---- 吉尔吉斯斯坦+996
+                            tap(108,345)
+                            mSleep(1000)
+                            touchDown(734,  701) 
+                            mSleep(1000)
+                            touchUp(734,  701)
+                            mSleep(500)
+                            tap(328, 857)
+                            mSleep(500)
+                        elseif values.号码地区=='7' then  ---- 巴西 +55
+                            tap(108,345)
+                            mSleep(1000)
+                            touchDown(735,  447) 
+                            mSleep(1000)
+                            touchUp(735,  447)
+                            mSleep(500)
+                            moveTo(500+math.random(1,10),1038+math.random(1,10),516+math.random(1,10),390+math.random(1,10)) --滑动到 巴西 +55
+                            mSleep(3000)
+                            tap(372, 532)
+                            mSleep(500)		
+                        elseif values.号码地区=='8' then  ---- 马来西亚 +60
+                            tap(108,345)
+                            mSleep(1000)
+                            touchDown(735,  755) 
+                            mSleep(1000)
+                            touchUp(735,  755)
+                            mSleep(500)
+                            tap(308,  575)
+                            mSleep(500)
+                        elseif values.号码地区=='9' then  ---- 英格兰 +44
+                            tap(108,345)
+                            mSleep(1000)
+                            touchDown( 733,  585) 
+                            mSleep(1000)
+                            touchUp( 733,  585)
+                            mSleep(500)
+                            moveTo(500,1038,516,390) --滑动到 根西岛 +44
+                            mSleep(3000)
+                            tap( 283,  410)
+                            mSleep(500)							
+                        else						
+                            mSleep(500)
+                        end
+                    elseif values.系统版本 == "0" then    --12系统
+                        if values.号码地区 == '1' then  ---- 俄罗斯号 +7   (默认)  
+                            --dialog("12")
+                            tap(108,345)
+                            mSleep(1000)
+                            touchDown(733,874) 
+                            mSleep(1000)
+                            touchUp(733,874)
+                            mSleep(500)
+                            tap(332,438)
+                            mSleep(500)  
+                        end
+                    else
+   
+                    end
+			    
+                    if values.接口序=='0' then
+                        电话号码 = 获取电话号码()
+                        --电话号码 = '3438659922'     -- 调试
+                    elseif values.接口序=='1' then
+                        电话号码 = 获取手机号和ID2()
+                    elseif values.接口序=='2' then
+                        电话号码 = 获取电话号码3()
+                    elseif values.接口序=='3' then
+                        电话号码 = 获取手机号和ID4()
+                    elseif values.接口序=='4' then
+                        电话号码 = 获取手机号和ID5()
+                    elseif values.接口序=='5' then
+                        电话号码 = 获取手机号和ID6()
+                    end
 					输入文本2(邮箱输入框X2,邮箱输入框Y2,电话号码)  --inputText 版本
 					mSleep(1000)
 					tap(372,660)--send 按钮
