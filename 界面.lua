@@ -7,7 +7,7 @@ MyTable = {
     ["height"] = h,            
     ["cancelname"] = "取消",  
     ["okname"] = "同意条款并运行", 
-    ["title"] = "TK二合一脚本", --标题栏文字
+    ["title"] = "TK四合一脚本", --标题栏文字
     ["titlealign"] = "left", --title 对齐方式，默认左对齐
     ["align"] = "center", --
     ["titlesize"] = 15,  
@@ -19,8 +19,9 @@ MyTable = {
     ["bgcolor"] = "255,255,255",
     ["pagenumtype"] = "tab", --页码样式，dot - 小圆点， number - 数字， default - 不显示，tab - 底部不显示页码样式，
     ["config"] = "peizhi.txt",  
-    --["timer"] = 120,  
+    --["timer"] = 120,   --倒计时时间
     ["rettype"] = "table",
+    ["bg"] = "bg.png",
     pages       =
     {
         {
@@ -40,7 +41,7 @@ MyTable = {
                 -- 必填，控件类型，单选组合
                 ["id"] = "系统版本",                      
                 -- 选填，无，控件 ID，以 table 格式返回返回值时必填,否则无法获取返回值
-                ["list"] = "IOS-12,其他系统",      -- 必填，无，多选组合内容
+                ["list"] = "IOS-12,其他版本",      -- 必填，无，多选组合内容
                 ["select"] = "1",                   -- 选填，0，默认选中项 id
                 --["images"] = "test1.png,test1.png,test1.png,test1.png", 
                 -- 选填，无， 单选组合选项显示图片
@@ -52,9 +53,9 @@ MyTable = {
                 ["align"] = "center",
                 ["text"] = "脚本功能:",
                 ["size"] = 15, 
-                ["align"] = "left",          
-                ["valign"] = "center", 
-                ["color"] = "0,0,0",           
+                ["align"] = "left",
+                ["valign"] = "center",
+                ["color"] = "0,0,0",
                 ["width"] = -1,
                 ["nowrap"] = 1,
             },
@@ -280,8 +281,8 @@ MyTable = {
 			{
 				["type"] = "Edit",               
 				["id"] = "登录文件名称",  
-				["text"] = "/private/var/mobile/Media/cs.txt",
-				["prompt"] = "/private/var/mobile/Media/cs.txt", 
+				["text"] = "/private/var/mobile/Media/账号密码.txt",
+				["prompt"] = "/private/var/mobile/Media/账号密码.txt", 
 				["kbtype"] = "default",  
 				["color"] = "0,0,0",   
 				["size"] = 15,           

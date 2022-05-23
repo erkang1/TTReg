@@ -228,7 +228,7 @@ function 流程()
 		if tonumber(values.注册间隔) < 60 then
 --			dialog("为保证流程正常运行，间隔时间应该大于等于【60】秒",{title = "参数设置错误",button = "退出重新设置"})
 --			lua_exit()
-            toast("为了保证流程正常运行，脚本建议间隔时长超过60秒",1)
+            toast("为了保证流程正常运行，脚本建议间隔时长设置超过60秒",1)
             mSleep(2000)
 		else
 			mSleep(100)

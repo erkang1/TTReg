@@ -1,4 +1,3 @@
-
 function 打码准备()
 for var= 1, 30 do
 	xx,yy = findMultiColorInRegionFuzzy(0xf4f5f6, "-10|254|0xf4f5f6,246|278|0xf4f5f6,237|110|0xf4f5f6,240|-7|0xf4f5f6,452|7|0xf4f5f6,451|234|0xf4f5f6,182|172|0xcacaca",90,123,479,594,770)
@@ -58,27 +57,27 @@ touchUp(312+随机数,260+随机数);
 mSleep(100)
 end
 
-function 打码()
-text,tid = ocrScreen(207,519,646,747,1318,60,0.5)
-if text~=nil then --成功获取数据
---------返回的坐标X+144，起始坐标Y
-	new = text:split(",") -- 将字符串 str 按照 `,`
-	local 终止坐标X=起始坐标X+new[1]+打码X偏移量
-	moveTo(起始坐标X,起始坐标Y,终止坐标X,起始坐标Y,{["step"] = 20,["ms"] = 100,["index"] = 1,["stop"] = true})
-else
-	toast('获取打码坐标失败',1)
-	return false
-end
-for var=1,20 do
-	mSleep(200)
-	if isColor(135,853,0xffc1c1) then  --判断打码是否成功
-		--打码失败
-		bool = ocrReportError()
-		toast('打码失败',1) 
-		break
-	end
-end
-end
+-- function 打码()    --已和谐
+-- text,tid = ocrScreen(207,519,646,747,1318,60,0.5)
+-- if text~=nil then --成功获取数据
+-- --------返回的坐标X+144，起始坐标Y
+-- 	new = text:split(",") -- 将字符串 str 按照 `,`
+-- 	local 终止坐标X=起始坐标X+new[1]+打码X偏移量
+-- 	moveTo(起始坐标X,起始坐标Y,终止坐标X,起始坐标Y,{["step"] = 20,["ms"] = 100,["index"] = 1,["stop"] = true})
+-- else
+-- 	toast('获取打码坐标失败',1)
+-- 	return false
+-- end
+-- for var=1,20 do
+-- 	mSleep(200)
+-- 	if isColor(135,853,0xffc1c1) then  --判断打码是否成功
+-- 		--打码失败
+-- 		bool = ocrReportError()
+-- 		toast('打码失败',1) 
+-- 		break
+-- 	end
+-- end
+-- end
 
 function 图鉴打码()
 	function userPath()
@@ -113,7 +112,7 @@ function 图鉴打码()
 		toast('打码失败',1) 
 		break
 	end
-end
+    end
 end
 
 function 随机账号密码()
@@ -379,7 +378,7 @@ end
 --/api/v2/phone/phoneNum?token=xxx   			查看手机号
 
 function 获取电话号码()
---http://20.122.103.3:11223/api/v2/phone/getPhone?token=erkang
+--http://167.172.136.167:11223/api/v2/phone/getPhone?token=erkang
 local webdata,tmp,获取状态
 for var= 1,20 do
 	--dialog("获取到的电话号码接口："..values.电话号接口)   --调试打印，上线需要注释
@@ -454,20 +453,24 @@ for var=1,5 do
 	else
 		--toast("验证码格式为文本格式",2)
 		--webdata1 = [[[TikTok] 3875 is your verification code, valid for 5 minutes. To keep your account safe, never forward this code.]]
+		--webdata="ÄTikTokÑ 0063 is your verification code, valid for 5 minutes. To keep your account safe, never forward this code."
 		--dialog("webdata:"..webdata,2)
 		local str = string.sub(webdata,33,34)
-		--dialog(str)
+		--dialog(str)		
+		local res_f = tostring(webdata)
+        local res2 ,_ = res_f:gsub("%D+","")  		--正则验证码
+        
 		for var= 1,14 do	
-			if str == 'on' then
+			if str == 'on' or str == 'ti'  then
 				break
 			else
 				mSleep(5000)
 			end
 		end 
-		if str == 'on' then		
-			验证码 = string.sub(webdata,10,13) 			--4位数验证码 
-			--dialog("验证码:"..验证码,2)
-			return 验证码
+		if str == 'on' or  str == 'ti'  then		
+		    验证码 = string.sub(res2,1,4)
+		    --dialog("验证码:"..验证码,2)
+		    return 验证码
 		else
 			mSleep(5000)
 		end
@@ -1253,7 +1256,7 @@ function 读取首行()
 		--for  i=1, #list,1  do
 		for  i=1, 1,1  do
 			local 首行 = list[i]
-			local str = 首行:split("|")	
+			local str = 首行:split("|")
 			登录账号 = str[1]
 			登录密码 = str[2]
 			toast("账号是："..登录账号)
@@ -1268,7 +1271,6 @@ end
 -------删除首行：先读取文件到table，然后修改，再清除文件内容，最后重载写入到文件
 local 文件路径 = values.登录文件名称
 function 读取文本(file)
-	-- body
 	local fileTab = {}
 	local line = file:read()
 	while line do
@@ -1289,7 +1291,6 @@ end
 
 
 function 删除首行()
-	-- body
 	toast("开始删除首行")
 	local 打开文件 = io.open(文件路径)
 	if 打开文件 then
