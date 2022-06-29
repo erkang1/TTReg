@@ -178,12 +178,12 @@ function 全局设置()
 		PyApp新机坐标版本()
 		mSleep(1000)
 	elseif values.使用软件 == '4' then 		--OnePress
---		os.execute("/usr/local/bin/onepress_lite -b com.zhiliaoapp.musically -C -o")
 		os.execute("/usr/local/bin/onepress_lite -b com.zhiliaoapp.musically -C -o")
 		mSleep(1000)
 		打开再关闭()
 		toast("等待2分钟")
 		mSleep(120000)
+        -- mSleep(10000)
 	else
 		mSleep(1000)
 	end
@@ -277,13 +277,13 @@ function 流程()
 			mSleep(3000)
 			tap(675,1287)    --点击 我的
 			mSleep(500)
-			--1.1.2_onepress_旧版本无需添加此项----------------
--- 			for var=1,24 do
---     			toast("等待2分钟，账号上传中...")
---     			mSleep(5000)   --等待2分钟并上传
--- 			end
+			--1.1.2_onepress_旧版本无需添加 for 等待------
+			for var=1,24 do
+    			toast("等待2分钟，账号上传中...")
+    			mSleep(5000)   --等待2分钟并上传
+			end
 -- 			toast("账号上传完成")
-			------------------------------------
+			----------------------------------------------
 		else
 			mSleep(1000)
 		end	

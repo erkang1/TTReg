@@ -371,9 +371,11 @@ function TT注册()
     --打开TT应用  自动进入到了TT注册主界面  点击电话及邮箱注册按钮   进入到注册生日界面  输入年月日  点击NEXT按钮  进入到注册电话界面  点击邮箱按钮  
     --进入到注册邮箱界面  输入邮箱账号  点击NEXT按钮 打码 进入设置密码界面 输入密码  点击NEXT按钮 打码 
     while (true) do
+        local TT_形状验证 = ocrText(92,370,197,408,0)   --识别Select文字
+        local TT_Signup = ocrText(229,614,526,652,0)   --识别Sign up for an account文字
         local 当前界面=检索界面(TT注册界面列表)---TT注册界面,TT设置生日界面,TT注册电话界面,TT注册邮箱界面,TT注册密码界面		
         ------------1665版本通知类弹框-----------------
-        if values.卸载安装 == '0' then 
+        if values.卸载安装 == '0' then
             mSleep(2000)
             tap(222+math.random(1,10),792+math.random(1,10)) --1665版本授权通知
             mSleep(1000)
@@ -384,9 +386,24 @@ function TT注册()
         if 当前界面=='TT注册界面1' or 当前界面=='TT注册界面2' or 当前界面=='TT注册界面3' or 当前界面=='TT注册界面4' or 当前界面=='TT注册界面5' then
             tap(邮箱及电话按钮X,邮箱及电话按钮Y)
             mSleep(1000)
+        elseif 当前界面 == "TT弹框2401" then
+            mSleep(1000)
+            -- touchDown(387,807)
+            -- mSleep(50)
+            -- touchUp(387,807)
+            tap(387,807,80,"click_point_5_2.png")
+            mSleep(1000)
+        elseif TT_Signup == "Sign up for an account" then
+            mSleep(1000)
+            tap(387,755)
+            mSleep(1000)
         elseif 当前界面=='TT注册225界面login点击1' or  当前界面=='TT注册225界面login点击2' then  --遮罩点击
             mSleep(500)
             tap(TT注册225界面login点击1X+math.random(0,5),TT注册225界面login点击1X+math.random(0,5))
+            mSleep(1000)
+        elseif 当前界面 == 'TT注册225界面Signup' then 
+            mSleep(1000)
+            tap(368,471)
             mSleep(1000)
         elseif 当前界面=='TT注册225界面login4' then  --登录界面4 如果选项过多就滑动一次
             moveTo(556+math.random(1,10),726+math.random(1,10),574+math.random(1,10),494+math.random(1,10)) 
@@ -395,34 +412,84 @@ function TT注册()
             mSleep(1000)
             tap(点击225signup按钮X,点击225signup按钮Y)
             mSleep(3000)		
+            
         elseif 当前界面=='TT注册225界面login2' or 当前界面=='TT注册225界面login3' or 当前界面=='TT注册225界面login' then   ----适配22.5.0版本
             toast("当前界面是登录界面")
             mSleep(1000)
             tap(点击225signup按钮X,点击225signup按钮Y)
             mSleep(3000)
+        -- elseif TT_形状验证 == 'Select' then       --图形打码
+        --     mSleep(6000)
+        --     图鉴打码()
+        elseif  当前界面 == 'TT登录主页滑动2' then 
+            mSleep(2000)
+            for var= 1,math.random(2,3) do
+                moveTo(370,988,374,461,{["step"] = 20,["ms"] = 70,["index"] = 1,["stop"] = 1}) --这里用的选择头像的时候的坐标
+                mSleep(1000)
+            end
+            mSleep(1000)
+            tap(674,1274,50,"click_point_5_2.png",1)    --点击主页            
+			mSleep(1000)
+			
 			
             -----------------1665版本适配----------------------
-        elseif 当前界面 == '注册1665主页授权界面' then
+            
+        elseif 当前界面 == "注册1665主页授权界面" then
             tap(248+math.random(0,5),788+math.random(0,5))  --点击 不允许
             mSleep(1000)
-        elseif 当前界面 == '注册1665主页界面' or 当前界面 == 'TT主界面无视频' then
-            mSleep(500)
-            moveTo(556+math.random(1,10),726+math.random(1,10),574+math.random(1,10),494+math.random(1,10)) --滑动遮罩
+        elseif 当前界面 == "注册1665主页界面" or 当前界面 == "TT1665主页01" then
+            mSleep(2000)
+            
+            moveTo(576,733,573,307,{["step"] = 20,["ms"] = 70,["index"] = 1,["stop"] = 1}) --滑动遮罩
+            mSleep(2000)
+            
+           
+            touchDown(670,1286)
+            mSleep(50)
+            touchUp(670,1286) 
+            -- tap(670+math.random(0,5),1286+math.random(0,5))  --点击 我c'v
             mSleep(1000)
-            tap(670+math.random(0,5),1286+math.random(0,5))  --点击 我c'v
+            
+            -- touchDown(372,745)
+            -- mSleep(50)
+            -- touchUp(372,745)
+            -- -- tap(372+math.random(0,5),745+math.random(0,5))   --点击 注册按钮
+            -- mSleep(1000)
+            
+            touchDown(328,492)
+            mSleep(50)
+            touchUp(328,492)
+            -- tap(328+math.random(0,10),492+math.random(0,10))  -- 点击手机号邮箱注册
             mSleep(1000)
-            tap(372+math.random(0,5),745+math.random(0,5))   --点击 注册按钮
+        elseif 当前界面 == "注册1665主页界面2" or 当前界面 == "注册1665视频提示界面" then
+            mSleep(2000)
+            -- touchDown(668,1280)
+            -- mSleep(50)
+            -- touchUp(668,1280)
+            
+            tap(670+math.random(0,5),1286+math.random(0,5),80,"click_point_5_2.png")  --点击 我
             mSleep(1000)
-            tap(328+math.random(0,10),492+math.random(0,10))  -- 点击手机号邮箱注册
-            mSleep(1000)
-        elseif 当前界面 == '注册1665主页界面2' or 当前界面 == '注册1665视频提示界面' then
-            mSleep(500)
-            tap(670+math.random(0,5),1286+math.random(0,5))  --点击 我
-            mSleep(1000)
-            tap(372+math.random(0,5),745+math.random(0,5))   --点击 注册按钮
+            
+            
+            touchDown(365,495)
+            mSleep(50)
+            touchUp(365,495)
+            -- tap(372+math.random(0,5),745+math.random(0,5))   --点击 注册按钮
             mSleep(1000)	
-        elseif 	当前界面=='注册1665signup界面' then
-            tap(364+math.random(0,5),494+math.random(0,5))
+        elseif 当前界面 == "TT2400主界面" and isColor(522, 739, 0xfe2c55, 90) then
+            mSleep(1000)
+            tap(522,739)
+            mSleep(1000)
+            tap(365,506)
+            mSleep(1000)
+        elseif 当前界面 == "TT2400主界面" or 当前界面 == "TT主界面无视频"  then
+            mSleep(1000)
+            tap(668,1277)
+            mSleep(1000)
+            tap(365,506)
+            mSleep(1000)
+        elseif 	当前界面 == '注册1665signup界面' then
+            tap(377,503)
             mSleep(1000)		
         elseif 	当前界面=='注册1665生日界面' then	
             选择生日()
@@ -436,7 +503,7 @@ function TT注册()
             tap(361,808,100,"click_point_5_2.png",1)
             mSleep(1000)
 
-            -----------------------------------------------------
+        -----------------------------------------------------
 		
         elseif 当前界面=='TT设置生日界面' then
             选择生日()
@@ -445,6 +512,7 @@ function TT注册()
             if (isColor( 277,  563, 0xfe2c55, 85)) then  --网络不好就重新点击
                 tap(生日界面next按钮X,生日界面next按钮Y)
             else
+                
             end
             mSleep(3000)
             判断是否离开该界面(TT注册界面列表,'TT设置生日界面')
@@ -452,7 +520,7 @@ function TT注册()
             --				mSleep(1000)
             --				tap(email按钮X,email按钮Y)
             --				erkang 如果有手机号接口，那么继续操作，如果没有，则使用随机邮箱注册
-            mSleep(1500)
+            mSleep(3000)
             if (isColor( 114,  429, 0xff4c3a, 85)) then
                 mSleep(1000)
                 toast("toomany，重新运行")
@@ -465,7 +533,8 @@ function TT注册()
             if values.电话号接口 == '' and values.电话号接口2 == '' and values.电话号接口3 == '' and values.电话号接口4 == '' and values.电话号接口5 == '' and values.电话号接口6 == '' then
                 toast("未获取到手机号接口，执行邮箱注册")
                 mSleep(1000)
-                tap(email按钮X,email按钮Y)
+                tap(543,164)
+                -- tap(email按钮X,email按钮Y)
                 mSleep(1000)
             else 
                 toast("获取到手机号接口,执行手机号注册")
@@ -619,6 +688,12 @@ function TT注册()
             mSleep(1000)
             toast("网络异常，流程结束")
             全局变量1=2
+        elseif 当前界面=='TT验证码等待界面' and TT_形状验证 == 'Select' then
+            mSleep(6000)
+            图鉴打码()
+        elseif 当前界面 == 'TT验证码打码界面' then 
+            mSleep(6000)
+            图鉴打码()
         elseif 当前界面=='TT验证码等待界面' then 
             mSleep(3000)
             toast("正在等待验证码刷新")
@@ -685,7 +760,8 @@ function TT注册()
             随机账号密码()
             输入文本2(邮箱输入框X,邮箱输入框Y,账号)
             mSleep(1000)
-            tap(邮箱界面next按钮X,邮箱界面next按钮Y)
+            tap(433,747)
+            -- tap(邮箱界面next按钮X,邮箱界面next按钮Y)
             mSleep(8000)
             判断是否离开该界面(TT注册界面列表,'TT注册邮箱界面')
         elseif 当前界面=='TT注册账号重复界面' then
@@ -697,7 +773,7 @@ function TT注册()
             打码准备()
             toast('验证码已刷新',1)
             mSleep(500)
-            --			打码()
+            --打码()
             图鉴打码()
             mSleep(12000)
             判断是否离开该界面(TT注册界面列表,'TT注册邮箱界面')
@@ -810,10 +886,20 @@ end
 
 function 设置资料()
     while (true) do   --修改链接
+        local 允许通讯录 = ocrText(152,794,332,833,0)   --识别 Don't allow 文字
         local 当前界面=检索界面(TT界面列表) --TT主界面,TT个人主页界面,TT管理账户界面,TT设置和隐私界面,TT企业设置界面,TT选择企业类型界面,TT弹窗欢迎光临界面,TT弹窗访问照片权限界面,TT个人资料设置界面,TT设置个性签名界面,TT设置链接界面
         if 当前界面 == 'TT主界面3' then
             mSleep(1000)
             randomTap(225,1257)
+            mSleep(1000)
+        -- elseif 当前界面 == 'TT弹框2401' then    --隐私弹框
+        --     mSleep(1000)
+        --     tap(387,807,80,"click_point_5_2.png")
+        --     mSleep(1000)
+        elseif 允许通讯录 == "Don't allow" then   --Don't allow 识别
+            toast("检测到弹框",1)
+            mSleep(1000)
+            tap(244,814,80,"click_point_5_2.png")
             mSleep(1000)
         elseif 当前界面=='TT主界面' or 当前界面=='TT主界面2' then --点ME按钮
             tap(me按钮X+math.random(0,5),me按钮Y+math.random(0,5))
@@ -1096,6 +1182,7 @@ end
 function 账号登录()
     while (true) do
         local 当前界面=检索界面(TT注册界面列表)
+        local 当前界面=检索界面(TT登录界面列表)
         if 当前界面=='注册1665主页授权界面' then
             tap(248+math.random(0,5),788+math.random(0,5))  --点击 不允许
             mSleep(1000)
@@ -1140,7 +1227,7 @@ function 账号登录()
             打码准备()
             toast('验证码已刷新',1)
             mSleep(500)
-            打码()
+            图鉴打码()
             mSleep(12000)
             判断是否离开该界面(TT注册界面列表,'TT注册邮箱界面')
         elseif 	当前界面=='注册1665验证码未刷新界面' then
@@ -1156,12 +1243,13 @@ function 账号登录()
         elseif 当前界面 == 'TT登录授权弹框' then 
             tap(TT登录授权弹框X,TT登录授权弹框Y)
             mSleep(1000)
-        elseif 当前界面 == 'TT登录主页滑动' or 当前界面 == '注册1665主页界面' then 
+        elseif 当前界面 == 'TT登录主页滑动' or 当前界面 == '注册1665主页界面' then  --
+            mSleep(2000)
             for var= 1,math.random(2,3) do
-                moveTo(370+math.random(1,10),988+math.random(1,10),374+math.random(1,10),461+math.random(1,10)) --这里用的选择头像的时候的坐标
+                moveTo(370,988,374,461,{["step"] = 20,["ms"] = 70,["index"] = 1,["stop"] = 1}) --这里用的选择头像的时候的坐标
                 mSleep(1000)
             end
-            tap(524+math.random(1,10),1272+math.random(1,10))    --点击主页
+            tap(524,1272)    --点击主页
         elseif 当前界面 == 'TT登录消息界面' then 
             记录登录账号信息()
             删除首行()

@@ -1,18 +1,18 @@
 function 打码准备()
-for var= 1, 30 do
-	xx,yy = findMultiColorInRegionFuzzy(0xf4f5f6, "-10|254|0xf4f5f6,246|278|0xf4f5f6,237|110|0xf4f5f6,240|-7|0xf4f5f6,452|7|0xf4f5f6,451|234|0xf4f5f6,182|172|0xcacaca",90,123,479,594,770)
-	if xx>0 then
-		mSleep(1000)
-	else
-		toast(xx..','..yy,1)
-		return true
-	end
-	xx1,yy1 = findMultiColorInRegionFuzzy(0xcacaca, "367|4|0xcdcdcd,184|-80|0xcacaca,133|29|0xcacaca,238|39|0xcacaca,232|34|0xcacaca,-68|278|0x505050,-32|284|0x505050",90,118,555,559,925)
-	if xx1>0 then  --说明验证码没有刷新
-		tap(117,925) 
-		mSleep(3000)
-	end
-end
+    for var= 1, 30 do
+    	xx,yy = findMultiColorInRegionFuzzy(0xf4f5f6, "-10|254|0xf4f5f6,246|278|0xf4f5f6,237|110|0xf4f5f6,240|-7|0xf4f5f6,452|7|0xf4f5f6,451|234|0xf4f5f6,182|172|0xcacaca",90,123,479,594,770)
+    	if xx>0 then       --找打码界面特征
+    		mSleep(1000)
+    	else
+    		toast(xx..','..yy,1)
+    		return true
+    	end
+    	xx1,yy1 = findMultiColorInRegionFuzzy(0xcacaca, "367|4|0xcdcdcd,184|-80|0xcacaca,133|29|0xcacaca,238|39|0xcacaca,232|34|0xcacaca,-68|278|0x505050,-32|284|0x505050",90,118,555,559,925)
+    	if xx1>0 then  --说明验证码没有刷新
+    		tap(117,925)
+    		mSleep(3000)
+    	end
+    end
 end
 
 function 向上翻页()
@@ -81,39 +81,66 @@ end
 
 function 图鉴打码()
 	function userPath()
-		return "/var/mobile/Media/TouchSprite"	--填写触动实际路径
+		return "/var/mobile/Media/TouchSprite"	      --填写触动实际路径
+        -- return "/private/var/mobile/Media/dayoutk"    --大有数据小精灵路径
 	end
 
-	function ttScreen(x1,y1,x2,y2,scale) -- 此处为触动截图方法
+	function ttScreen(x1,y1,x2,y2,scale)        --此处为触动截图方法
 		scale=scale or 1
 		local path=userPath().."/res/ttshu.png"
 		snapshot("ttshu.png",x1,y1,x2,y2,scale)
 		return path
 	end
-	local a = ttScreen(99,459,650,802,1) --图片的路径完整路径此处为截图获取的路径
+	
+-- 	local a = ttScreen(99,459,650,802,1) --图片的路径完整路径此处为截图获取的路径_滑块
+    toast("正在获取打码坐标...")
+    local a = ttScreen(96,480,651,826,1) --图片的路径完整路径此处为截图获取的路径_形状
 --	dialog(tostring(a))
-	res,id = tt.Image(a,33) --开始识别  33为滑块验证类型 返回起始X坐标
+	res,id = tt.Image(a,27) --开始识别  【33】为滑块验证 返回起始X坐标，     【27】: 1 ~ 4个坐标 返回两个形状的 x,y轴坐标,总计4个坐标
 --	dialog("result:"..tostring(res)..tostring(id)) --识别结果,识别id
 	--识别结果报错示例。
 --	res1=tt.ReportError2(id) 
 --	dialog(tostring(res1))
-	if res ~= nil then 
-		local  终止坐标X=107+tonumber(res)
-		moveTo(107,847,终止坐标X,847,{["step"] = 20,["ms"] = 100,["index"] = 1,["stop"] = true})
+	if res ~= nil  and string.len(res)>7 then 
+----------------------------------------滑块打码--------------------------------------------------------------
+-- 		local  终止坐标X=107+tonumber(res)
+-- 		moveTo(107,847,终止坐标X,847,{["step"] = 20,["ms"] = 100,["index"] = 1,["stop"] = true})
+--------------------------------------------------------------------------------------------------------------
+
+----------------------------------------形状打码--------------------------------------------------------------
+        local 坐标1 = (res:split("|"))[1]
+        local 坐标2 = (res:split("|"))[2]
+        local 坐标1拆分x = tonumber((坐标1:split(","))[1])+96      --先处理坐标 string 然后拆分单个坐标转为 number     +96 +482 为界面的x,y边距
+        local 坐标1拆分y = tonumber((坐标1:split(","))[2])+482
+        local 坐标2拆分x = tonumber((坐标2:split(","))[1])+96
+        local 坐标2拆分y = tonumber((坐标2:split(","))[2])+482
+
+        tap(坐标1拆分x,坐标1拆分y,50,"click_point_5_2.png",1)
+        mSleep(1000)
+        tap(坐标2拆分x,坐标2拆分y,50,"click_point_5_2.png",1)
+        
+        mSleep(2000)
+        tap(375,951)
+--------------------------------------------------------------------------------------------------------------
 	else
 		toast('获取打码坐标失败',1)
-		return false
+		全局变量1=2
+-- 		return false
 	end
+
 	for var=1,20 do
-	mSleep(200)
-	if isColor(135,853,0xffc1c1) then  --判断打码是否成功
-		--打码失败
-		bool = tt.ReportError2(id) 
-		toast('打码失败',1) 
-		break
-	end
+	    mSleep(200)
+    	if isColor(135,853,0xffc1c1) or string.len(res)<=7 then  --判断打码是否成功
+    		--打码失败
+    		bool = tt.ReportError2(id)
+    		toast('打码失败',1) 
+    		break
+    	end
     end
 end
+--关于圆形旋转打码目前尚未解决
+
+
 
 function 随机账号密码()
 --require("界面")
@@ -241,7 +268,7 @@ end
 
 ---------------------------------------------------------------------one_press还原上传----------------------------------------------------------------------------------
 function onepress还原备份()
-    tableGet = ts.hlfs.getFileList("/private/var/mobile/Library/onepress/Documents/com.zhiliaoapp.musically",true)   --列出文件夹下所有文件
+    tableGet = ts.hlfs.getFileList("/private/var/mobile/Library/onepress/Documents/com.zhiliaoapp.musically",true)    --列出文件夹下所有文件
     if tableGet then
         for i,v in pairs(tableGet) do
         完整文件名称 = string.format("%s = %s",i,v)
@@ -391,7 +418,7 @@ for var= 1,20 do
 	--获取验证码地址='http://154.17.1.45/sms.php?token=2e4d193ebc0da0024da2i157986eb1002c67c'
 	无可用手机号 = tmp.msg
 	--dialog("获取状态:"..获取状态)
-	--dialog("获取到的验证码地址："..获取验证码地址)   --调试打印，上线需要注释
+	--dialog("获取到的验证码地址："..获取验证码地址)      --调试打印，上线需要注释
 	--dialog("电话号码:"..电话号码)
 	if 获取状态 == '0' then
 		mSleep(1000)
@@ -432,7 +459,7 @@ for var=1,5 do
 		for var= 1, 20 do
 			if 验证状态 == 'false'  then
 				mSleep(5000)
-				if (isColor(  69,  475, 0xfe2c55, 85)) then
+				if (isColor( 69,  475, 0xfe2c55, 85)) then
 					tap(  113+math.random(0,5),  478+math.random(0,5)) --点击重新发送
 				end
 			else
@@ -620,16 +647,38 @@ end
 
 function 获取验证码2()
 local webdata,tmp,验证码
+local resend = ocrText (63,462,227,486,0)
 for var= 1,20 do
 	webdata = httpGet('https://api.sms-activate.org/stubs/handler_api.php?api_key='..api_key值..'&action=getFullSms&id='..激活ID,5)
-	--webdata = httpGet('https://sms-activate.ru/stubs/handler_api.php?api_key='..api_key值..'&action=getFullSms&id='..激活ID,5)			--原地址
---	if webdata=='STATUS_WAIT_CODE' or webdata== false then
-	if (isColor( 69,  475, 0xfe2c55, 85)) then
-		tap(113+math.random(0,5),  478+math.random(0,5)) --点击重新发送
-	else
-		mSleep(1000)
-	end
-	
+-- 	if (isColor(68, 475, 0xfe2c55, 90)) then
+-- 	    mSleep(2000)
+-- 		tap(105,477) --点击重新发送
+-- 	else
+-- 	    --toast("未发现颜色")
+-- 		mSleep(5000)
+-- 	end
+    if resend == "Resend code" then 
+        mSleep(3000)
+        touchDown(105,477)
+        mSleep(1000)
+        touchUp(105,477)
+    else
+    	mSleep(1000)
+    	toast("未找到resend code文字")
+    end
+
+    -------------针对形状打码-------------------------------------------------------------------------------------------------------------------
+    local 当前界面=检索界面(TT注册界面列表)
+    if 当前界面 == 'TT验证码打码界面' then 
+        mSleep(6000)
+        图鉴打码()
+    else
+        toast("未找到图形验证的识别,流程继续")
+        -- 全局变量1=2
+    end
+    --------------------------------------------------------------------------------------------------------------------------------------------    
+
+
 	if webdata == 'STATUS_WAIT_CODE' or webdata == "STATUS_WAIT_RETRY" then	
 		mSleep(3000)
 	else
@@ -637,8 +686,8 @@ for var= 1,20 do
 	end
 end
 
-    tmp=webdata:split(':')
-    local res,_ = webdata:gsub("%D+","")    	--使用正则匹配验证码  目前测试 适配 16.6.5版本4位数验证码
+tmp=webdata:split(':')
+local res,_ = webdata:gsub("%D+","")    	--使用正则匹配验证码  目前测试 适配 16.6.5版本4位数验证码
 
 if tmp[1]=='FULL_SMS' then
 	发送状态('6')
@@ -646,7 +695,6 @@ if tmp[1]=='FULL_SMS' then
 		验证码 = string.sub(res,1,4) 		--4位数验证码 
 	else
 		验证码 = string.sub(res,1,6) 
-		--验证码=string.sub(tmp[2],10,15) 	--6位数验证码 
 	end
 	mSleep(1000)
 	return 验证码
@@ -858,7 +906,7 @@ function 获取手机号和ID4()
 国家代码4=获取国家代码4()
 --dialog("获取国家代码:"..国家代码)
 --mSleep(1000)
-local wet= httpGet(values.电话号接口4,20)
+local wet= httpGet(values.电话号接口4,20)  --http://api1.5sim.net/stubs/handler_api.php?api_key=0586df498fef4d28b04f7ead2618edb1&action=getNumber&service=lf&country=0
 new = tostring(wet):split(":")
 --dialog("获取到的号码状态："..wet)
 while (true) do
@@ -891,6 +939,7 @@ end
 
 function 获取验证码4()
 local webdata,tmp,验证码
+local resend = ocrText (63,462,227,486,0)
 for var= 1,20 do 
 	webdata = httpGet('http://api1.5sim.net/stubs/handler_api.php?api_key='..sim_api_key值..'&action=getStatus&id='..激活ID,5)
 	if webdata == 'STATUS_WAIT_CODE' or webdata == "STATUS_WAIT_RETRY" then	
@@ -898,29 +947,45 @@ for var= 1,20 do
 	else
 		break
 	end
-	if (isColor( 69,  475, 0xfe2c55, 85)) then
-		tap(113+math.random(0,5),  478+math.random(0,5)) --点击重新发送
-	else
-		mSleep(1000)
-	end
+
+    if resend == "Resend code" then 
+        mSleep(3000)
+        touchDown(105,477)
+        mSleep(1000)
+        touchUp(105,477)
+    else
+    	mSleep(1000)
+    	toast("未找到resend code文字")
+    end
+    
+    -------------针对形状打码-------------------------------------------------------------------------------------------------------------------
+    local 当前界面=检索界面(TT注册界面列表)
+    if 当前界面 == 'TT验证码打码界面' then 
+        mSleep(6000)
+        图鉴打码()
+    else
+        toast("未找到图形验证的识别,流程继续")
+        -- 全局变量1=2
+    end
+    --------------------------------------------------------------------------------------------------------------------------------------------    
 end
 
-    tmp=webdata:split(':')
+tmp=webdata:split(':')
 local res,_ = webdata:gsub("%D+","")    	
 
-    if tmp[1]=='FULL_SMS' or tmp[1]=='STATUS_OK' then
-    	发送状态4('6')
-    	if values.软件版本 == '0' then
-    		验证码 = string.sub(res,1,4) 		--4位数验证码 
-    	else
-    		验证码 = string.sub(res,1,6)  		--6位数验证码 
-    	end
-    	mSleep(1000)
-    	return 验证码
+if tmp[1]=='FULL_SMS' or tmp[1]=='STATUS_OK' then
+    发送状态4('6')
+    if values.软件版本 == '0' then
+        验证码 = string.sub(res,1,4) 		--4位数验证码 
     else
-    	toast('获取验证码失败',1)
-    	全局变量1=2
+        验证码 = string.sub(res,1,6)  		--6位数验证码 
     end
+    mSleep(1000)
+    return 验证码
+else
+    toast('获取验证码失败',1)
+    全局变量1=2
+end
 end
 
 --------------------------------------richpva--------------------------------------------------------
@@ -995,11 +1060,13 @@ function 获取验证码5()
         --webdata = [[{"money":"40.00","cost":"8.50","request_id":"21155","application_id":"51","country_id":"1","number":"79777989264","sms_code":"4309","errmsg":""}]]
         local str = json.decode(webdata)
         --dialog(str.sms_code)
-    	if (isColor( 69,  475, 0xfe2c55, 85)) then
-    		tap(113+math.random(0,5),  478+math.random(0,5)) --点击重新发送
+    	if (isColor(68, 475, 0xfe2c55, 90)) then
+    	    mSleep(2000)
+    		tap(105,477) --点击重新发送
     	else
     		mSleep(1000)
     	end
+    	
         验证码 = str.sms_code
         if 验证码 ~='' then
             mSleep(1000)
@@ -1099,18 +1166,18 @@ end
 function 获取验证码6()
     local webdata,tmp,验证码
     for var= 1,25 do
-    	if (isColor( 69,  475, 0xfe2c55, 85)) then
-    		tap(113+math.random(0,5),  478+math.random(0,5)) --点击重新发送
+    	if (isColor(68, 475, 0xfe2c55, 90)) then
+    	    mSleep(2000)
+    		tap(105,477) --点击重新发送
     	else
     		mSleep(1000)
-    		--toast("未发现色块")
     	end
         code,header_resp, body_resp  = ts.httpsGet('https://smspool.net/api/sms/check?key='..smspool值.."&orderid="..smspool激活id ,10)
         webdata = body_resp
         --webdata = [[{"status":1,"message":"pending","resend":0}]]
   	    --dialog(webdata)
         local str = json.decode(webdata)
-        --{"status":1,"message":"pending","resend":0}                     {"status":3,"sms":"0377","full_sms":"0377"}
+        --{"status":1,"message":"pending","resend":0}                    {"status":3,"sms":"0377","full_sms":"0377"}
         获取状态 = tostring(str.status)
         验证码 = tostring(str.sms)
         --dialog(获取状态)
@@ -1172,11 +1239,11 @@ function 记录账号信息()
 		
 	if values.电话号接口 == '' and values.电话号接口2 == '' and values.电话号接口3 == '' and values.电话号接口4 == ''  and values.电话号接口5 == '' and values.电话号接口6 == '' then   --如果都为空  那么就是邮箱号
 		--dialog("邮箱账号记录")
-		记录内容 = tostring(账号).."-----".. tostring(名字).."-----".. tostring(密码).."-----".. tostring(时间)
+		记录内容 = tostring(账号).."----".. tostring(名字).."----".. tostring(密码).."----".. tostring(时间)
 		mSleep(1000)
 		记录数据('已注册邮箱账号.log',记录内容)
 	else
-		记录内容 = tostring(区号).."|".. tostring(电话号码).."|".. tostring(获取验证码地址).."-----".. tostring(名字).."-----".. tostring(密码).."-----".. tostring(时间)
+		记录内容 = tostring(区号).."|".. tostring(电话号码).."|".. tostring(获取验证码地址).."----".. tostring(名字).."----".. tostring(密码).."----".. tostring(时间)
 		--dialog("电话号码:"..电话号码)
 		mSleep(1000)
 		记录数据('已注册手机号.log',记录内容)

@@ -352,7 +352,6 @@ local function parse_object(str, i)
   return res, i
 end
 
-
 local char_func_map = {
   [ '"' ] = parse_string,
   [ "0" ] = parse_number,
