@@ -21,7 +21,7 @@ MyTable = {
     ["config"] = "peizhi.txt",  
     --["timer"] = 120,   --倒计时时间
     ["rettype"] = "table",
-    ["bg"] = "bg.png",
+    ["bg"] = "tkbg.png",
     pages       =
     {
         {
@@ -90,6 +90,25 @@ MyTable = {
                 ["scale"] = 0.4,                    -- 选填，1，图片缩放比例
                 ["countperline"] = 0,
             },
+			{
+                ["type"] = "Label",
+                ["align"] = "center",
+                ["text"] = "打码类型:",
+                ["size"] = 15, 
+                ["align"] = "left",          
+                ["valign"] = "center", 
+                ["color"] = "0,0,0",           
+                ["width"] = -1,
+                ["nowrap"] = 1,
+            },
+            {
+                ["type"] = "RadioGroup",            
+                ["id"] = "打码类型",                      
+                ["list"] = "滑动滑块打码,点击相同形状打码",      -- 必填，无，多选组合内容
+                ["select"] = "0",                   -- 选填，0，默认选中项 id
+                ["scale"] = 0.4,                    -- 选填，1，图片缩放比例
+                ["countperline"] = 0,
+            },        
 			{
                 ["type"] = "Label",
                 ["align"] = "center",
@@ -199,10 +218,31 @@ MyTable = {
                 ["width"] = -1,
                 ["nowrap"] = 1,
             },
-			{
+-- 			{
+--                 ["type"] = "Label",
+--                 ["align"] = "center",
+--                 ["text"] = "手动获取代理:",
+--                 ["size"] = 15, 
+--                 ["align"] = "left",          
+--                 ["valign"] = "center", 
+--                 ["color"] = "0,0,0",           
+--                 ["width"] = -1,
+--                 ["nowrap"] = 1,
+--             },
+-- 			{
+--                 ["type"] = "Switch",
+--                 ["id"] = "手动获取代理",
+--                 ["size"] = "m",
+--                 ["align"] = "left",
+--                 ["valign"] = "top",
+--                 ["state"] = "off",
+--                 ["width"] = -1,
+--                 ["nowrap"] = 0,
+--             },
+            {
                 ["type"] = "Label",
                 ["align"] = "center",
-                ["text"] = "手动获取代理:",
+                ["text"] = "在线代理：",
                 ["size"] = 15, 
                 ["align"] = "left",          
                 ["valign"] = "center", 
@@ -210,16 +250,16 @@ MyTable = {
                 ["width"] = -1,
                 ["nowrap"] = 1,
             },
-			{
-                ["type"] = "Switch",
-                ["id"] = "手动获取代理",
-                ["size"] = "m",
-                ["align"] = "left",
-                ["valign"] = "top",
-                ["state"] = "off",
-                ["width"] = -1,
+            {
+                ["type"] = "ComboBox",               
+                ["id"] = "手动获取代理",                  
+                ["list"] = "账密格式,北鲲云,无账密格式",
+                ["color"] = "0,0,0",
+                ["align"] = "",
+                ["valign"] = "top",   
+                ["width"] = 180,
                 ["nowrap"] = 0,
-            },
+            }, 
 			{
                 ["type"] = "Label", 
 --                ["text"] = "联众密码:",        

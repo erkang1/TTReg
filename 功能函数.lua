@@ -81,7 +81,7 @@ end
 
 function 图鉴打码()
 	function userPath()
-		return "/var/mobile/Media/TouchSprite"	      --填写触动实际路径
+		return "/var/mobile/Media/TouchSprite"	         --填写触动实际路径
         -- return "/private/var/mobile/Media/dayoutk"    --大有数据小精灵路径
 	end
 
@@ -92,22 +92,39 @@ function 图鉴打码()
 		return path
 	end
 	
--- 	local a = ttScreen(99,459,650,802,1) --图片的路径完整路径此处为截图获取的路径_滑块
-    toast("正在获取打码坐标...")
-    local a = ttScreen(96,480,651,826,1) --图片的路径完整路径此处为截图获取的路径_形状
+	toast("正在获取打码坐标...")
+	 
+	if values.打码类型 == '0' then
+	   a = ttScreen(99,459,650,802,1) --图片的路径完整路径此处为截图获取的路径_滑块
+    else
+       a = ttScreen(96,480,651,826,1) --图片的路径完整路径此处为截图获取的路径_形状
+	end
 --	dialog(tostring(a))
-	res,id = tt.Image(a,27) --开始识别  【33】为滑块验证 返回起始X坐标，     【27】: 1 ~ 4个坐标 返回两个形状的 x,y轴坐标,总计4个坐标
+    local 类型
+   if values.打码类型 == '0' then
+        类型 = 33
+   else
+        类型 = 27
+   end
+   
+	res,id = tt.Image(a,类型) --开始识别  【33】为滑块验证 返回起始X坐标，     【27】: 1 ~ 4个坐标 返回两个形状的 x,y轴坐标,总计4个坐标
 --	dialog("result:"..tostring(res)..tostring(id)) --识别结果,识别id
 	--识别结果报错示例。
 --	res1=tt.ReportError2(id) 
 --	dialog(tostring(res1))
-	if res ~= nil  and string.len(res)>7 then 
-----------------------------------------滑块打码--------------------------------------------------------------
--- 		local  终止坐标X=107+tonumber(res)
--- 		moveTo(107,847,终止坐标X,847,{["step"] = 20,["ms"] = 100,["index"] = 1,["stop"] = true})
+-- 	if res ~= nil  and string.len(res)>7 then 
+	if res ~= nil then 
+----------------------------------------滑块打码--------------------------------------------------------------	    
+	    if values.打码类型 == '0' then
+        toast("当前为滑块打码")
+		local  终止坐标X=104+tonumber(res)
+		moveTo(107,847,终止坐标X,847,{["step"] = 20,["ms"] = 100,["index"] = 1,["stop"] = 1})
 --------------------------------------------------------------------------------------------------------------
 
+
 ----------------------------------------形状打码--------------------------------------------------------------
+	    elseif  values.打码类型 == '1' and string.len(res)>7 then
+        toast("当前为点击形状打码")
         local 坐标1 = (res:split("|"))[1]
         local 坐标2 = (res:split("|"))[2]
         local 坐标1拆分x = tonumber((坐标1:split(","))[1])+96      --先处理坐标 string 然后拆分单个坐标转为 number     +96 +482 为界面的x,y边距
@@ -122,6 +139,10 @@ function 图鉴打码()
         mSleep(2000)
         tap(375,951)
 --------------------------------------------------------------------------------------------------------------
+        else
+            toast('获取打码坐标失败2',1)
+            全局变量1=2
+        end
 	else
 		toast('获取打码坐标失败',1)
 		全局变量1=2
@@ -311,52 +332,103 @@ end
 ------------------手动S5设置------------------------------------------------------------------------------------------------------------
 function 获取S5代理()
     获取S5接口 = values.代理链接
-    -- 获取S5接口 = "http://20.122.103.3:51515/api/v1/getIP?type=text&username=test_99641&protocol=0&region=RU&count=1"
-    -- 格式：socks5://test_99641$ifhie8NkW4*US:owrjgdnhg@185.145.128.72:4113
+    -- 获取S5接口 = "http://20.122.103.3:51515/api/v1/getIP?type=text&username=test_99641&protocol=0&region=RU&count=1"  --测试链接
+    -- 获取S5接口 = "https://coralip.com/api/v2/getIP?username=pps_erkang&password=pzhuondvwb&protocol=0&count=1&region=&keep_time=2&type=text"     --珊瑚IP
+    
+    -- 返回格式1：socks5://test_99641$ifhie8NkW4*US:owrjgdnhg@185.145.128.72:4113
+    -- 返回格式2：http://139.155.87.202:1688/api/v2/USIP/usip.php                            返回值 3.101.85.252:20089
+    -- 返回格式3：http://129.226.173.62:8888/getport     ip端固定129.226.173.62   端口返回值 {"code":0,"message":"","data":43897}    需要拼接为 IP+端口 填入ssr
     local webdata=httpGet(获取S5接口)
-    --dialog(webdata)
-    local strs1 = webdata:split("//")  --分割前缀
-    local strs2 = strs1[2]:split("@")  --分割账号密码 + IP端口
-    local strs3 = strs2[1]:split(":")  --分割账号 密码
-    local strs4 = strs2[2]:split(":")  --分割IP 端口
+    --dialog(tostring(webdata))
+    if tostring(webdata) =='false' then
+        for var=1 , 5 do
+            mSleep(5000)
+            toast("正在获取代理...")
+        end
+        toast("获取代理失败")
+        全局变量1 = 4
+    else
+        
+    end    
     
-    代理账号 = strs3[1]
-    代理密码 = strs3[2]
-    代理IP = strs4[1]
-    代理端口 = strs4[2]
-    
+    if  values.手动获取代理 == "0" then 
+        ------------------    --黄--格式1需要打开   ----------------------------------
+        local strs1 = webdata:split("//")  --分割前缀
+        local strs2 = strs1[2]:split("@")  --分割账号密码 + IP端口
+        local strs3 = strs2[1]:split(":")  --分割账号  密码
+        local strs4 = strs2[2]:split(":")  --分割IP 端口
+        代理账号 = strs3[1]
+        代理密码 = strs3[2]
+        代理端口 = strs4[2]
+        代理IP = strs4[1]
+        ------------------------------------------------------------------------------
+    elseif values.手动获取代理 == "1" then 
+        -- toast("text")
+        local strs6 = webdata:split(":")  --分割IP 端口  --北鲲云
+        代理端口 = tonumber(strs6[2])
+        代理IP = strs6[1]
+    else                                               
+        local strs5 = json.decode(webdata)
+        local ss = ((values.代理链接:split("//")[2]):split("/")[1]):split(":")[1]
+        -- 代理IP = "129.226.173.62"       --自测           http://129.226.173.62:8888/getport?region=US
+        -- 代理IP = "119.28.87.24"         --大有数据       http://119.28.87.24:8888/getport?region=US
+        代理IP = ss
+        代理端口 = strs5.data
+    end
     --dialog("账号密码："..strs2[1].."IP端口"..strs2[2])
     --dialog("账号:"..strs3[1].."密码："..strs3[2])
-    --dialog("IP:"..strs4[1].."端口:"..strs4[2])
-
+    --dialog("IP:"..strs4[1].."端口:"..strs4[2])   
+    --dialog("IP："..代理IP.."端口："..代理端口)
 end
 
+
 function 手动设置代理()
-	关闭应用("com.liguangming.Shadowrocket")
-	mSleep(500)
-	打开应用("com.liguangming.Shadowrocket",500)
-	tap(695,82)  --点击加号
-	mSleep(500)
-	tap(485,208)  --点击类型
-	mSleep(1000)
-	tap(362,773)  --点击Socks5
-	mSleep(1000)
-	
-	--开始输入
-	--tap(226,360) --点击地址
-	--dialog(代理IP)
-	输入文本2(226,360,代理IP)
-	mSleep(500)
-	--dialog(代理端口)
-	输入文本2(220,455,代理端口)
-	mSleep(500)
-	--dialog(代理账号)
-	输入文本2(304,542,代理账号)
-	mSleep(500)
-	--dialog(代理密码)
-	输入文本2(221,623,代理密码)
-	mSleep(500)
-	tap( 680,83) --点击完成
+    关闭应用("com.liguangming.Shadowrocket")
+    mSleep(500)
+    打开应用("com.liguangming.Shadowrocket",500)
+    mSleep(3000)
+    tap(695,82,80,"click_point_5_2.png",1)  --点击加号
+    mSleep(1000)
+    tap(485,208,80,"click_point_5_2.png",1)  --点击类型
+    mSleep(1000)
+    tap(362,773,80,"click_point_5_2.png",1)  --点击Socks5
+    mSleep(1000)
+    -- 开始输入
+    -- tap(226,360) --点击地址
+    -- dialog(代理IP)
+    -- 获取S5代理()
+    输入文本2(226,360,代理IP)
+    mSleep(500)
+
+    tap(220,455)
+    mSleep(1000)
+    小键盘输入(代理端口)
+    mSleep(500)
+    -- dialog(代理账号)
+    if  values.手动获取代理 == 0 then 
+        输入文本2(304,542,代理账号)    --黄--格式需要打开
+        mSleep(500)
+        -- dialog(代理密码)
+        输入文本2(221,623,代理密码)    --黄--格式需要打开
+        mSleep(500)
+    end
+    tap( 680,83) -- 点击完成
+end
+
+function 检查代理连通状态()
+    for var= 1,15 do
+        local webdata = httpGet("http://www.google.com/")               --获取谷歌网页数据
+        toast(tostring(webdata).."，网络无法连接，正在重试...")
+        mSleep(3000)
+        if  webdata and webdata ~= "" then
+            toast("网络正常，开始运行")
+            break
+        else
+            --dialog("网络连通异常")
+            全局变量1=4
+        end
+    end
+    mSleep(3000)
 end
 
 function 删除手动设置的代理()

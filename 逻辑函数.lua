@@ -477,12 +477,14 @@ function TT注册()
             -- tap(372+math.random(0,5),745+math.random(0,5))   --点击 注册按钮
             mSleep(1000)	
         elseif 当前界面 == "TT2400主界面" and isColor(522, 739, 0xfe2c55, 90) then
-            mSleep(1000)
-            tap(522,739)
-            mSleep(1000)
-            tap(365,506)
-            mSleep(1000)
-        elseif 当前界面 == "TT2400主界面" or 当前界面 == "TT主界面无视频"  then
+            -- mSleep(1000)
+            -- tap(522,739)
+            -- mSleep(1000)
+            -- tap(365,506)
+            -- mSleep(1000)
+            -- toast("代理IP出现问题，脚本重新开始")
+            全局变量1=4
+        elseif 当前界面 == "TT2400主界面" or 当前界面 == "TT主界面无视频"  or 当前界面 == "TT主界面无视频2"  then
             mSleep(1000)
             tap(668,1277)
             mSleep(1000)
@@ -692,6 +694,7 @@ function TT注册()
             mSleep(6000)
             图鉴打码()
         elseif 当前界面 == 'TT验证码打码界面' then 
+            打码准备()     --当前界面刷新验证码准备  需要适配
             mSleep(6000)
             图鉴打码()
         elseif 当前界面=='TT验证码等待界面' then 

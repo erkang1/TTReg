@@ -81,6 +81,7 @@ local 软件版本 = values.软件版本
 local 手动获取代理 = values.手动获取代理
 local 代理链接 = values.代理链接
 local 号码地区 = values.号码地区
+local 打码类型 = values.打码类型
 
 require("基础函数")
 require("功能函数")
@@ -129,9 +130,9 @@ function 全局设置()
 		代理状态()
 		打开VPN()
 		toast("代理已经切换")
-		 
+	end	 
 	--------  手动设置S5代理  ------
-	elseif values.手动获取代理 == 'on' then 
+	if  values.代理链接~= "" then 
 		toast("手动设置代理已经开启")
 		mSleep(500)
 		关闭VPN()
@@ -181,8 +182,8 @@ function 全局设置()
 		os.execute("/usr/local/bin/onepress_lite -b com.zhiliaoapp.musically -C -o")
 		mSleep(1000)
 		打开再关闭()
-		toast("等待2分钟")
-		mSleep(120000)
+		toast("等待1分钟")
+		mSleep(60000)
         -- mSleep(10000)
 	else
 		mSleep(1000)
@@ -278,10 +279,10 @@ function 流程()
 			tap(675,1287)    --点击 我的
 			mSleep(500)
 			--1.1.2_onepress_旧版本无需添加 for 等待------
-			for var=1,24 do
-    			toast("等待2分钟，账号上传中...")
-    			mSleep(5000)   --等待2分钟并上传
-			end
+-- 			for var=1,24 do
+--     			toast("等待2分钟，账号上传中...")
+--     			mSleep(5000)   --等待2分钟并上传
+-- 			end
 -- 			toast("账号上传完成")
 			----------------------------------------------
 		else
@@ -302,9 +303,8 @@ function 流程()
 		end
 		全局变量1=1     --注册成功
 		记录账号信息()  --记录注册成功的账号到本地
-		设置资料()
-		
 		if values.上传头像 == 'on' then
+		    设置资料()
 			设置头像()
 		else
 			mSleep(1000)
@@ -354,6 +354,9 @@ for var = 1, 注册数量 do
 		elseif 全局变量1==3 then
 			toast('退出注册，脚本重新开始',1)
 			break
+		elseif 全局变量1==4 then
+			toast('注册代理异常，脚本重新开始',1)
+			break			
 		elseif 全局登录变量1==1 then
 			toast('登录成功',1)
 			mSleep(1000)
