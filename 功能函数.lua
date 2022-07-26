@@ -81,9 +81,9 @@ end
 
 function 图鉴打码()
 	function userPath()
-		return "/var/mobile/Media/TouchSprite"	         -- 填写触动实际路径
-        -- return "/private/var/mobile/Media/dayoutk"    -- 大有数据小精灵路径
-        -- return "/var/mobile/Media/erktest"               -- 大有数据小精灵路径
+		return "/var/mobile/Media/TouchSprite"	            -- 填写触动实际路径
+        -- return "/private/var/mobile/Media/dayoutk"       -- 大有数据小精灵路径
+        -- return "/var/mobile/Media/erktest"               -- 易总数据小精灵路径
 	end
 
 	function ttScreen(x1,y1,x2,y2,scale)        --此处为触动截图方法
@@ -245,6 +245,55 @@ function TT防闪退启动()
 		end
 	end
 end
+
+
+
+function 备份还原_清理()
+    关闭应用(TT)
+	打开应用('com.3btest.BackUpApp',2000)
+    toast("防止服务器异常，软件将关闭并重新打开")
+	mSleep(1000)
+	关闭应用("com.3btest.BackUpApp")	    --避免出现 连接服务器失败导致无法清理的问题
+	打开应用('com.3btest.BackUpApp',2000)
+	mSleep(2000)
+    -- tap(388,601,50,"click_point_5_2.png",1)   --旧版本
+    -- tap(381,418,50,"click_point_5_2.png",1) --2.0.5版本
+    tap(389,478,50,"click_point_5_2.png",1) --2.0.10版本
+    -- local 包名检查 = ocrText(273,118,560,159,0)   --识别com.zhiliao.musically文字   如果不是TK  就停止脚本并给提示
+    -- -- nLog(包名检查)
+    -- if 包名检查 == "com.zhiliao.musically" then
+    --     mSleep(2000)
+    --     tap(389,478,50,"click_point_5_2.png",1)
+    -- else
+    --     dialog("请在备份还原软件内APP包名处选择TK")
+    --     全局变量1=2
+    -- end
+    mSleep(3000)
+end
+
+function 备份还原_备份()
+    关闭应用(TT)
+	打开应用('com.3btest.BackUpApp',2000)
+    toast("防止服务器异常，软件将关闭并重新打开")
+	mSleep(1000)
+	关闭应用("com.3btest.BackUpApp")	    --避免出现 连接服务器失败导致无法清理的问题
+	打开应用('com.3btest.BackUpApp',2000)
+	mSleep(2000)
+    -- tap(388,601,50,"click_point_5_2.png",1)   --旧版本
+    -- tap(381,418,50,"click_point_5_2.png",1) --2.0.5版本
+    tap(370,239,50,"click_point_5_2.png",1) --2.0.10版本  --点击备份
+    -- local 包名检查 = ocrText(273,118,560,159,0)   --识别com.zhiliao.musically文字   如果不是TK  就停止脚本并给提示
+    -- -- nLog(包名检查)
+    -- if 包名检查 == "com.zhiliao.musically" then
+    --     mSleep(2000)
+    --     tap(389,478,50,"click_point_5_2.png",1)
+    -- else
+    --     dialog("请在备份还原软件内APP包名处选择TK")
+    --     全局变量1=2
+    -- end
+    mSleep(3000)
+end
+
 
 
 function KillMe()
@@ -433,18 +482,20 @@ function 检查代理连通状态()
 end
 
 function 删除手动设置的代理()
-    if (isColor( 682,  551, 0xc4c4c6, 85)) then  --如果找到色块，则返回 true
+    if (isColor(682, 550, 0xc4c4c6, 90)) then  --如果找到色块，则返回 true
     	--dialog("111")
     	mSleep(1000)
     	return true
     else
+        --dialog("进入流程")
     	关闭应用("com.liguangming.Shadowrocket")
     	mSleep(500)
     	打开应用("com.liguangming.Shadowrocket",500)
     	mSleep(1000)
-    	moveTo(552,  553,486,  548,{["step"] = 20,["ms"] = 70,["index"] = 1,["stop"] = 1})  --滑动显示删除
+    	--dialog("开始滑动")
+    	moveTo(682,550,356,550,{["step"] = 20,["ms"] = 70,["index"] = 1,["stop"] = 1})  --滑动显示删除
     	mSleep(1000)
-    	tap(  641,  555) --滑动之后点击删除
+    	tap(641,  555) --滑动之后点击删除
     	mSleep(1000)
     	tap( 510,  763) --点击删除
     end
@@ -589,7 +640,7 @@ local 验证码长度=string.len(数字验证码)
 for i= 1,(验证码长度) do
 	local 数字=tonumber(string.sub(数字验证码,i,i)) --把字符串转化为整数
 	tap(键盘坐标[数字+1][1],键盘坐标[数字+1][2])
-	mSleep(1000)
+	mSleep(500)   --延时缩短，当前功能正常
 end
 end
 
@@ -1314,12 +1365,12 @@ function 记录账号信息()
 		--dialog("邮箱账号记录")
 		记录内容 = tostring(账号).."----".. tostring(名字).."----".. tostring(密码).."----".. tostring(时间)
 		mSleep(1000)
-		记录数据('已注册邮箱账号.log',记录内容)
+		记录数据('TK--已注册邮箱账号.log',记录内容)
 	else
 		记录内容 = tostring(区号).."|".. tostring(电话号码).."|".. tostring(获取验证码地址).."----".. tostring(名字).."----".. tostring(密码).."----".. tostring(时间)
 		--dialog("电话号码:"..电话号码)
 		mSleep(1000)
-		记录数据('已注册手机号.log',记录内容)
+		记录数据('TK--已注册手机号.log',记录内容)
 		--dialog("已经记录信息")
 	end
 	mSleep(5000)

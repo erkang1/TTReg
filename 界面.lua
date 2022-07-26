@@ -124,7 +124,7 @@ MyTable = {
                 ["type"] = "ComboBox",               
                 ["id"] = "使用软件",                  
                 --["prompt"] = "300毫秒", 
-				["list"] = "AWZ,AXJ,黑豹,PyApp,OnePress,SuperMan",
+				["list"] = "AWZ,AXJ,黑豹,PyApp,OnePress,SuperMan,内部清理软件",
 				["select"] = 4,
 				--["list"] = "地址1:http://45.207.44.6:12345/v2/api/get/phone?name=,地址2:sms-activate.ru/cn",
                 ["color"] = "0,0,0",
@@ -903,16 +903,16 @@ MyTable = {
                 ["nowrap"] = 0,
 				
             },
-			{
-                ["type"] = "Label", 
-                ["text"] = "本软件【不会进行收费】，请悉知，避免上当受骗！！！",        
-                ["size"] = 12, 
-                ["align"] = "center",          
-                ["valign"] = "center", 
-                ["color"] = "0,0,0",           
-                --["width"] = -1,
-                ["nowrap"] = 0,
-            }
+-- 			{
+--                 ["type"] = "Label", 
+--                 ["text"] = "本软件【不会进行收费】，请悉知，避免上当受骗！！！",        
+--                 ["size"] = 12, 
+--                 ["align"] = "center",          
+--                 ["valign"] = "center", 
+--                 ["color"] = "0,0,0",           
+--                 --["width"] = -1,
+--                 ["nowrap"] = 0,
+--             }
             
 		},
     }   

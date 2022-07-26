@@ -373,7 +373,11 @@ function TT注册()
     while (true) do
         local TT_形状验证 = ocrText(92,370,197,408,0)   --识别Select文字
         local TT_Signup = ocrText(229,614,526,652,0)   --识别Sign up for an account文字
+        local TT_Choose = ocrText(54,118,333,196,0)   --识别Choose文字
+        local TT_Skip = ocrText(182,1237,245,1277,0)   --识别Skip文字
+        local TT_Swipe = ocrText(57,111,394,207,0)   --识别Swipe up文字
         local 当前界面=检索界面(TT注册界面列表)---TT注册界面,TT设置生日界面,TT注册电话界面,TT注册邮箱界面,TT注册密码界面		
+        
         ------------1665版本通知类弹框-----------------
         if values.卸载安装 == '0' then
             mSleep(2000)
@@ -382,6 +386,20 @@ function TT注册()
         else 
             mSleep(500)
         end
+        
+
+        
+        if TT_Swipe == "Swipe up" then
+            mSleep(1000)
+            toast("滑动主页",1)
+            mSleep(1000)
+            for var= 1,math.random(2,3) do
+                moveTo(370,988,374,461,{["step"] = 20,["ms"] = 70,["index"] = 1,["stop"] = 1}) --这里用的选择头像的时候的坐标
+                mSleep(1000)
+            end        
+        end
+        
+        
 		
         if 当前界面=='TT注册界面1' or 当前界面=='TT注册界面2' or 当前界面=='TT注册界面3' or 当前界面=='TT注册界面4' or 当前界面=='TT注册界面5' then
             tap(邮箱及电话按钮X,邮箱及电话按钮Y)
@@ -393,11 +411,21 @@ function TT注册()
             -- touchUp(387,807)
             tap(387,807,80,"click_point_5_2.png")
             mSleep(1000)
+        elseif TT_Choose == "Choose" and TT_Skip == "Skip" then
+            mSleep(1000)
+            toast("选择兴趣",1)
+            mSleep(1000)
+            tap(209,1246,50,"click_point_5_2.png",1)
+            mSleep(2000)
+        elseif 当前界面 == "TT注册界面001" then 
+            mSleep(1000)
+            tap(398,509,80,"click_point_5_2.png",1)
+            mSleep(1000)
         elseif TT_Signup == "Sign up for an account" then
             mSleep(1000)
             tap(387,755)
             mSleep(1000)
-        elseif 当前界面=='TT注册225界面login点击1' or  当前界面=='TT注册225界面login点击2' then  --遮罩点击
+        elseif 当前界面=='TT注册225界面login点击1' or  当前界面=='TT注册225界面login点击2' then    --遮罩点击
             mSleep(500)
             tap(TT注册225界面login点击1X+math.random(0,5),TT注册225界面login点击1X+math.random(0,5))
             mSleep(1000)
