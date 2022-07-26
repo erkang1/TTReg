@@ -81,8 +81,9 @@ end
 
 function 图鉴打码()
 	function userPath()
-		return "/var/mobile/Media/TouchSprite"	         --填写触动实际路径
-        -- return "/private/var/mobile/Media/dayoutk"    --大有数据小精灵路径
+		return "/var/mobile/Media/TouchSprite"	         -- 填写触动实际路径
+        -- return "/private/var/mobile/Media/dayoutk"    -- 大有数据小精灵路径
+        -- return "/var/mobile/Media/erktest"               -- 大有数据小精灵路径
 	end
 
 	function ttScreen(x1,y1,x2,y2,scale)        --此处为触动截图方法

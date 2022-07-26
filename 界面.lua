@@ -902,7 +902,18 @@ MyTable = {
                 --["width"] = -1,
                 ["nowrap"] = 0,
 				
-            }			
+            },
+			{
+                ["type"] = "Label", 
+                ["text"] = "本软件【不会进行收费】，请悉知，避免上当受骗！！！",        
+                ["size"] = 12, 
+                ["align"] = "center",          
+                ["valign"] = "center", 
+                ["color"] = "0,0,0",           
+                --["width"] = -1,
+                ["nowrap"] = 0,
+            }
+            
 		},
     }   
 }
